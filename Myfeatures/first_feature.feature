@@ -1,23 +1,12 @@
 
-Feature: Add product
-Actor:Admin
-Desc: This '..'
+Feature: login
+ 
+Scenario: valid login
+Given I am not in system
+When set username "tasneem" and pass "12345"
+Then login succeed
 
-
-  
-  Scenario Outline: Add new product
-    Given the name of product as <name>
-    
-    And this product has 23 items
-    When press add button
-    And some other action
-    
-    Then the new product should be added
-    
-
-  
-
-    Examples: 
-      | name  | 
-      | cola |    
-      | ppp |    
+Scenario: invalid user name 
+Given I am not in system
+When set innalid username "tasneemm" and pass "12345"
+Then login failed

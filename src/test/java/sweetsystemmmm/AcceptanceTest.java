@@ -11,7 +11,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 
 @RunWith(Cucumber.class)
 
-@CucumberOptions(features="MyFeature" ,
+@CucumberOptions(features="MyFeatures" ,
 plugin= {"summary", "html:target/cucumber/report.html"},
 monochrome=true,
 snippets=SnippetType.CAMELCASE,
