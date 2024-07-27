@@ -16,23 +16,35 @@ public class loginsteps {
 	
 	
 	
-	
-	
-	@Given("I am not in system")
-	public void iAmNotInSystem() {
+
+	@Given("user is not in the sweet system")
+	public void userIsNotInTheSweetSystem() {
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new io.cucumber.java.PendingException();
 	}
-	@When("set username {string} and pass {string}")
-	public void setUsernameAndPass(String string, String string2) {
+	@Given("user has a valid username and password")
+	public void userHasAValidUsernameAndPassword() {
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new io.cucumber.java.PendingException();
 	}
-	@Then("login succeed")
-	public void loginSucceed() {
+	@When("user enters  username {string} and password {string}")
+	public void userEntersUsernameAndPassword(String string, String string2) {
 	    // Write code here that turns the phrase above into concrete actions
 	    throw new io.cucumber.java.PendingException();
 	}
+	@Then("user is now in the system")
+	public void userIsNowInTheSystem() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+	@Then("welcome msg will be appeared")
+	public void welcomeMsgWillBeAppeared() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+
+
+
 
 
 
