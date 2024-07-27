@@ -3,24 +3,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 public class UserDatabase {
+    private Map<String, User> users;
 
-	 private static final Map<String, String> users = new HashMap<>();
+    public UserDatabase() {
+        this.users = new HashMap<>();
+    }
 
-	  
-	    public static void addUser(String username, String password) {
-	        users.put(username, password);
-	    }
+    public void addUser(String username, String password) throws Exception {
+        if (users.containsKey(username)) {
+            throw new Exception("User already exists");
+        }
+        users.put(username, new User(username, password));
+    }
 
-	    // Check if username exists
-	    public static boolean usernameExists(String username) {
-	        return users.containsKey(username);
-	    }
-
-	    // Validate the password for a given username
-	    public static boolean validatePassword(String username, String password) {
-	        return users.get(username).equals(password);
-	    }
-	
-	
+    public boolean validateUser(String username, String password) {
+        if (!users.containsKey(username)) {
+            return false;
+        }
+        return users.get(username).getPassword().equals(password);
+    }
 }

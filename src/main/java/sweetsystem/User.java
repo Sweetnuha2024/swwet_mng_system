@@ -7,8 +7,6 @@ import javax.swing.JOptionPane;
 
 import io.cucumber.java.it.Date;
 public class User {
-	String ID;
-	String Name;
 	
 	private String username;
     private String password;
@@ -25,6 +23,11 @@ public class User {
     public String getPassword() {
         return password;
     }
+    
+public String toString()
+{
+	return "User [username="+username+",Password=" +password +"]";
+}
 	
 	
 	
