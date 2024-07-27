@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 public class MyApplication {
 
-	
-	
-	
-	public boolean is_logged_in;
+
+	public boolean is_logged_in=false;
 	private String welcome_msg;
 	
 	
@@ -26,7 +24,5 @@ public class MyApplication {
 		List_user.add(new User("shahd","822003"));
 		List_user.add(new User("nuha","132003"));
 	}
-	
-	
 
 }

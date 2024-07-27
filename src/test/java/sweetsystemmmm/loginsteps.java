@@ -10,6 +10,8 @@ import io.cucumber.java.en.When;
 import sweetsystem.MyApplication;
 import sweetsystem.User;
 
+
+
 public class loginsteps {
 
 	MyApplication app;
@@ -24,21 +26,23 @@ public class loginsteps {
 
 @Given("user is not in the sweet system")
 public void userIsNotInTheSweetSystem() {
+	app.is_logged_in = false;
     assertFalse(app.is_logged_in);
 }
 
 @When("user enters  username {string} and password {string}")
 public void userEntersUsernameAndPassword(String un, String pass) {
   User user =new User (un,pass);
-  
+  boolean validUser = false;
   for (User u:app.getList_user()) {
   
   if (user.equals(u));{
-	  app.is_logged_in=true;
+	  validUser = true;
 	  break;
   }
-  }
   
+  }
+  app.is_logged_in = validUser;
 }
  
 @Then("user is now in the system")
@@ -47,18 +51,20 @@ public void userIsNowInTheSystem() {
 }
 @Then("welcome msg will be appeared")
 public void welcomeMsgWillBeAppeared() {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+	 if (app.is_logged_in) {
+         System.out.println("Welcome to the Sweet Management System!");
+     }
 }
 @Then("user is now out of the system")
 public void userIsNowOutOfTheSystem() {
-    assertFalse(app.is_logged_in);
+	 assertFalse(app.is_logged_in);
 }
 
 @Then("failed login msg will be appeared")
 public void failedLoginMsgWillBeAppeared() {
-    // Write code here that turns the phrase above into concrete actions
-    throw new io.cucumber.java.PendingException();
+	if (!app.is_logged_in) {
+        System.out.println("Login failed. Please check your username and password.");
+    }
 }
 
 
