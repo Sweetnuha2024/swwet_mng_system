@@ -1,8 +1,6 @@
 Feature: User Management
 
-  Description:
-    Admins will have full control over user accounts, including store owners and raw material suppliers. This feature will enable admins to perform CRUD (Create, Read, Update, Delete) operations on user accounts.
-
+  
   Background:
     Given the admin is logged into the Sweet Management System
 
