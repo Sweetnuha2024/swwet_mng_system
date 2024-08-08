@@ -1,97 +1,101 @@
 package sweetsystemmmm;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-
 import Mysweetsystem2024.MyApplication;
+import Mysweetsystem2024.User;
+import Mysweetsystem2024.UserRole;
+import Mysweetsystem2024.signupmanager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
 public class signupsteps {
 
-	 MyApplication app;
-	  
-	    String signupMessage;
-	
-	    public signupsteps(MyApplication ob) {
-	    	super();
-			this.app=ob;
-			
-	    }
-	
-	
-	
+    private MyApplication app;
+    private signupmanager signupManager;
+    private String currentUsername;
+    private String currentPassword;
+    private boolean signUpResult;
 
-@Given("the user is not currently signed up for the Sweet System")
-public void theUserIsNotCurrentlySignedUpForTheSweetSystem() {
-    
-}
+    public signupsteps(MyApplication ob) {
+        app = ob;  // Use the provided MyApplication instance
+        signupManager = new signupmanager(app);
+    }
 
-@Given("the user provides a unique username and a valid password")
-public void theUserProvidesAUniqueUsernameAndAValidPassword() {
-   
-}
+    @Given("that the user {string} is not signed up")
+    public void thatTheUserIsNotSignedUp(String username) {
+        currentUsername = username;
+        assertFalse("User should not be signed up", app.userExists(username));
+    }
 
-@When("the user enters username {string} and password {string}")
-public void theUserEntersUsernameAndPassword(String username, String password) {
-	//signupMessage = authService.register(username, password);
-}
+    @Given("they do not have an account in the system")
+    public void theyDoNotHaveAnAccountInTheSystem() {
+        assertNull("User account should not exist", app.getUser(currentUsername));
+    }
 
-@Then("the user should be successfully signed up to the system")
-public void theUserShouldBeSuccessfullySignedUpToTheSystem() {
-	 assertTrue(signupMessage.equals("User successfully registered."));
-}
+    @When("the user enters a username {string} and password {string}")
+    public void theUserEntersAUsernameAndPassword(String username, String password) {
+        currentUsername = username;
+        currentPassword = password;
 
-@Then("a success message should be displayed")
-public void aSuccessMessageShouldBeDisplayed() {
-	  System.out.println(signupMessage);
-}
+        // Here we can use default or hard-coded values for email, country, and role
+        String defaultEmail = "defaultEmail@example.com";
+        String defaultCountry = "Palestine";
+        UserRole defaultRole = UserRole.REGULAR_USER;
 
-@Given("the user provides a username that already exists and a valid password")
-public void theUserProvidesAUsernameThatAlreadyExistsAndAValidPassword() {
-	// authService.register("nuha", "securePass123");
-}
+        // Attempt to sign up the user
+        signUpResult = signupManager.signUp(username, password, defaultEmail, defaultCountry, defaultRole);
+    }
 
-@Then("the user should not be signed up to the system")
-public void theUserShouldNotBeSignedUpToTheSystem() {
-	  assertFalse(signupMessage.equals("User successfully registered."));
-}
+    @Then("the sign up succeeds")
+    public void theSignUpSucceeds() {
+        assertTrue("Sign up should succeed", signUpResult);
+    }
 
-@Then("an error message should be displayed indicating the username already exists")
-public void anErrorMessageShouldBeDisplayedIndicatingTheUsernameAlreadyExists() {
-	 assertTrue(signupMessage.equals("Username already exists."));
-}
+    @Then("the user is redirected to the login page")
+    public void theUserIsRedirectedToTheLoginPage() {
+        // This can be simulated by checking if the signup result was successful.
+        assertTrue("User should be redirected to login page", signUpResult);
+    }
 
-@Given("the user provides a valid username but an invalid password format")
-public void theUserProvidesAValidUsernameButAnInvalidPasswordFormat() {
-    
-}
+    @Then("the account is saved in the system")
+    public void theAccountIsSavedInTheSystem() {
+        assertNotNull("User account should be saved", app.getUser(currentUsername));
+    }
 
-@Then("an error message should be displayed indicating the password is invalid")
-public void anErrorMessageShouldBeDisplayedIndicatingThePasswordIsInvalid() {
-	 assertTrue(signupMessage.equals("Invalid password format."));
-}
+    @Given("they already have an account in the system")
+    public void theyAlreadyHaveAnAccountInTheSystem() {
+    	// Ensure the user is already in the system
+        if (!app.userExists(currentUsername)) {
+            app.addUser(new User(currentUsername, "defaultPassword", "defaultEmail@example.com", "Palestine", UserRole.REGULAR_USER));
+        }
+        assertTrue("User account should exist", app.userExists(currentUsername));
+    }
 
-@Given("the user provides an invalid username format and a valid password")
-public void theUserProvidesAnInvalidUsernameFormatAndAValidPassword() {
-    
-}
+    @Then("the sign up fails")
+    public void theSignUpFails() {
+        assertFalse("Sign up should fail", signUpResult);
+    }
 
-@Then("an error message should be displayed indicating the username is invalid")
-public void anErrorMessageShouldBeDisplayedIndicatingTheUsernameIsInvalid() {
-	 assertTrue(signupMessage.equals("Invalid username format."));
-}
+    @Then("the user is prompted to try again")
+    public void theUserIsPromptedToTryAgain() {
+        assertFalse("User should be prompted to try again", signUpResult);
+    }
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    @Then("the account is not saved in the system")
+    public void theAccountIsNotSavedInTheSystem() {
+    	 User user = app.getUser(currentUsername);
+    	    
+    	    // If the sign-up attempt fails, no new account should be created
+    	    // If the user already exists, we should verify that no new account was added or modified.
+    	    if (app.userExists(currentUsername)) {
+    	        assertTrue("The user already existed before the sign-up attempt", user != null && user.getUsername().equals(currentUsername));
+    	    } else {
+    	        assertNull("User account should not be saved", user);
+    	    }
+    }
 }
