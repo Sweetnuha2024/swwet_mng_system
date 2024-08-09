@@ -16,7 +16,11 @@ public class User {
         this.country = country;
     }
 
-    // Getters and Setters
+    public User(String username, String password, String role) {
+		// TODO Auto-generated constructor stub
+	}
+
+	// Getters and Setters
     public String getUsername() {
         return username;
     }

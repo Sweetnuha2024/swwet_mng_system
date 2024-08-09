@@ -1,31 +1,25 @@
 package sweetsystemmmm;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import Mysweetsystem2024.MyApplication;
+import Mysweetsystem2024.NotificationServices;
 import Mysweetsystem2024.StoreOwner;
 import Mysweetsystem2024.User;
-import Mysweetsystem2024.UserRole;
 import Mysweetsystem2024.Usermangadmin;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class Usermanagementsteps {
+
     private MyApplication app;
     private Usermangadmin admin;
     private User user;
     private String username;
     private String password;
-    private String email;
-    private String country;
-    private String storeName;
-    private String storeAddress;
-    private String phoneNumber;
     private boolean operationResult;
-    private User createdUser;
 
     @Given("the admin is logged into the Sweet Management System")
     public void theAdminIsLoggedIntoTheSweetManagementSystem() {
@@ -35,21 +29,15 @@ public class Usermanagementsteps {
 
     @Given("the admin wants to create a new user account")
     public void theAdminWantsToCreateANewUserAccount() {
-        // Ensure we're starting with a clean state
         username = "newuser";
         password = "password123";
-        email = "newuser@example.com";
-        country = "CountryName";
-        storeName = "New Store";
-        storeAddress = "123 New Street";
-        phoneNumber = "555-1234";
     }
 
     @When("the admin provides valid details for a new store owner or supplier")
     public void theAdminProvidesValidDetailsForANewStoreOwnerOrSupplier() {
-        // Example: Create a StoreOwner
-        createdUser = new StoreOwner(username, password, email, country, storeName, storeAddress, phoneNumber);
-        operationResult = admin.createUser(createdUser);  // Method should handle user creation
+        // Create a StoreOwner as an example
+        user = new StoreOwner(username, password, "newuser@example.com", "CountryName", "New Store", "123 New Street", "555-1234");
+        operationResult = admin.createUser(user);
     }
 
     @Then("the new user account is created successfully")
@@ -57,17 +45,30 @@ public class Usermanagementsteps {
         assertTrue("User account should be created successfully", operationResult);
         assertNotNull("User should be present in the system", app.getUser(username));
     }
-
+/////
     @Then("the user receives a notification about their new account")
     public void theUserReceivesANotificationAboutTheirNewAccount() {
-        // Assuming a notification system is in place
-        // Verify if a notification was sent
-        // Example placeholder: assertTrue("User should receive a notification", notificationSystem.checkNotification(username));
+    	 System.out.println("Checking notification for user: " + username);
+    	    boolean notificationExists = app.getNotificationService().hasNotificationForUser(username);
+    	    System.out.println("Notification exists: " + notificationExists);
+    	    assertTrue("User should receive a notification about their new account", notificationExists);
     }
 
+
+
+    
+    
+    
     @Given("the admin wants to view an existing user account")
     public void theAdminWantsToViewAnExistingUserAccount() {
         username = "existinguser";
+
+        // Ensure the user exists in the system
+        user = app.getUser(username);
+        if (user == null) {
+            user = new StoreOwner(username, "password123", "existinguser@example.com", "CountryName", "Existing Store", "456 Old Street", "555-5678");
+            admin.createUser(user);
+        }
     }
 
     @When("the admin searches for the user by username or other filters")
@@ -78,6 +79,7 @@ public class Usermanagementsteps {
     @Then("the system displays the user's account details")
     public void theSystemDisplaysTheUserSAccountDetails() {
         assertNotNull("User details should be displayed", user);
+        // Add additional checks if you want to verify specific details
     }
 
     @Given("the admin wants to update an existing user account")
@@ -90,9 +92,13 @@ public class Usermanagementsteps {
     public void theAdminModifiesTheUserSInformation() {
         if (user != null) {
             user.setEmail("updatedemail@example.com");
-            operationResult = admin.updateUser(user);  // Method should handle user update
+            operationResult = admin.updateUser(user);
         }
     }
+    
+
+
+
 
     @Then("the user's account is updated successfully")
     public void theUserSAccountIsUpdatedSuccessfully() {
@@ -102,16 +108,26 @@ public class Usermanagementsteps {
         assertTrue("User email should be updated", updatedUser.getEmail().equals("updatedemail@example.com"));
     }
 
+    
+    
+    
     @Then("the user is notified about the updates to their account")
     public void theUserIsNotifiedAboutTheUpdatesToTheirAccount() {
-        // Assuming a notification system is in place
-        // Verify if a notification was sent
-        // Example placeholder: assertTrue("User should receive a notification about updates", notificationSystem.checkNotification(username));
-    }
-
+   
+    }    
+    
+    
+    
     @Given("the admin wants to delete an existing user account")
     public void theAdminWantsToDeleteAnExistingUserAccount() {
         username = "userToDelete";
+
+        // Ensure the user exists before attempting to delete
+        user = app.getUser(username);
+        if (user == null) {
+            user = new StoreOwner(username, "password123", "userToDelete@example.com", "CountryName", "Store to Delete", "789 Delete Street", "555-7890");
+            admin.createUser(user);
+        }
     }
 
     @When("the admin confirms the deletion of the user account")
@@ -124,6 +140,8 @@ public class Usermanagementsteps {
         assertTrue("User account should be deleted successfully", operationResult);
         assertNull("User should not exist in the system", app.getUser(username));
     }
+
+
 
     @Then("the user's account is archived for a certain period before permanent deletion")
     public void theUserSAccountIsArchivedForACertainPeriodBeforePermanentDeletion() {

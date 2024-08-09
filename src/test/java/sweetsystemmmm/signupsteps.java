@@ -62,6 +62,7 @@ public class signupsteps {
         assertTrue("User should be redirected to login page", signUpResult);
     }
 
+    
     @Then("the account is saved in the system")
     public void theAccountIsSavedInTheSystem() {
         assertNotNull("User account should be saved", app.getUser(currentUsername));
