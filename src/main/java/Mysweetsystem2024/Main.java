@@ -425,6 +425,7 @@ public class Main extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        
 
         // Set up CardLayout
         cardLayout = new CardLayout();
@@ -442,6 +443,8 @@ public class Main extends JFrame {
         cardPanel.add(new CommunicationPage(), "CommunicationPage");
         cardPanel.add(new OrderManagementPage(), "OrderManagementPage");
         cardPanel.add(new FeedbackPage(), "FeedbackPage");
+        //cardPanel.add(new UserManagementPage(), "User Management Page");
+        
 
         add(cardPanel);
 
@@ -456,6 +459,7 @@ public class Main extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Main().setVisible(true);
+            
         });
     }
 }
@@ -662,7 +666,7 @@ class AdminDashboard extends JPanel {
         add(splitPane, BorderLayout.CENTER);
 
         // Add action listeners to buttons to show different content
-        userManagementButton.addActionListener(e -> showPanel("User Management", contentPanel));
+        userManagementButton.addActionListener(e ->  openUserManagementPage());
         monitoringReportingButton.addActionListener(e -> showPanel("Monitoring and Reporting", contentPanel));
         contentManagementButton.addActionListener(e -> showPanel("Content Management", contentPanel));
         statisticsButton.addActionListener(e -> showPanel("Statistics", contentPanel));
@@ -676,9 +680,14 @@ class AdminDashboard extends JPanel {
         contentPanel.revalidate();
         contentPanel.repaint();
     }
+    private void openUserManagementPage () {
+        // Create and show the ManagePersonalAccountFrame
+    	UserManagementPage f = new UserManagementPage();
+        f.setVisible(true);
+    }
 }
 
-// Store Owner Dashboard
+
 //Store Owner Dashboard
 class StoreOwnerDashboard extends JPanel {
 
@@ -790,6 +799,7 @@ class RawMaterialSupplierDashboard extends JPanel {
  }
 }
 
+
 //Beneficiary User Dashboard
 class BeneficiaryUserDashboard extends JPanel {
 
@@ -842,12 +852,14 @@ class BeneficiaryUserDashboard extends JPanel {
      contentPanel.revalidate();
      contentPanel.repaint();
  }
+ 
 }
 
 //User Management Page
 class UserManagementPage extends JPanel {
 
-	 private JTable userTable;
+	
+	    private JTable userTable;
 	    private DefaultTableModel tableModel;
 
 	    public UserManagementPage() {
@@ -880,12 +892,35 @@ class UserManagementPage extends JPanel {
 	        viewUserButton.addActionListener(e -> showViewUserDialog());
 	        editUserButton.addActionListener(e -> showEditUserDialog());
 	        deleteUserButton.addActionListener(e -> deleteUser());
+	        
+	        // Populate sample data for demonstration
+	        populateSampleData();
 	    }
 
 	    // Method to show dialog for adding a new user
 	    private void showAddUserDialog() {
-	        // You can implement a dialog to collect user details here
-	        JOptionPane.showMessageDialog(this, "Add New User functionality.");
+	        JTextField usernameField = new JTextField(15);
+	        JTextField emailField = new JTextField(15);
+	        JPanel panel = new JPanel();
+	        panel.add(new JLabel("Username:"));
+	        panel.add(usernameField);
+	        panel.add(new JLabel("Email:"));
+	        panel.add(emailField);
+
+	        int result = JOptionPane.showConfirmDialog(this, panel, "Add New User", JOptionPane.OK_CANCEL_OPTION);
+	        if (result == JOptionPane.OK_OPTION) {
+	            String username = usernameField.getText();
+	            String email = emailField.getText();
+	            if (!username.isEmpty() && !email.isEmpty()) {
+	                // Add user to the database or list
+	                // For demonstration, adding to table directly
+	                int newId = tableModel.getRowCount() + 1;
+	                tableModel.addRow(new Object[]{newId, username, email});
+	                JOptionPane.showMessageDialog(this, "User added successfully.");
+	            } else {
+	                JOptionPane.showMessageDialog(this, "Please enter both username and email.");
+	            }
+	        }
 	    }
 
 	    // Method to show dialog for viewing user details
@@ -893,7 +928,11 @@ class UserManagementPage extends JPanel {
 	        int selectedRow = userTable.getSelectedRow();
 	        if (selectedRow != -1) {
 	            String userId = (String) tableModel.getValueAt(selectedRow, 0);
-	            JOptionPane.showMessageDialog(this, "Viewing details for User ID: " + userId);
+	            String username = (String) tableModel.getValueAt(selectedRow, 1);
+	            String email = (String) tableModel.getValueAt(selectedRow, 2);
+
+	            String message = String.format("User ID: %s\nUsername: %s\nEmail: %s", userId, username, email);
+	            JOptionPane.showMessageDialog(this, message, "User Details", JOptionPane.INFORMATION_MESSAGE);
 	        } else {
 	            JOptionPane.showMessageDialog(this, "Please select a user to view.");
 	        }
@@ -904,7 +943,30 @@ class UserManagementPage extends JPanel {
 	        int selectedRow = userTable.getSelectedRow();
 	        if (selectedRow != -1) {
 	            String userId = (String) tableModel.getValueAt(selectedRow, 0);
-	            JOptionPane.showMessageDialog(this, "Editing details for User ID: " + userId);
+	            String username = (String) tableModel.getValueAt(selectedRow, 1);
+	            String email = (String) tableModel.getValueAt(selectedRow, 2);
+
+	            JTextField usernameField = new JTextField(username, 15);
+	            JTextField emailField = new JTextField(email, 15);
+	            JPanel panel = new JPanel();
+	            panel.add(new JLabel("Username:"));
+	            panel.add(usernameField);
+	            panel.add(new JLabel("Email:"));
+	            panel.add(emailField);
+
+	            int result = JOptionPane.showConfirmDialog(this, panel, "Edit User", JOptionPane.OK_CANCEL_OPTION);
+	            if (result == JOptionPane.OK_OPTION) {
+	                String newUsername = usernameField.getText();
+	                String newEmail = emailField.getText();
+	                if (!newUsername.isEmpty() && !newEmail.isEmpty()) {
+	                    // Update user in the database or list
+	                    tableModel.setValueAt(newUsername, selectedRow, 1);
+	                    tableModel.setValueAt(newEmail, selectedRow, 2);
+	                    JOptionPane.showMessageDialog(this, "User details updated successfully.");
+	                } else {
+	                    JOptionPane.showMessageDialog(this, "Please enter both username and email.");
+	                }
+	            }
 	        } else {
 	            JOptionPane.showMessageDialog(this, "Please select a user to edit.");
 	        }
@@ -916,6 +978,7 @@ class UserManagementPage extends JPanel {
 	        if (selectedRow != -1) {
 	            int confirmation = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 	            if (confirmation == JOptionPane.YES_OPTION) {
+	                // Remove user from database or list
 	                tableModel.removeRow(selectedRow);
 	                JOptionPane.showMessageDialog(this, "User deleted successfully.");
 	            }
@@ -929,8 +992,13 @@ class UserManagementPage extends JPanel {
 	        tableModel.addRow(new Object[]{"1", "john_doe", "john@example.com"});
 	        tableModel.addRow(new Object[]{"2", "jane_smith", "jane@example.com"});
 	    }
+	   
 	    
-}
+	}
+
+	  
+	    
+
 
 //Product Management Page
 class ProductManagementPage extends JPanel {
@@ -1067,7 +1135,7 @@ class FeedbackPage extends JPanel {
          JOptionPane.showMessageDialog(this, "Submit Feedback functionality.");
      });
  }
- 
+
 
 }
 
