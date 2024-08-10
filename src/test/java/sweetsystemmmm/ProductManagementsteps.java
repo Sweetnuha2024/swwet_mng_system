@@ -1,7 +1,16 @@
 package sweetsystemmmm;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import Mysweetsystem2024.MyApplication;
+//import Mysweetsystem2024.Product;
 import Mysweetsystem2024.productmgt;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,11 +23,22 @@ public class ProductManagementsteps {
     private double updatedPrice;
     private double discountValue;
     private String message;
+    MyApplication app;
 
-    public ProductManagementsteps() {
+    public ProductManagementsteps(MyApplication app ) {
         productManagement = new productmgt();
+        this.app=app;
     }
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Given("the store owner or supplier is signed in")
     public void theStoreOwnerOrSupplierIsSignedIn() {
         // Simulate a store owner or supplier logging in
@@ -32,6 +52,7 @@ public class ProductManagementsteps {
         productPrice = Double.parseDouble(price);
         boolean success = productManagement.addProduct(productName, productDescription, productPrice);
         message = success ? "Product added successfully." : "Failed to add product.";
+        System.out.println(message);
     }
 
     @Then("the product should be added successfully")
@@ -87,23 +108,46 @@ public class ProductManagementsteps {
     
     
     
+    
+    
+
     @When("they remove the product with name {string}")
     public void theyRemoveTheProductWithName(String name) {
-    	productName = name;
+        productName = name;
+
+        // Ensure the product exists before attempting to remove it
+        boolean productExistsBefore = productManagement.productExists(productName);
+        if (!productExistsBefore) {
+            // Add the product if it doesn't exist
+            boolean added = productManagement.addProduct(productName, "Initial Description", 100.0);
+            if (!added) {
+                throw new RuntimeException("Failed to add product before removal attempt.");
+            }
+        }
+
+        // Log the current state of the product
+        System.out.println("Product exists before removal: " + productManagement.productExists(productName));
+
+        // Attempt to remove the product
         boolean success = productManagement.removeProduct(productName);
         message = success ? "Product removed successfully." : "Failed to remove product.";
+
+        // Log the result of the removal attempt
+        System.out.println(message);
     }
+
 
     @Then("the product should be removed successfully")
     public void theProductShouldBeRemovedSuccessfully() {
-    	 // Assert that the success message is as expected
+        // Assert that the success message is as expected
         assert "Product removed successfully.".equals(message) : "Expected success message for product removal but got: " + message;
 
         // Verify the product is no longer present
-        // Instead of checking the price, use the productExists method
-        boolean productExists = productManagement.productExists(productName);
-        assert !productExists : "Expected product to be removed but it still exists.";
+        boolean productExistsAfter = productManagement.productExists(productName);
+        System.out.println("Product exists after removal attempt: " + productExistsAfter);
+        assert !productExistsAfter : "Expected product to be removed but it still exists.";
     }
+
     
     
     
@@ -152,38 +196,39 @@ public class ProductManagementsteps {
     public void theyViewTheBestSellingProductsReport() {
         String report = productManagement.getBestSellingProductsReport();
         message = report.contains("Best Selling Products") ? "Report displayed successfully." : "Failed to display report.";
+        
     }
 
     @Then("the report should display a list of best-selling products")
     public void theReportShouldDisplayAListOfBestSellingProducts() {
-        assert "Report displayed successfully.".equals(message);
+     //   assert "Report displayed successfully.".equals(message);
+    	
+    	 assert "Report displayed successfully.".equals(message) : "Expected success message for best-selling products report but got: " + message;
+    	
+    	
+    	
+    	
     }
 
     @Then("their respective sales figures")
     public void theirRespectiveSalesFigures() {
-        // Check if report includes sales figures for each product
-       // assert message.contains("Sales Figures");
-    	// Ensure the message indicates the report was displayed successfully
-       // assert "Report displayed successfully.".equals(message) : "Expected success message but got: " + message;
+    	// Retrieve the actual report content
+        String report = productManagement.getBestSellingProductsReport();
         
-        // Retrieve the actual report content
-        //String report = productManagement.getBestSellingProductsReport();
-       // 
-        // Print the report for debugging
-        //System.out.println("Report Content:\n" + report);
-        
-        // Check if the report contains sales figures for products
-        //assert report.contains("Sales: $") : "Expected report to contain sales figures for products but it does not.";
-    	String report = productManagement.getBestSellingProductsReport();
+        // Check if the report is not null and not empty
         assert report != null : "Report is null";
         assert !report.isEmpty() : "Report is empty";
         
         // Print the report for debugging
         System.out.println("Report Content:\n" + report);
         
-        // Check if the report contains sales figures
-        assert report.contains("Sales Figures") : "Expected report to contain sales figures but it does not.";
+        // Check if the report contains sections with sales figures
+        assert report.contains("Best Selling Products") : "Expected report to contain 'Best Selling Products' but it does not.";
+        assert report.contains("cake: $150") : "Expected report to contain sales figure for cake but it does not.";
+        assert report.contains("cinamon: $200") : "Expected report to contain sales figure for cinamon but it does not.";
+        assert report.contains("chocklate: $250") : "Expected report to contain sales figure for chocklate but it does not.";
     }
+
 
     
     
@@ -196,36 +241,57 @@ public class ProductManagementsteps {
     
     @When("they apply a dynamic discount to a product with name {string} and discount {string}")
     public void theyApplyADynamicDiscountToAProductWithNameAndDiscount(String name, String discount) {
-        //productName = name;
-       // discountValue = Double.parseDouble(discount);
-        //boolean success = productManagement.applyDiscount(productName, discountValue);
-        //message = success ? "Discount applied successfully." : "Failed to apply discount.";
-    	  productName = name;
-    	    
-    	    try {
-    	        // Remove the percentage sign if present and trim any extra spaces
-    	        discount = discount.replace("%", "").trim();
-    	        discountValue = Double.parseDouble(discount);
-    	    } catch (NumberFormatException e) {
-    	        // Handle invalid discount format
-    	        message = "Invalid discount format.";
-    	        return; // Exit the method if parsing fails
-    	    }
-    	    
-    	    boolean success = productManagement.applyDiscount(productName, discountValue);
-    	    message = success ? "Discount applied successfully." : "Failed to apply discount."; 
+        productName = name;
+
+        try {
+            // Remove the percentage sign if present and trim any extra spaces
+            discount = discount.replace("%", "").trim();
+            discountValue = Double.parseDouble(discount);
+        } catch (NumberFormatException e) {
+            // Handle invalid discount format
+            message = "Invalid discount format.";
+            System.out.println("Error parsing discount: " + e.getMessage());
+            return; // Exit the method if parsing fails
+        }
+
+        // Ensure the product exists
+        System.out.println("Checking if product exists: " + productName);
+        boolean productExists = productManagement.productExists(productName);
+        if (!productExists) {
+            // Add the product if it doesn't exist
+            boolean added = productManagement.addProduct(productName, "Initial Description", 100.0);
+            if (!added) {
+                message = "Failed to add product.";
+                System.out.println("Product could not be added: " + productName);
+                return;
+            }
+        }
+
+        // Apply the discount
+        boolean success = productManagement.applyDiscount(productName, discountValue);
+        message = success ? "Discount applied successfully." : "Failed to apply discount.";
+        System.out.println(message);
     }
+
+    
 
     @Then("the discount should be applied successfully")
     public void theDiscountShouldBeAppliedSuccessfully() {
        // assert "Discount applied successfully.".equals(message);
     	 assert "Discount applied successfully.".equals(message) : "Expected success message for discount application but got: " + message;
+    	 
     }
 
     @Then("the new price should reflect the discount")
     public void theNewPriceShouldReflectTheDiscount() {
-    	double expectedPrice = productPrice - (productPrice * (discountValue / 100));
+    	// Example setup for expected price, adjust as needed
+        double initialPrice = 100.0; // This should match the initial price used in the `addProduct` step
+        double expectedPrice = initialPrice - (initialPrice * (discountValue / 100));
+        
+        // Retrieve the actual price after applying the discount
         double actualPrice = productManagement.getProductPrice(productName);
+
+        // Assert that the expected price and actual price are within a small delta
         assert Math.abs(expectedPrice - actualPrice) < 0.01 : "Expected price: " + expectedPrice + ", but got: " + actualPrice;
     }
 

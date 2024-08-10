@@ -1,12 +1,9 @@
 package Mysweetsystem2024;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MyApplication {
@@ -14,13 +11,168 @@ public class MyApplication {
     private LoginManager loginManager;
     private NotificationServices notificationService;
 
+    
+    
+    
+    
+   // private List<DessertCreation> dessertCreations;
+    private Map<String, Order> orders;
+    private List<Post> posts;
+    
+    
+    
+    
+    
+    
+    private static final String FILE_PATH = "users.dat"; // Changed to .dat for serialization
+
     public MyApplication() {
         users = new HashMap<>();
         loginManager = new LoginManager(users);
         notificationService = new NotificationServices();
+        posts = new ArrayList<>();
+        
+        
+        
+        
+       // dessertCreations = new ArrayList<>();
+        
+        
+        
         loadUsers();
     }
 
+    //order class
+    
+    
+    
+    
+    
+    public boolean processOrder(String orderId) {
+        Order order = orders.get(orderId);
+        if (order != null) {
+            // Logic to process the order
+            order.setStatus("Processed");
+            return true;
+        }
+        return false;
+    }
+    public Order getOrderById(String orderId) {
+        return orders.get(orderId);
+    }
+    public boolean updateOrderStatus(String orderId, String newStatus) {
+        Order order = orders.get(orderId);
+        if (order != null) {
+            order.setStatus(newStatus);
+            return true;
+        }
+        return false;
+    }
+    public boolean hasExistingOrder() {
+        return orders != null && !orders.isEmpty();
+    }
+    
+    
+    
+    public boolean hasNewOrders() {
+        if (orders == null || orders.isEmpty()) {
+            return false;
+        }
+
+        for (Order order : orders.values()) {
+            if (order.isNew()) { // Check if the order is new
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    //order class
+
+    
+    
+    
+    //post
+    public boolean postContent(User user, String description, String image) {
+        // Check if the user is logged in
+        if (!isUserLoggedIn(user.getUsername())) {
+            System.err.println("User is not logged in.");
+            return false;
+        }
+
+        // Validate inputs
+        if (description == null || description.isEmpty()) {
+            System.err.println("Description is required.");
+            return false;
+        }
+
+        if (image == null || image.isEmpty()) {
+            System.err.println("Image is required.");
+            return false;
+        }
+
+        // Create the post
+        Post newPost = new Post(description, image, user.getUsername());
+        posts.add(newPost);
+        return true;
+    }
+
+
+    // Method to display all posts (for testing)
+    public void displayAllPosts() {
+        for (Post post : posts) {
+            System.out.println(post);
+        }
+    }//
+        
+    
+        
+    
+ /*       
+    public boolean submitDessertCreation(DessertCreation dessertCreation) {
+        // Validate dessert creation
+        if (dessertCreation.getTitle() == null || dessertCreation.getTitle().trim().isEmpty()) {
+            System.err.println("Title is required.");
+            return false;
+        }
+        if (dessertCreation.getDescription() == null || dessertCreation.getDescription().trim().isEmpty()) {
+            System.err.println("Description is required.");
+            return false;
+        }
+        if (dessertCreation.getImage() == null || dessertCreation.getImage().trim().isEmpty()) {
+            System.err.println("Image is required.");
+            return false;
+        }
+
+        // If all validations pass, add to the list
+        dessertCreations.add(dessertCreation);
+        // Optionally, save to a file or database here
+        saveDessertCreations();
+        
+        return true;
+    }
+    
+    
+    
+    
+   private void saveDessertCreations() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("dessertCreations.dat"))) {
+            oos.writeObject(dessertCreations);
+        } catch (IOException e) {
+            System.err.println("Error saving dessert creations: " + e.getMessage());
+        }
+    
+    
+   }
+    */
+    
+    
+    
+    
+    
+    
+    
     public NotificationServices getNotificationService() {
         return notificationService;
     }
@@ -72,23 +224,24 @@ public class MyApplication {
     }
 
     private void saveUsers() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("users.dat"))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
             oos.writeObject(users);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving users: " + e.getMessage());
         }
     }
 
     private void loadUsers() {
-        File file = new File("users.dat");
+        File file = new File(FILE_PATH);
         if (file.exists()) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 users = (Map<String, User>) ois.readObject();
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                System.err.println("Error loading users: " + e.getMessage());
             }
         }
     }
+
     public boolean updateUser(User user) {
         if (users.containsKey(user.getUsername())) {
             users.put(user.getUsername(), user); // Update the user
@@ -97,6 +250,4 @@ public class MyApplication {
         }
         return false;
     }
-    
-
 }

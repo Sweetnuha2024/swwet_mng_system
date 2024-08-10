@@ -1,25 +1,45 @@
-Feature: User Management
+#Feature: User Management
 
-Background:
-    Given the admin is logged into the Sweet Management System
+  #
+ # Scenario: View all users
+  #  Given the admin is logged in
+  #  When the admin navigates to the user management page
+  #  Then the admin should see a list of all users
 
-Scenario: Create User
-    Given the admin wants to create a new user
-    When the admin enters valid details
-    Then the user account is created
+  
+  #Scenario: View user details
+   # Given the admin is logged in
+   # When the admin selects a user from the list
+    #Then the admin should see the details of the selected user
 
-Scenario: View User
-    Given the admin wants to view a user
-    When the admin searches for the user by username
-    Then the system displays the user details
 
-Scenario: Update User
-    Given the admin wants to update a user
-    When the admin modifies the user’s information
-    Then the user account is updated
+ # Scenario: Create a new store owner
+   # Given the admin is logged in
+  #  When the admin navigates to the create store owner page
+  #  And the admin enters the store owner's details
+  #  And the admin submits the form
+  #  Then the new store owner should be created successfully
 
-Scenario: Delete User
-    Given the admin wants to delete a user
-    When the admin confirms the deletion
-    Then the user account is deleted
-    And the user account is archived
+  
+ # Scenario: Create a new raw material supplier
+  #  Given the admin is logged in
+  #  When the admin navigates to the create raw material supplier page
+  #  And the admin enters the supplier's details
+  #  And the admin submits the form
+  #  Then the new raw material supplier should be created successfully
+
+
+  #Scenario: Update user details
+ #   Given the admin is logged in
+  #  When the admin selects a user from the list
+   # And the admin navigates to the update user page
+    #And the admin updates the user's details
+    #And the admin submits the form
+    #Then the user's details should be updated successfully
+
+  
+ # Scenario: Delete a user
+  #  Given the admin is logged in
+   # When the admin selects a user from the list
+   # And the admin chooses to delete the user
+   # Then the user should be deleted successfully

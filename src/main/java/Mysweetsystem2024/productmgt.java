@@ -34,11 +34,26 @@ public class productmgt {
     
 
     // Remove a product
-    public boolean removeProduct(String name) {
-        if (products.remove(name) == null) {
-            return false; // Product does not exist
-        }
-        return true;
+    public boolean removeProduct(String productName) {
+       // if (products.remove(name) == null) {
+     //       return false; // Product does not exist
+        //}
+    //    return true;
+    	
+    	
+    	 System.out.println("Attempting to remove product: " + productName);
+
+    	    if (products.containsKey(productName)) {
+    	        products.remove(productName);
+    	        System.out.println("Product removed successfully: " + productName);
+    	        return true;
+    	    } else {
+    	        System.out.println("Product not found, removal failed: " + productName);
+    	        return false;
+    	    }
+    	
+    	
+    	
     }
     public boolean productExists(String name) {
         return products.containsKey(name);
@@ -78,7 +93,7 @@ public class productmgt {
     }
     
     
-    public boolean applyDiscount(String name, double discount) {
+  /*  public boolean applyDiscount(String name, double discount) {
         Product product = products.get(name);
         if (product == null) {
             return false; // Product does not exist
@@ -89,6 +104,44 @@ public class productmgt {
         return true;
     }
 
+    */
+    public Product findProductByName(String productName) {
+        return products.get(productName);
+    }
+    public boolean applyDiscount(String productName, double discountValue) {
+        // Find product by name
+        Product product = findProductByName(productName);
+        if (product == null) {
+            System.out.println("Product not found: " + productName);
+            return false;
+        }
+
+        // Apply discount
+        double originalPrice = product.getPrice();
+        double discountedPrice = originalPrice - (originalPrice * (discountValue / 100));
+
+        if (discountedPrice < 0) {
+            System.out.println("Discounted price is negative. Discount Value: " + discountValue);
+            return false;
+        }
+
+        product.setPrice(discountedPrice);
+        return true;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 
     // Get best-selling products report

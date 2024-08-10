@@ -26,9 +26,7 @@ public class StoreOwner extends User {
         return storeAddress;
     }
 
-    public void setStoreAddress(String storeAddress) {
-        this.storeAddress = storeAddress;
-    }
+    
 
     public String getPhoneNumber() {
         return phoneNumber;

@@ -1,5 +1,5 @@
 package Mysweetsystem2024;
-/*
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -406,18 +406,20 @@ public class Main {
     public static void main(String[] args) {
         new Main();
     }
-}*/
-import javax.swing.*;
+}
+/*import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
+import java.util.List;
 public class Main extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel cardPanel;
+    private List <User> users;
 
     public Main() {
         // Set up the frame
@@ -425,7 +427,8 @@ public class Main extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
+        users = new ArrayList<>();
+        initializeUsers();
 
         // Set up CardLayout
         cardLayout = new CardLayout();
@@ -452,9 +455,23 @@ public class Main extends JFrame {
         cardLayout.show(cardPanel, "Login");
     }
 
+    
+    
+    private void initializeUsers() {
+        // Add users to the application
+        users.add(new User("nuha", "111111", "Palestine", "nuha@gmail.com", UserRole.REGULAR_USER));
+        users.add(new User("shahd", "222222", "Palestine", "shahd@gmail.com", UserRole.ADMIN));
+        users.add(new User("hala", "333333", "Palestine", "hala@gmail.com", UserRole.STORE_OWNER));
+        users.add(new User("safaa", "444444", "Palestine", "safa@gmail.com", UserRole.SUPPLIER));
+        
+       // app.saveUsers();
+    }
     public void showCard(String cardName) {
         cardLayout.show(cardPanel, cardName);
     }
+    
+    
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -542,6 +559,21 @@ class LoginPage extends JPanel {
                 mainFrame.showCard("SignUp");
             }
         });
+    }
+    
+    private UserRole convertRoleToUserRole(String role) {
+        switch (role) {
+            case "Admin":
+                return UserRole.ADMIN;
+            case "Store Owner":
+                return UserRole.STORE_OWNER;
+            case "Raw Material Supplier":
+                return UserRole.SUPPLIER;
+            case "Beneficiary User":
+                return UserRole.REGULAR_USER;
+            default:
+                return null;
+        }
     }
 }
 
@@ -1137,5 +1169,5 @@ class FeedbackPage extends JPanel {
  }
 
 
-}
+}*/
 

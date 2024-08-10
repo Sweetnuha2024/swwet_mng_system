@@ -7,6 +7,7 @@ public class User {
     private UserRole role;
     private String email;
     private String country;
+    private String phoneNumber;
 
     public User(String username, String password, String country, String email, UserRole role) {
         this.username = username;
@@ -18,6 +19,23 @@ public class User {
 
     public User(String username, String password, String role) {
 		// TODO Auto-generated constructor stub
+	}
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    
+    
+    
+    
+	public User(String username2, String email2) {
+		this.username=username2;
+		this.email=email2;
+	}
+
+	public User(String username, String email, String password, String role1) {
+		 this.username = username;
+	        this.password = password;
+	        this.role = role;
+	        this.email = email;
 	}
 
 	// Getters and Setters
