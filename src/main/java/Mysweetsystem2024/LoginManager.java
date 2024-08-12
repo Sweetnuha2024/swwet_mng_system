@@ -6,7 +6,10 @@ import java.util.HashSet;
 
 public class LoginManager {
     private final Map<String, User> users;
-    private final Set<String> loggedInUsers;  // To track logged-in users
+    private final Set<String> loggedInUsers; // To track logged-in users
+    
+    
+    
 
     public LoginManager(Map<String, User> users) {
         this.users = users;
@@ -31,6 +34,11 @@ public class LoginManager {
             return false;
         }
     }
+    
+    
+    
+    
+    
 
     public boolean logout(String username) {
         if (username == null) {

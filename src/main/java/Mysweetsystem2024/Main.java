@@ -1,5 +1,5 @@
 package Mysweetsystem2024;
-
+/*
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -407,7 +407,8 @@ public class Main {
         new Main();
     }
 }
-/*import javax.swing.*;
+*/
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
@@ -473,12 +474,12 @@ public class Main extends JFrame {
     
     
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Main().setVisible(true);
+   // public static void main(String[] args) {
+     //   SwingUtilities.invokeLater(() -> {
+       //     new Main().setVisible(true);
             
-        });
-    }
+       // });
+   // }
 }
 
 // Login Page
@@ -1169,5 +1170,5 @@ class FeedbackPage extends JPanel {
  }
 
 
-}*/
+}
 

@@ -26,6 +26,9 @@ public class User {
     
     
     
+    
+    
+    
 	public User(String username2, String email2) {
 		this.username=username2;
 		this.email=email2;
@@ -84,8 +87,11 @@ public class User {
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    
+    public String toFileString() {
+        return username + "," + password + "," + country + "," + email + "," + role;
+    }
+
+   
     
     
     

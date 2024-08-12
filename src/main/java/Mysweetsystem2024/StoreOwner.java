@@ -7,7 +7,7 @@ public class StoreOwner extends User {
     private String phoneNumber;
 
     public StoreOwner(String username, String password, String email, String country, String storeName, String storeAddress, String phoneNumber) {
-        super(username, password, country, email, UserRole.STORE_OWNER);
+        super(username, password, country, email);
         this.storeName = storeName;
         this.storeAddress = storeAddress;
         this.phoneNumber = phoneNumber;
