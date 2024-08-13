@@ -29,7 +29,7 @@ public class signupsteps {
     @Given("that the user {string} is not signed up")
     public void thatTheUserIsNotSignedUp(String username) {
         currentUsername = username;
-        assertFalse("User should not be signed up", app.userExists(username));
+        assertFalse("User should not be signed up", app.userExists(username));//error
     }
 
     @Given("they do not have an account in the system")

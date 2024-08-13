@@ -23,3 +23,8 @@ merna: Red velvet cake - new cake - $43.63
 Leen: Vegan cake - good - $24.24
 Leen: Cheesecake - mixture is sweetened - $29.09
 nuhha: strawberry cake - nothing - $63.00
+nuhha: strawberry cake - nothing - $70.0
+nuhha: Cinamon Roll - nothing - $30.0
+tasneem: Teramissio - different flavour - $100.0
+tasneem: Creps - delicious - $15.0
+alma: Nut Cake - delicious - $30.0

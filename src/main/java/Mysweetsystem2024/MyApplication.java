@@ -2,6 +2,7 @@ package Mysweetsystem2024;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -720,22 +721,65 @@ public class MyApplication {
     private void showManageFeedbackFrame() {
         JFrame feedbackFrame = new JFrame("Manage Feedback");
         feedbackFrame.setSize(600, 400);
-        feedbackFrame.setLocationRelativeTo(null); // Center the frame
+        feedbackFrame.setLocationRelativeTo(null);
         feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         DefaultListModel<String> feedbackListModel = new DefaultListModel<>();
         JList<String> feedbackList = new JList<>(feedbackListModel);
         JScrollPane scrollPane = new JScrollPane(feedbackList);
 
+        // Load feedback from file and populate the list
+        List<String> feedbackLines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                feedbackListModel.addElement(line); // Assuming feedback file contains lines with "username: feedback"
+                feedbackLines.add(line);
+                String[] parts = line.split("\\|");
+                if (parts.length == 3) {
+                    String username = parts[0].trim();
+                    String productName = parts[1].trim();
+                    String feedback = parts[2].trim();
+                    feedbackListModel.addElement("User: " + username + " | Product/Post: " + productName + " | Feedback: " + feedback);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(feedbackFrame, "Error loading feedback.");
         }
+
+        // Button to delete selected feedback
+        JButton deleteButton = new JButton("Delete Feedback");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedIndex = feedbackList.getSelectedIndex();
+                if (selectedIndex != -1) {
+                    int confirm = JOptionPane.showConfirmDialog(feedbackFrame, "Are you sure you want to delete this feedback?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        // Remove from list model
+                        feedbackListModel.remove(selectedIndex);
+
+                        // Remove from file
+                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt"))) {
+                            for (int i = 0; i < feedbackListModel.getSize(); i++) {
+                                String item = feedbackListModel.getElementAt(i);
+                                String[] parts = item.split("\\|");
+                                String username = parts[0].replace("User: ", "").trim();
+                                String productName = parts[1].replace("Product/Post: ", "").trim();
+                                String feedback = parts[2].replace("Feedback: ", "").trim();
+                                writer.write(username + "|" + productName + "|" + feedback);
+                                writer.newLine();
+                            }
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(feedbackFrame, "Error updating feedback file.");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(feedbackFrame, "No feedback selected.");
+                }
+            }
+        });
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> feedbackFrame.dispose());
@@ -743,11 +787,55 @@ public class MyApplication {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(scrollPane, BorderLayout.CENTER);
-        panel.add(backButton, BorderLayout.SOUTH);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(backButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
 
         feedbackFrame.add(panel);
         feedbackFrame.setVisible(true);
     }
+
+    
+    
+    
+    /////14/8/2024
+    private void writeFeedback(String username, String productName) {
+        JFrame feedbackFrame = new JFrame("Write Feedback");
+        feedbackFrame.setSize(400, 300);
+        feedbackFrame.setLocationRelativeTo(null);
+        feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        JTextArea feedbackArea = new JTextArea(10, 30);
+        JButton submitButton = new JButton("Submit Feedback");
+
+        submitButton.addActionListener(e -> {
+            String feedback = feedbackArea.getText().trim();
+            if (!feedback.isEmpty()) {
+                saveFeedbackToFile(username, productName, feedback);
+                JOptionPane.showMessageDialog(feedbackFrame, "Thank you for your feedback!");
+                feedbackFrame.dispose();
+            } else {
+                JOptionPane.showMessageDialog(feedbackFrame, "Feedback cannot be empty.");
+            }
+        });
+
+        panel.add(new JScrollPane(feedbackArea), BorderLayout.CENTER);
+        panel.add(submitButton, BorderLayout.SOUTH);
+
+        feedbackFrame.add(panel);
+        feedbackFrame.setVisible(true);
+    }
+
+  
+    
+    
+    
+//14/8/2024 shahd
 ///////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -1415,7 +1503,6 @@ public class MyApplication {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        
         JTextField searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
         JButton purchaseFromStoreOwnerButton = new JButton("Purchase from Store Owner");
@@ -1426,12 +1513,10 @@ public class MyApplication {
         searchPanel.add(searchButton);
         searchPanel.add(purchaseFromStoreOwnerButton);
 
-        
         DefaultListModel<String> productListModel = new DefaultListModel<>();
         JList<String> productList = new JList<>(productListModel);
         JScrollPane productScrollPane = new JScrollPane(productList);
 
-        
         JCheckBox glutenFreeCheckbox = new JCheckBox("Gluten-Free");
         JCheckBox veganCheckbox = new JCheckBox("Vegan");
         JCheckBox nutFreeCheckbox = new JCheckBox("Nut-Free");
@@ -1441,21 +1526,18 @@ public class MyApplication {
         filterPanel.add(veganCheckbox);
         filterPanel.add(nutFreeCheckbox);
 
-        
         JButton purchaseButton = new JButton("Purchase Selected Product");
 
-       
+        // Load all products from file
         List<String> allProducts = loadProductsFromFile("Product.txt");
         allProducts.forEach(productListModel::addElement);
 
-        
         searchButton.addActionListener(e -> {
             String query = searchField.getText().toLowerCase();
             boolean glutenFree = glutenFreeCheckbox.isSelected();
             boolean vegan = veganCheckbox.isSelected();
             boolean nutFree = nutFreeCheckbox.isSelected();
 
-            
             List<String> filteredProducts = allProducts.stream()
                 .filter(product -> product.toLowerCase().contains(query))
                 .filter(product -> {
@@ -1473,12 +1555,10 @@ public class MyApplication {
                 })
                 .collect(Collectors.toList());
 
-           
             productListModel.clear();
             filteredProducts.forEach(productListModel::addElement);
         });
 
-       
         purchaseButton.addActionListener(e -> {
             String selectedProduct = productList.getSelectedValue();
             if (selectedProduct != null) {
@@ -1487,16 +1567,20 @@ public class MyApplication {
                         "Confirm Purchase",
                         JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    
+                    // Save the purchase
                     savePurchaseToFile(selectedProduct);
                     JOptionPane.showMessageDialog(panel, "Purchase successful! You bought: " + selectedProduct);
+
+                    // Assuming currentUser is a String containing the username
+                  
                 }
             } else {
                 JOptionPane.showMessageDialog(panel, "Please select a product to purchase.");
+                
             }
         });
 
-      
+
         purchaseFromStoreOwnerButton.addActionListener(e -> {
             List<String> storeOwners = loadStoreOwnersFromFile("users.txt");
             String selectedStoreOwner = (String) JOptionPane.showInputDialog(
@@ -1660,12 +1744,278 @@ public class MyApplication {
 
     ////monday
     
-    
+    ////////////////////////////////////
+    //////////////////////////////
+    ///////////////////////////////////////
+    //////////////////////////////////
     private JPanel createCommunicationFeedbackPanel() {
-        JPanel panel = new JPanel();
-        // Add components for communication and feedback
+        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+
+        // Create the communication button
+        JButton communicationButton = new JButton("Communication");
+        communicationButton.addActionListener(e -> showCommunicationOptions());
+
+        // Create the feedback button
+        JButton feedbackButton = new JButton("Feedback");
+        feedbackButton.addActionListener(e -> showFeedbackOptionsFrame());//here i wanna to update somthing 
+        
+
+        // Add buttons to the panel
+        panel.add(communicationButton);
+        panel.add(feedbackButton);
+
         return panel;
     }
+
+    
+    private void showFeedbackOptionsFrame() {
+        JFrame feedbackOptionsFrame = new JFrame("Feedback Options");
+        feedbackOptionsFrame.setSize(300, 150);
+        feedbackOptionsFrame.setLocationRelativeTo(null);
+        feedbackOptionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+
+        // Button for feedback on purchases
+        JButton feedbackOnPurchasesButton = new JButton("Feedback on My Purchases");
+        feedbackOnPurchasesButton.addActionListener(e -> {
+            feedbackOptionsFrame.dispose(); // Close the options frame
+            showFeedbackFrame();
+        });
+
+        // Button for feedback on posts
+        JButton feedbackOnPostsButton = new JButton("Feedback on Posts");
+        feedbackOnPostsButton.addActionListener(e -> {
+            feedbackOptionsFrame.dispose(); // Close the options frame
+            showFeedbackFrameForPosts ();
+        });
+
+        panel.add(feedbackOnPurchasesButton);
+        panel.add(feedbackOnPostsButton);
+
+        feedbackOptionsFrame.add(panel);
+        feedbackOptionsFrame.setVisible(true);
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////
+    
+
+    private void showFeedbackFrameForPosts() {
+        JFrame feedbackFrame = new JFrame("Provide Feedback on Shared Posts");
+        feedbackFrame.setSize(500, 400);
+        feedbackFrame.setLocationRelativeTo(null);
+        feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        List<String> sharedPosts = loadSharedPosts();
+
+        if (sharedPosts.isEmpty()) {
+            JOptionPane.showMessageDialog(feedbackFrame, "No shared posts found.");
+            feedbackFrame.dispose();
+            return;
+        }
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+
+        JComboBox<String> postComboBox = new JComboBox<>(sharedPosts.toArray(new String[0]));
+        JTextArea feedbackArea = new JTextArea(5, 20);
+        feedbackArea.setWrapStyleWord(true);
+        feedbackArea.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(feedbackArea);
+        JButton submitFeedbackButton = new JButton("Submit Feedback");
+
+        submitFeedbackButton.addActionListener(e -> {
+            String selectedPost = (String) postComboBox.getSelectedItem();
+            String feedback = feedbackArea.getText().trim();
+            if (!feedback.isEmpty()) {
+            	 saveFeedbackToFile(currentUser, selectedPost, feedback);
+                JOptionPane.showMessageDialog(feedbackFrame, "Thank you for your feedback!");
+                feedbackFrame.dispose();
+            } else {
+                JOptionPane.showMessageDialog(feedbackFrame, "Feedback cannot be empty.");
+            }
+        });
+
+        panel.add(new JLabel("Select a post:"), BorderLayout.NORTH);
+        panel.add(postComboBox, BorderLayout.CENTER);
+        panel.add(scrollPane, BorderLayout.SOUTH);
+        panel.add(submitFeedbackButton, BorderLayout.PAGE_END);
+
+        feedbackFrame.add(panel);
+        feedbackFrame.setVisible(true);
+    }
+    
+    private List<String> loadSharedPosts() {
+        List<String> sharedPosts = new ArrayList<>();
+        String filePath = "dessert_creations.txt"; // File where shared posts data is stored
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                sharedPosts.add(line); // Each line represents a shared post
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error reading shared posts data.");
+        }
+
+        return sharedPosts;
+    }
+    
+    ///////
+    //////end feedback
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Method to show communication options
+    private void showCommunicationOptions() {
+        JFrame communicationFrame = new JFrame("Communication Options");
+        communicationFrame.setSize(400, 200);
+        communicationFrame.setLocationRelativeTo(null);
+        communicationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+
+        JButton communicateWithOwnerButton = new JButton("Communicate with Store Owner");
+        communicateWithOwnerButton.addActionListener(e -> communicateWithOwner());
+
+        JButton communicateWithSupplierButton = new JButton("Communicate with Supplier");
+        communicateWithSupplierButton.addActionListener(e -> communicateWithSupplier());
+
+        panel.add(communicateWithOwnerButton);
+        panel.add(communicateWithSupplierButton);
+
+        communicationFrame.add(panel);
+        communicationFrame.setVisible(true);
+    }
+
+    // Placeholder methods for communication actions
+    private void communicateWithOwner() {
+        JOptionPane.showMessageDialog(null, "Communicate with Store Owner feature coming soon.");
+    }
+
+    private void communicateWithSupplier() {
+        JOptionPane.showMessageDialog(null, "Communicate with Supplier feature coming soon.");
+    }
+
+    // Method to show the feedback frame
+    private void showFeedbackFrame() {
+        JFrame feedbackFrame = new JFrame("Provide Feedback");
+        feedbackFrame.setSize(400, 300);
+        feedbackFrame.setLocationRelativeTo(null);
+        feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        List<String> purchasedProducts = loadPurchasedProducts(currentUser);
+
+        if (purchasedProducts.isEmpty()) {
+            JOptionPane.showMessageDialog(feedbackFrame, "No purchased products found.");
+            feedbackFrame.dispose();
+            return;
+        }
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+
+        JComboBox<String> productComboBox = new JComboBox<>(purchasedProducts.toArray(new String[0]));
+        JTextArea feedbackArea = new JTextArea(5, 20);
+        feedbackArea.setWrapStyleWord(true);
+        feedbackArea.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(feedbackArea);
+        JButton submitFeedbackButton = new JButton("Submit Feedback");
+
+        submitFeedbackButton.addActionListener(e -> {
+            String selectedProduct = (String) productComboBox.getSelectedItem();
+            String feedback = feedbackArea.getText().trim();
+            if (!feedback.isEmpty()) {
+            	saveFeedbackToFile(currentUser, selectedProduct, feedback);
+                JOptionPane.showMessageDialog(feedbackFrame, "Thank you for your feedback!");
+                feedbackFrame.dispose();
+            } else {
+                JOptionPane.showMessageDialog(feedbackFrame, "Feedback cannot be empty.");
+            }
+        });
+
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(new JLabel("Select a product:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        formPanel.add(productComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        formPanel.add(scrollPane, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        formPanel.add(submitFeedbackButton, gbc);
+
+        panel.add(formPanel, BorderLayout.CENTER);
+
+        feedbackFrame.add(panel);
+        feedbackFrame.setVisible(true);
+    }
+
+    // Placeholder methods for feedback functionality
+    private List<String> loadPurchasedProducts(String username) {
+        List<String> purchasedProducts = new ArrayList<>();
+        String filePath = "_Purchases.txt"; // File where purchase data is stored
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith(username + ":")) {  // Check if the line starts with the given username
+                    String product = line.substring(line.indexOf(":") + 1).trim(); // Extract the product details
+                    purchasedProducts.add(product);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error reading purchase data.");
+        }
+
+        return purchasedProducts;
+    }
+
+    private void saveFeedbackToFile(String username, String productName, String feedback) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt", true))) {
+            writer.write(username +"|" + productName +"|" + feedback);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    ////////////////feedback on shared post 
+    
+    
+    
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////
 
     public void signUpUser(String username, String password, String email, String country, UserRole role) {
         if (!userExists(username)) {
