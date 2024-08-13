@@ -8,12 +8,12 @@ public class signupmanager {
     }
     public boolean signUp(String username, String password, String email, String country, UserRole role) {
         if (app.userExists(username)) {
-            return false; // User already exists, sign up fails
+            return false; 
         }
 
         User newUser = new User(username, password, email, country, role);
         app.addUser(newUser);
-        return true; // Sign up successful
+        return true; 
     }
 }
 

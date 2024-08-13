@@ -9,20 +9,20 @@ public class Test {
 	    private Map<String, String> reports = new HashMap<>();
 
 	    public Test() {
-	        // Initialize any necessary data or state
+	       
 	        reports.put("Financial Report", "Total Profits: $10000\nDetailed Report: [Details here]");
 	        reports.put("Best-Selling Products", "Store A: Product X - 500 units\nStore B: Product Y - 300 units");
 	        reports.put("User Statistics", "Nablus: 200 users\nJenin: 150 users");
 	    }
 
-	    // Method to simulate admin login
+	    
 	    public void loginAsAdmin() {
-	        // Simulate admin login process
+	       
 	        adminLoggedIn = true;
 	        System.out.println("Admin logged in.");
 	    }
 
-	    // Method to navigate to a specific section
+	    
 	    public void navigateToSection(String section) {
 	        if (adminLoggedIn) {
 	            currentSection = section;
@@ -32,7 +32,7 @@ public class Test {
 	        }
 	    }
 
-	    // Method to request a financial report
+	   
 	    public String requestFinancialReport() {
 	        if ("Financial Reports".equals(currentSection)) {
 	            return reports.get("Financial Report");
@@ -41,7 +41,7 @@ public class Test {
 	        }
 	    }
 
-	    // Method to request a best-selling products report
+	    
 	    public String requestBestSellingProductsReport() {
 	        if ("Store Reports".equals(currentSection)) {
 	            return reports.get("Best-Selling Products");
@@ -50,7 +50,7 @@ public class Test {
 	        }
 	    }
 
-	    // Method to request user statistics by city
+	    
 	    public String requestUserStatisticsByCity() {
 	        if ("User Statistics".equals(currentSection)) {
 	            return reports.get("User Statistics");

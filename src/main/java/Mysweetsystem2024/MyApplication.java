@@ -20,6 +20,14 @@ public class MyApplication {
     private LoginManager loginManager;
     private static final String FILE_PATH = "users.txt";
     
+    
+    
+    
+    /////may edit 
+    private static final String POSTS_FILE = "dessert_creations.txt";
+    
+    
+    ////
     private static final String DESSERT_CREATIONS_FILE = "dessert_creations.txt";
     private static final String IMAGES_DIR = "images/";
     
@@ -27,11 +35,9 @@ public class MyApplication {
     private JButton uploadImageButton;
     private File selectedImageFile;
     
-    private String currentUser; // Variable to store the current user
+    private String currentUser; 
 
-    //public MyApplication(String currentUser) {
-      //  this.currentUser = currentUser; // Initialize current user
-    //}
+    
     
     
     
@@ -45,21 +51,21 @@ public class MyApplication {
     }
 
     private void initializeUsers() {
-        // Add users to the application
+        
         users.put("nuha", new User("nuha", "111111", "nuha@gmail.com", "Nablus", UserRole.REGULAR_USER));
         users.put("shahd", new User("shahd", "222222", "shahd@gmail.com", "Nablus", UserRole.ADMIN));
         users.put("hala", new User("hala", "333333", "hala@gmail.com", "Jenin", UserRole.STORE_OWNER));
         users.put("safaa", new User("safaa", "444444", "safa@gmail.com", "Tulkerem", UserRole.SUPPLIER));
         saveUsers();
     }
-//log in
+/////////////////////////////////////log in///////////////////////////////////////////////////////////////////
     
     private void showLoginFrame() {
         JFrame loginFrame = new JFrame("Login");
         loginFrame.setSize(600, 500);
-        loginFrame.setLayout(new GridLayout(5, 2)); // Adjust the grid layout to 5 rows, 2 columns
+        loginFrame.setLayout(new GridLayout(5, 2)); 
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loginFrame.setLocationRelativeTo(null); // Center the frame
+        loginFrame.setLocationRelativeTo(null); 
 
         JLabel userLabel = new JLabel("Username:");
         JTextField userText = new JTextField();
@@ -68,18 +74,18 @@ public class MyApplication {
         
         JLabel roleLabel = new JLabel("Role:");
         String[] roles = {"REGULAR_USER", "ADMIN", "STORE_OWNER", "SUPPLIER"};
-        JComboBox<String> roleComboBox = new JComboBox<>(roles); // Create the JComboBox
+        JComboBox<String> roleComboBox = new JComboBox<>(roles); 
 
         JButton loginButton = new JButton("Log In");
         JButton signUpButton = new JButton("Sign Up");
 
-        // Add components to the frame
+        
         loginFrame.add(userLabel);
         loginFrame.add(userText);
         loginFrame.add(passwordLabel);
         loginFrame.add(passwordText);
         loginFrame.add(roleLabel);
-        loginFrame.add(roleComboBox); // Add the JComboBox to the frame
+        loginFrame.add(roleComboBox); 
         loginFrame.add(loginButton);
         loginFrame.add(signUpButton);
 
@@ -207,12 +213,12 @@ public class MyApplication {
     
     private JPanel createUserManagementPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); // Use BoxLayout for vertical stacking
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS)); 
 
-        // Panel for user addition
+        
         JPanel addPanel = new JPanel();
         addPanel.setBorder(BorderFactory.createTitledBorder("Add User"));
-        addPanel.setLayout(new GridLayout(7, 2)); // Use GridLayout for organized input fields
+        addPanel.setLayout(new GridLayout(7, 2)); 
 
         JTextField nameField = new JTextField();
         
@@ -220,12 +226,12 @@ public class MyApplication {
         JTextField countryField = new JTextField();
         
         JTextField roleField = new JTextField();
-        JPasswordField passwordField = new JPasswordField(); // Added password field
+        JPasswordField passwordField = new JPasswordField(); 
 
         addPanel.add(new JLabel("Name:"));
         addPanel.add(nameField);
-        addPanel.add(new JLabel("Password:")); // Added password label
-        addPanel.add(passwordField); // Added password field
+        addPanel.add(new JLabel("Password:")); 
+        addPanel.add(passwordField); 
        ;
         addPanel.add(new JLabel("Email:"));
         addPanel.add(emailField);
@@ -237,7 +243,7 @@ public class MyApplication {
         JButton addButton = new JButton("Add User");
         addPanel.add(addButton);
 
-        // Panel for user deletion
+        
         JPanel deletePanel = new JPanel();
         deletePanel.setBorder(BorderFactory.createTitledBorder("Delete User"));
         deletePanel.setLayout(new GridLayout(2, 2));
@@ -250,22 +256,21 @@ public class MyApplication {
         JButton deleteButton = new JButton("Delete User");
         deletePanel.add(deleteButton);
 
-        // Panel for user updating
         JPanel updatePanel = new JPanel();
         updatePanel.setBorder(BorderFactory.createTitledBorder("Update User"));
-        updatePanel.setLayout(new GridLayout(8, 2)); // Adjust GridLayout to accommodate new fields
+        updatePanel.setLayout(new GridLayout(8, 2)); 
 
         JTextField updateNameField = new JTextField();
        
         JTextField updateEmailField = new JTextField();
         JTextField updateCountryField = new JTextField();
         JTextField updateRoleField = new JTextField();
-        JPasswordField updatePasswordField = new JPasswordField(); // Added password field
+        JPasswordField updatePasswordField = new JPasswordField(); 
 
         updatePanel.add(new JLabel("Name:"));
         updatePanel.add(updateNameField);
-        updatePanel.add(new JLabel("Password:")); // Added password label
-        updatePanel.add(updatePasswordField); // Added password field
+        updatePanel.add(new JLabel("Password:")); 
+        updatePanel.add(updatePasswordField); 
       
         updatePanel.add(new JLabel("Email:"));
         updatePanel.add(updateEmailField);
@@ -277,15 +282,15 @@ public class MyApplication {
         JButton updateButton = new JButton("Update User");
         updatePanel.add(updateButton);
 
-        // Add panels to the main panel
+      
         panel.add(addPanel);
         panel.add(deletePanel);
         panel.add(updatePanel);
 
-     // Action listeners for buttons
+    
         addButton.addActionListener(e -> {
             String name = nameField.getText();
-            String password = new String(passwordField.getPassword()); // Get password from JPasswordField
+            String password = new String(passwordField.getPassword()); 
             String email = emailField.getText();
             String country = countryField.getText();
             String roleString = roleField.getText();
@@ -295,7 +300,7 @@ public class MyApplication {
             System.out.println("Email: " + email);
             System.out.println("Role: " + roleString);
 
-            // Convert roleString to UserRole
+            
             UserRole role;
             try {
                 role = UserRole.fromString(roleString);
@@ -310,28 +315,28 @@ public class MyApplication {
             users.put(name, newUser);
             saveUsers(); // Save users to file
 
-            JOptionPane.showMessageDialog(panel, "User added successfully."); // Confirmation message
+            JOptionPane.showMessageDialog(panel, "User added successfully."); 
         });
 
         deleteButton.addActionListener(e -> {
             String name = deleteNameField.getText();
             if (users.containsKey(name)) {
-                users.remove(name); // Remove user from in-memory collection
-                saveUsers(); // Save users to file
-                JOptionPane.showMessageDialog(panel, "User deleted successfully."); // Confirmation message
+                users.remove(name); 
+                saveUsers();
+                JOptionPane.showMessageDialog(panel, "User deleted successfully."); 
             } else {
-                JOptionPane.showMessageDialog(panel, "User not found."); // Error message
+                JOptionPane.showMessageDialog(panel, "User not found."); 
             }
         });
 
         updateButton.addActionListener(e -> {
             String name = updateNameField.getText();
-            String newPassword = new String(updatePasswordField.getPassword()); // Get password from JPasswordField
+            String newPassword = new String(updatePasswordField.getPassword()); 
             String newCountry = updateCountryField.getText();
             String newEmail = updateEmailField.getText();
             String newRoleString = updateRoleField.getText();
 
-            // Convert newRoleString to UserRole
+          
             UserRole newRole;
             try {
                 newRole = UserRole.fromString(newRoleString);
@@ -343,11 +348,11 @@ public class MyApplication {
             User existingUser = users.get(name);
             if (existingUser != null) {
                 User updatedUser = new User(name, newPassword, newEmail, newCountry, newRole);
-                users.put(name, updatedUser); // Update user in the in-memory collection
-                saveUsers(); // Save users to file
-                JOptionPane.showMessageDialog(panel, "User updated successfully."); // Confirmation message
+                users.put(name, updatedUser); 
+                saveUsers(); 
+                JOptionPane.showMessageDialog(panel, "User updated successfully."); 
             } else {
-                JOptionPane.showMessageDialog(panel, "User not found."); // Error message
+                JOptionPane.showMessageDialog(panel, "User not found."); 
             }
         });
 
@@ -360,51 +365,48 @@ public class MyApplication {
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Create title label
         JLabel titleLabel = new JLabel("Monitoring and Reporting", JLabel.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-        // Main content panel
+     
         JPanel contentPanel = new JPanel(new GridLayout(3, 1, 10, 10));
 
-        // Profits and Financial Reports Section
         JPanel profitsPanel = new JPanel(new BorderLayout());
         profitsPanel.setBorder(BorderFactory.createTitledBorder("Profits and Financial Reports"));
 
         JTextArea profitsReport = new JTextArea(10, 40);
         profitsReport.setEditable(false);
-        profitsReport.setText(generateFinancialReport()); // Replace with actual data
+        profitsReport.setText(generateFinancialReport()); 
         JScrollPane profitsScrollPane = new JScrollPane(profitsReport);
         profitsPanel.add(profitsScrollPane, BorderLayout.CENTER);
 
         contentPanel.add(profitsPanel);
 
-        // Best-Selling Products Section
         JPanel bestSellingPanel = new JPanel(new BorderLayout());
         bestSellingPanel.setBorder(BorderFactory.createTitledBorder("Best-Selling Products by Store"));
 
         JTextArea bestSellingReport = new JTextArea(10, 40);
         bestSellingReport.setEditable(false);
-        bestSellingReport.setText(getBestSellingProductsReport()); // Replace with actual data
+        bestSellingReport.setText(getBestSellingProductsReport()); 
         JScrollPane bestSellingScrollPane = new JScrollPane(bestSellingReport);
         bestSellingPanel.add(bestSellingScrollPane, BorderLayout.CENTER);
 
         contentPanel.add(bestSellingPanel);
 
-        // User Statistics by City Section
+       
         JPanel userStatsPanel = new JPanel(new BorderLayout());
         userStatsPanel.setBorder(BorderFactory.createTitledBorder("User Statistics by City"));
 
         JTextArea userStatsReport = new JTextArea(10, 40);
         userStatsReport.setEditable(false);
-        userStatsReport.setText(getUserStatisticsByCity()); // Replace with actual data
+        userStatsReport.setText(getUserStatisticsByCity()); 
         JScrollPane userStatsScrollPane = new JScrollPane(userStatsReport);
         userStatsPanel.add(userStatsScrollPane, BorderLayout.CENTER);
 
         contentPanel.add(userStatsPanel);
 
-        // Add the content panel to the main panel
+      
         panel.add(contentPanel, BorderLayout.CENTER);
 
         return panel;
@@ -425,7 +427,7 @@ public class MyApplication {
                 String productEntry = parts[0];
                 double price = Double.parseDouble(parts[2].replace("$", ""));
                 
-                String storeOwner = "Selen"; // Default if no owner specified///fix it shahd
+                String storeOwner = "Selen"; 
                 if (productEntry.contains(":")) {
                     String[] ownerProduct = productEntry.split(":");
                     storeOwner = ownerProduct[0].trim();
@@ -470,7 +472,7 @@ public class MyApplication {
         
         StringBuilder report = new StringBuilder();
         productSales.entrySet().stream()
-            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())) // Sort by sales descending
+            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())) 
             .forEach(entry -> report.append("Product: ").append(entry.getKey())
                     .append(" - Sales: ").append(entry.getValue()).append("\n"));
         
@@ -478,19 +480,19 @@ public class MyApplication {
     }
 
     private String getUserStatisticsByCity() {
-        Map<String, Integer> cityUserStats = new HashMap<>(); // Maps cities to user counts
+        Map<String, Integer> cityUserStats = new HashMap<>(); 
 
-        // Load user-city mapping and count REGULAR_USERs per city
+        
         try (BufferedReader userReader = new BufferedReader(new FileReader("users.txt"))) {
             String line;
             while ((line = userReader.readLine()) != null) {
                 String[] userParts = line.split(",");
-                if (userParts.length < 5) continue; // Ensure there's enough data
+                if (userParts.length < 5) continue; 
 
                 String city = userParts[2].trim();
                 String role = userParts[4].trim();
 
-                // Count only REGULAR_USERs
+                
                 if (role.equals("REGULAR_USER")) {
                     cityUserStats.put(city, cityUserStats.getOrDefault(city, 0) + 1);
                 }
@@ -500,7 +502,7 @@ public class MyApplication {
             return "Error loading user data.";
         }
 
-        // Generate report
+        
         StringBuilder report = new StringBuilder();
         cityUserStats.forEach((city, count) -> 
             report.append("City: ").append(city).append(" - REGULAR_USERs: ").append(count).append("\n")
@@ -525,9 +527,8 @@ public class MyApplication {
         managePostsButton.addActionListener(e -> showManagePostsFrame());
         manageFeedbackButton.addActionListener(e -> showManageFeedbackFrame());
         backButton.addActionListener(e -> {
-            // Implement logic to go back to the previous panel
-            // For example, switch back to the admin dashboard
-            showAdminDashboard(); // Replace with the actual method to show the admin dashboard
+           
+            showAdminDashboard(); 
         });
 
         panel.add(managePostsButton);
@@ -537,74 +538,73 @@ public class MyApplication {
         return panel;
     }
     
-    
-    private void showManagePostsFrame() {
+    /////////////////////////////////////////////
+    ////////////////////////////////////////////
+    ///////////////////////////////////////////////
+    //////////////////////////////////////////////
+    public void showManagePostsFrame() {
         JFrame postsFrame = new JFrame("Manage Posts");
-        postsFrame.setSize(800, 400);  // زيادة عرض الإطار لاستيعاب الأزرار
-        postsFrame.setLocationRelativeTo(null); // Center the frame
+        postsFrame.setSize(800, 400);  
+        postsFrame.setLocationRelativeTo(null); 
         postsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        DefaultListModel<JPanel> postListModel = new DefaultListModel<>();
-        JList<JPanel> postList = new JList<>(postListModel);
-        postList.setCellRenderer(new ListCellRenderer<JPanel>() {
-            @Override
-            public Component getListCellRendererComponent(JList<? extends JPanel> list, JPanel value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
-                return value;
-            }
-        });
-
-        JScrollPane scrollPane = new JScrollPane(postList);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         try (BufferedReader reader = new BufferedReader(new FileReader("dessert_creations.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Assuming the format is "username|path/to/image.jpg|description"
+               
                 String[] parts = line.split("\\|", 3);
                 if (parts.length == 3) {
                     String username = parts[0].trim();
                     String imagePath = parts[1].trim();
                     String description = parts[2].trim();
-                    
+
                     ImageIcon imageIcon = new ImageIcon(imagePath);
                     if (imageIcon.getIconWidth() == -1) {
                         System.out.println("Failed to load image: " + imagePath);
-                        continue; // Skip if the image can't be loaded
+                        continue; 
                     }
 
-                    // Create a JPanel to hold the image, description, and buttons
+                   
                     JPanel postPanel = new JPanel(new BorderLayout());
 
                     JLabel imageLabel = new JLabel("<html><b>" + username + ":</b> " + description + "</html>", imageIcon, JLabel.LEFT);
                     postPanel.add(imageLabel, BorderLayout.CENTER);
 
-                    // Create the buttons panel
+                    
                     JPanel buttonPanel = new JPanel();
                     JButton editButton = new JButton("Edit");
                     JButton deleteButton = new JButton("Delete");
 
-                    // Action listener for the delete button
+                   
                     deleteButton.addActionListener(e -> {
-                        postListModel.removeElement(postPanel); // Remove from the list
-                        deletePostFromFile(username, imagePath, description); // Custom method to delete the post from the file
+                        mainPanel.remove(postPanel); 
+                        mainPanel.revalidate();
+                        mainPanel.repaint();
+                        deletePostFromFile(username, imagePath, description); 
                     });
 
-                    // Action listener for the edit button
+                    
                     editButton.addActionListener(e -> {
-                        editPost(username, imagePath, description); // Custom method to edit the post
+                        editPost(username, imagePath, description, postPanel, imageLabel); 
                     });
 
                     buttonPanel.add(editButton);
                     buttonPanel.add(deleteButton);
 
-                    postPanel.add(buttonPanel, BorderLayout.EAST);
-                    postListModel.addElement(postPanel);
+                    postPanel.add(buttonPanel, BorderLayout.SOUTH); 
+
+                    mainPanel.add(postPanel);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(postsFrame, "Error loading posts.");
         }
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> postsFrame.dispose());
@@ -618,18 +618,99 @@ public class MyApplication {
         postsFrame.setVisible(true);
     }
 
-    // Method to delete the post from the file
+
     private void deletePostFromFile(String username, String imagePath, String description) {
-        // Implement logic to remove the line from the file 'dessert_creations.txt'
-        // You may read all lines, remove the specific line, then write back the remaining lines.
+        File inputFile = new File("dessert_creations.txt");
+        File tempFile = new File("temp_dessert_creations.txt");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+
+            String line;
+            String postToRemove = username + "|" + imagePath + "|" + description;
+            while ((line = reader.readLine()) != null) {
+                
+                if (!line.trim().equals(postToRemove.trim())) {
+                    writer.write(line + System.getProperty("line.separator"));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (inputFile.delete()) {
+            tempFile.renameTo(inputFile);
+        } else {
+            System.out.println("Could not delete file");
+        }
     }
 
-    // Method to edit the post
-    private void editPost(String username, String imagePath, String description) {
-        // Implement logic to allow the user to edit the post details
-        // For example, open a dialog with fields pre-filled with the current post details, then save the changes.
+ 
+    private void editPost(String username, String imagePath, String description, JPanel postPanel, JLabel imageLabel) {
+        JTextField newDescriptionField = new JTextField(description, 20);
+        JButton chooseImageButton = new JButton("Choose New Image");
+        JFileChooser fileChooser = new JFileChooser();
+        final String[] newImagePath = {imagePath};
+
+        chooseImageButton.addActionListener((ActionEvent e) -> {
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                newImagePath[0] = selectedFile.getAbsolutePath();
+            }
+        });
+
+        Object[] message = {
+            "New Description:", newDescriptionField,
+            "New Image:", chooseImageButton
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, message, "Edit Post", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            String newDescription = newDescriptionField.getText().trim();
+            updatePostInFile(username, imagePath, description, newImagePath[0], newDescription);
+            imageLabel.setText("<html><b>" + username + ":</b> " + newDescription + "</html>");
+            imageLabel.setIcon(new ImageIcon(newImagePath[0]));
+        }
     }
 
+    
+    private void updatePostInFile(String username, String oldImagePath, String oldDescription, String newImagePath, String newDescription) {
+        File inputFile = new File("dessert_creations.txt");
+        File tempFile = new File("temp_dessert_creations.txt");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+
+            String line;
+            String oldPost = username + "|" + oldImagePath + "|" + oldDescription;
+            String newPost = username + "|" + newImagePath + "|" + newDescription;
+
+            while ((line = reader.readLine()) != null) {
+          
+                if (line.trim().equals(oldPost.trim())) {
+                    writer.write(newPost + System.getProperty("line.separator"));
+                } else {
+                    writer.write(line + System.getProperty("line.separator"));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        
+        if (inputFile.delete()) {
+            tempFile.renameTo(inputFile);
+        } else {
+            System.out.println("Could not delete file");
+        }
+    }
+
+/////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
 
     private void showManageFeedbackFrame() {
         JFrame feedbackFrame = new JFrame("Manage Feedback");
@@ -696,13 +777,13 @@ public class MyApplication {
     
     private JPanel createCommunicationNotificationPanel() {
         JPanel panel = new JPanel();
-        // Add components for communication and feedback
+      
         return panel;
     }
 
     private JPanel createOrderManagementPanel() {
         JPanel panel = new JPanel();
-        // Add components for communication and feedback
+       
         return panel;
     }
 
@@ -713,7 +794,7 @@ public class MyApplication {
     private JPanel createProductManagementPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // Top section: Add new product
+        
         JPanel addProductPanel = new JPanel(new GridLayout(4, 2));
         JLabel nameLabel = new JLabel("Product Name:");
         JTextField nameField = new JTextField();
@@ -732,14 +813,14 @@ public class MyApplication {
         addProductPanel.add(new JLabel());
         addProductPanel.add(addButton);
 
-        // Center section: Product list
+       
         DefaultListModel<String> productListModel = new DefaultListModel<>();
         JList<String> productList = new JList<>(productListModel);
         JScrollPane productScrollPane = new JScrollPane(productList);
         
         loadProductsFromFile(productListModel);
 
-        // Bottom section: Buttons for update and delete
+       
         JPanel buttonPanel = new JPanel();
         JButton updateButton = new JButton("Update Product");
         JButton deleteButton = new JButton("Delete Product");
@@ -750,7 +831,7 @@ public class MyApplication {
         panel.add(productScrollPane, BorderLayout.CENTER);
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Action for adding product
+       
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -776,7 +857,7 @@ public class MyApplication {
             }
         });
 
-        // Action for updating product
+        
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -796,7 +877,7 @@ public class MyApplication {
             }
         });
 
-        // Action for deleting product
+       
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -823,21 +904,21 @@ public class MyApplication {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // Create components for monitoring sales and profits
+        
         JPanel salesProfitsPanel = new JPanel();
-        salesProfitsPanel.setLayout(new GridLayout(2, 2)); // Grid layout for sales and profits
+        salesProfitsPanel.setLayout(new GridLayout(2, 2)); 
 
         JLabel totalSalesLabel = new JLabel("Total Sales:");
-        JLabel totalSalesValue = new JLabel("$0.00"); // Placeholder for total sales value
+        JLabel totalSalesValue = new JLabel("$0.00"); 
         JLabel totalProfitsLabel = new JLabel("Total Profits:");
-        JLabel totalProfitsValue = new JLabel("$0.00"); // Placeholder for total profits value
-
+        JLabel totalProfitsValue = new JLabel("$0.00"); 
+        
         salesProfitsPanel.add(totalSalesLabel);
         salesProfitsPanel.add(totalSalesValue);
         salesProfitsPanel.add(totalProfitsLabel);
         salesProfitsPanel.add(totalProfitsValue);
 
-        // Create components for identifying best-selling products
+        
         JPanel bestSellingPanel = new JPanel();
         bestSellingPanel.setLayout(new BorderLayout());
 
@@ -849,20 +930,20 @@ public class MyApplication {
         bestSellingPanel.add(bestSellingLabel, BorderLayout.NORTH);
         bestSellingPanel.add(bestSellingScrollPane, BorderLayout.CENTER);
 
-        // Create components for dynamic discount features
+       
         JPanel discountPanel = new JPanel();
-        discountPanel.setLayout(new GridLayout(3, 2)); // Grid layout for discount controls
-
+        discountPanel.setLayout(new GridLayout(3, 2)); 
+        
         JLabel discountLabel = new JLabel("Apply Discount (%):");
         JTextField discountField = new JTextField();
         JButton applyDiscountButton = new JButton("Apply Discount");
 
         discountPanel.add(discountLabel);
         discountPanel.add(discountField);
-        discountPanel.add(new JLabel()); // Empty label for alignment
+        discountPanel.add(new JLabel());
         discountPanel.add(applyDiscountButton);
 
-        // Add action listener for the apply discount button
+        
         applyDiscountButton.addActionListener(e -> {
             try {
                 double discountPercentage = Double.parseDouble(discountField.getText());
@@ -871,7 +952,7 @@ public class MyApplication {
                 } else {
                     applyDiscount(discountPercentage);
                     JOptionPane.showMessageDialog(panel, "Discount of " + discountPercentage + "% applied successfully.");
-                    // Update sales and profits after discount
+                  
                     updateSalesAndProfits(totalSalesValue, totalProfitsValue);
                 }
             } catch (NumberFormatException ex) {
@@ -879,12 +960,11 @@ public class MyApplication {
             }
         });
 
-        // Add components to the main panel
         panel.add(salesProfitsPanel, BorderLayout.NORTH);
         panel.add(bestSellingPanel, BorderLayout.CENTER);
         panel.add(discountPanel, BorderLayout.SOUTH);
 
-        // Initial calculation of sales, profits, and best-selling products
+      
         updateSalesAndProfits(totalSalesValue, totalProfitsValue);
         updateBestSellingProducts(bestSellingListModel);
 
@@ -903,8 +983,8 @@ public class MyApplication {
                     String priceStr = parts[2].replace("$", "");
                     double price = Double.parseDouble(priceStr);
 
-                    // Assuming cost price is available; if not, use a default profit margin.
-                    double costPrice = price * 0.7; // Example: 70% of selling price is cost
+                   
+                    double costPrice = price * 0.7; 
                     totalSales += price;
                     totalProfits += (price - costPrice);
                 }
@@ -933,7 +1013,7 @@ public class MyApplication {
             e.printStackTrace();
         }
 
-        // Sort products by sales count
+     
         List<Map.Entry<String, Integer>> sortedProducts = new ArrayList<>(productSalesCount.entrySet());
         sortedProducts.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
@@ -968,11 +1048,11 @@ public class MyApplication {
             e.printStackTrace();
         }
 
-        // Replace the original file with the updated file
+       
         new File("_Purchases.txt").delete();
         new File("_Purchases_tmp.txt").renameTo(new File("_Purchases.txt"));
 
-        // Show the discounted products in a new frame
+       
         showDiscountedProductsFrame(discountedProducts);
     }
 
@@ -1029,8 +1109,6 @@ public class MyApplication {
     
 //////////USER USER  USER USER USER USER
     private void showBeneficiaryUserDashboard() {
-        // Implementation specific to the Beneficiary User Dashboard
-        // You can use the `showMainFrame` method if it meets the needs of this dashboard
         showMainFrame();
     }
 
@@ -1055,10 +1133,10 @@ public class MyApplication {
     	JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // Create a tabbed pane for account management features
+       
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Panel for managing account details
+  
         JPanel accountDetailsPanel = new JPanel();
         accountDetailsPanel.setLayout(new GridLayout(6, 2, 10, 10));
         
@@ -1084,10 +1162,10 @@ public class MyApplication {
         accountDetailsPanel.add(countryField);
         accountDetailsPanel.add(passwordLabel);
         accountDetailsPanel.add(passwordField);
-        accountDetailsPanel.add(new JLabel()); // Empty cell
+        accountDetailsPanel.add(new JLabel()); 
         accountDetailsPanel.add(updateButton);
 
-        // Action for the update button
+       
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1111,7 +1189,7 @@ public class MyApplication {
                     user.setEmail(email);
                     user.setCountry(country);
                     user.setPassword(password);
-                    saveUsers();  // Ensure this method correctly saves the updated user details
+                    saveUsers();  
                     JOptionPane.showMessageDialog(panel, "Details updated successfully.");
                 } else {
                     System.out.println("User not found.");
@@ -1125,9 +1203,9 @@ public class MyApplication {
     
         JPanel postDessertPanel = createPostDessertPanel();
 
-        // Add tabs to the JTabbedPane
+        
         tabbedPane.addTab("Account Details", accountDetailsPanel);
-       // tabbedPane.addTab("View My Posts", viewMyPostsPanel);
+       
         tabbedPane.addTab("Post Dessert", postDessertPanel);
 
         panel.add(tabbedPane, BorderLayout.CENTER);
@@ -1137,9 +1215,8 @@ public class MyApplication {
         
     
     private String getCurrentUsername() {
-        // Implement logic to retrieve the currently logged-in username
-        // Placeholder implementation:
-        return currentUser; // Replace with actual logic
+        
+        return currentUser; 
     }
     
     
@@ -1154,7 +1231,7 @@ public class MyApplication {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(username + ":")) {
-                    // Assuming the format is username:imagePath:description
+                   
                     String[] parts = line.split(":");
                     if (parts.length >= 3) {
                         String imagePath = parts[1];
@@ -1201,13 +1278,13 @@ public class MyApplication {
     }
 
     private void loadUserPosts(JPanel panel, String username) {
-        panel.removeAll(); // Clear existing content
+        panel.removeAll(); 
 
         try (BufferedReader reader = new BufferedReader(new FileReader(DESSERT_CREATIONS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("\\|");
-                if (parts.length == 3) { // Ensure the line has the correct format
+                if (parts.length == 3) { 
                     String postUsername = parts[0];
                     String imagePath = parts[1];
                     String description = parts[2];
@@ -1215,7 +1292,7 @@ public class MyApplication {
                     if (postUsername.equals(username)) {
                         JPanel contentItemPanel = new JPanel();
                         contentItemPanel.setLayout(new BoxLayout(contentItemPanel, BoxLayout.Y_AXIS));
-                        contentItemPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding around each item
+                        contentItemPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
 
                         JLabel descriptionLabel = new JLabel("Description: " + description);
                         contentItemPanel.add(descriptionLabel);
@@ -1226,15 +1303,15 @@ public class MyApplication {
                         contentItemPanel.add(imageLabel);
 
                         panel.add(contentItemPanel);
-                        panel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between items
+                        panel.add(Box.createRigidArea(new Dimension(0, 20))); 
                     }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace(); // Handle exceptions
+            e.printStackTrace(); 
         }
 
-        panel.revalidate(); // Refresh the panel to show new content
+        panel.revalidate(); 
         panel.repaint();
     }
 
@@ -1252,7 +1329,7 @@ public class MyApplication {
     
     private JPanel createPostDessertPanel() {
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 1)); // Adjusted GridLayout for the additional button
+        panel.setLayout(new GridLayout(6, 1)); 
 
         JLabel descriptionLabel = new JLabel("Description:");
         descriptionTextArea = new JTextArea(4, 30);
@@ -1260,13 +1337,13 @@ public class MyApplication {
 
         uploadImageButton = new JButton("Upload Image");
         JButton postButton = new JButton("Post Dessert");
-        JButton viewPostsButton = new JButton("View My Posts"); // Added button to view posts
+        JButton viewPostsButton = new JButton("View My Posts"); 
 
         panel.add(descriptionLabel);
         panel.add(scrollPane);
         panel.add(uploadImageButton);
         panel.add(postButton);
-        panel.add(viewPostsButton); // Added button to panel
+        panel.add(viewPostsButton); 
 
         uploadImageButton.addActionListener(new ActionListener() {
             @Override
@@ -1297,7 +1374,7 @@ public class MyApplication {
         viewPostsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showAllUserPosts(); // Call the method to show user posts
+                showAllUserPosts(); 
             }
         });
 
@@ -1313,7 +1390,7 @@ public class MyApplication {
    
     private void saveDessertCreation(String description, File imageFile) {
         String currentUsername = getCurrentUsername();
-        String imagePath = imageFile.getAbsolutePath(); // Store the full path of the image
+        String imagePath = imageFile.getAbsolutePath(); 
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DESSERT_CREATIONS_FILE, true))) {
             // Format: username|imagePath|description
@@ -1333,7 +1410,7 @@ public class MyApplication {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // Create components for browsing and searching products
+        
         JTextField searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
         JButton purchaseFromStoreOwnerButton = new JButton("Purchase from Store Owner");
@@ -1344,12 +1421,12 @@ public class MyApplication {
         searchPanel.add(searchButton);
         searchPanel.add(purchaseFromStoreOwnerButton);
 
-        // Create a list to display the search results (products)
+        
         DefaultListModel<String> productListModel = new DefaultListModel<>();
         JList<String> productList = new JList<>(productListModel);
         JScrollPane productScrollPane = new JScrollPane(productList);
 
-        // Create components for filtering based on dietary needs or food allergies
+        
         JCheckBox glutenFreeCheckbox = new JCheckBox("Gluten-Free");
         JCheckBox veganCheckbox = new JCheckBox("Vegan");
         JCheckBox nutFreeCheckbox = new JCheckBox("Nut-Free");
@@ -1359,21 +1436,21 @@ public class MyApplication {
         filterPanel.add(veganCheckbox);
         filterPanel.add(nutFreeCheckbox);
 
-        // Create a button to show available products for purchase
+        
         JButton purchaseButton = new JButton("Purchase Selected Product");
 
-        // Load all products from the file initially
+       
         List<String> allProducts = loadProductsFromFile("Product.txt");
         allProducts.forEach(productListModel::addElement);
 
-        // Add action listener for the search button
+        
         searchButton.addActionListener(e -> {
             String query = searchField.getText().toLowerCase();
             boolean glutenFree = glutenFreeCheckbox.isSelected();
             boolean vegan = veganCheckbox.isSelected();
             boolean nutFree = nutFreeCheckbox.isSelected();
 
-            // Filter products based on search query and selected filters
+            
             List<String> filteredProducts = allProducts.stream()
                 .filter(product -> product.toLowerCase().contains(query))
                 .filter(product -> {
@@ -1391,12 +1468,12 @@ public class MyApplication {
                 })
                 .collect(Collectors.toList());
 
-            // Update the list model with filtered products
+           
             productListModel.clear();
             filteredProducts.forEach(productListModel::addElement);
         });
 
-        // Add action listener for the purchase button
+       
         purchaseButton.addActionListener(e -> {
             String selectedProduct = productList.getSelectedValue();
             if (selectedProduct != null) {
@@ -1405,7 +1482,7 @@ public class MyApplication {
                         "Confirm Purchase",
                         JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {
-                    // Simulate purchase logic (e.g., update inventory, deduct balance)
+                    
                     savePurchaseToFile(selectedProduct);
                     JOptionPane.showMessageDialog(panel, "Purchase successful! You bought: " + selectedProduct);
                 }
@@ -1414,7 +1491,7 @@ public class MyApplication {
             }
         });
 
-        // Add action listener for the direct purchase button
+      
         purchaseFromStoreOwnerButton.addActionListener(e -> {
             List<String> storeOwners = loadStoreOwnersFromFile("users.txt");
             String selectedStoreOwner = (String) JOptionPane.showInputDialog(
@@ -1449,7 +1526,7 @@ public class MyApplication {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length == 5 && "STORE_OWNER".equalsIgnoreCase(parts[4].trim())) {
-                    storeOwners.add(parts[0].trim()); // Add the username (first part)
+                    storeOwners.add(parts[0].trim()); 
                 }
             }
         } catch (IOException e) {
@@ -1588,7 +1665,7 @@ public class MyApplication {
     public void signUpUser(String username, String password, String email, String country, UserRole role) {
         if (!userExists(username)) {
             users.put(username, new User(username, password, email, country, role));
-            saveUsers(); // This will save the updated users map to the file
+            saveUsers(); 
         }
     }
 

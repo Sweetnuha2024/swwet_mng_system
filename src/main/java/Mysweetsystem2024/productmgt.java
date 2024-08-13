@@ -7,19 +7,19 @@ import java.util.Map;
 
 public class productmgt {
 
-    // Internal storage for products
+   
     private Map<String, Product> products = new HashMap<>();
 
     // Add a new product
     public boolean addProduct(String name, String description, double price) {
         if (products.containsKey(name)) {
-            return false; // Product already exists
+            return false; 
         }
         products.put(name, new Product(name, description, price));
         return true;
     }
 
-    // Update an existing product
+   
     public boolean updateProduct(String name, String newDescription, double newPrice) {
         Product product = products.get(name);
         if (product == null) {
@@ -66,14 +66,14 @@ public class productmgt {
     
     
 
-    // Get sales and profits report
+    
     public String getSalesAndProfitsReport() {
-        // Construct a detailed report
+       
         StringBuilder report = new StringBuilder();
         report.append("Total Sales: $1000\n");
         report.append("Total Profits: $300\n");
         report.append("Sales Breakdown:\n");
-        // Example breakdown - replace with actual data
+       
         report.append("Product1: $150\n");
         report.append("Product2: $200\n");
         return report.toString();

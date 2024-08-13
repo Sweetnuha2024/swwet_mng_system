@@ -1,7 +1,6 @@
 alma|C:\Users\acer\Downloads\25.jpg|my first try of making cake
-alma|C:\Users\acer\Downloads\Best-Chocolate-Cake.jpg|alma cakeeeeee))))
-yara|C:\Users\acer\Downloads\Best-Chocolate-Cake.jpg|gooooooood
-yara|C:\Users\acer\Downloads\23.jpg|very good
+alma|C:\Users\acer\Downloads\30.jpg|alma cakeeeeee))))
+yara|C:\Users\acer\Downloads\1333.png|you should try it
 yara|C:\Users\acer\Downloads\27.jpg|my creation
 nuhha|C:\Users\acer\Downloads\13.png|helllo
 nuhha|C:\Users\acer\Downloads\133.png|good morninggg
@@ -11,3 +10,5 @@ alma|C:\Users\acer\Downloads\133333333.jpg|Hellllllo
 alma|C:\Users\acer\Downloads\13333333.jpg|Tuesday recipe
 alma|C:\Users\acer\Downloads\1333333.jpg|Monday resipe
 nuhha|C:\Users\acer\Downloads\1333.png|helllo
+alma|C:\Users\acer\Downloads\29.jpg|holaa
+sama|C:\Users\acer\Downloads\26.jpg|super soft melt in mouth

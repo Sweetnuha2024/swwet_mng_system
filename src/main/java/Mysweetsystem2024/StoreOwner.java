@@ -13,7 +13,7 @@ public class StoreOwner extends User {
         this.phoneNumber = phoneNumber;
     }
 
-    // Getters and setters for new fields
+    
     public String getStoreName() {
         return storeName;
     }

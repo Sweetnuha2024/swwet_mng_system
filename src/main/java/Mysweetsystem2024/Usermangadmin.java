@@ -9,7 +9,7 @@ import java.util.List;
 public class Usermangadmin {
 
     private MyApplication app;
-    private List<User> userList; // In-memory list to hold users
+    private List<User> userList; 
     private boolean loggedIn;
 
     public Usermangadmin(MyApplication app) {
@@ -19,8 +19,8 @@ public class Usermangadmin {
     }
 
     public boolean login(String username, String password) {
-        String storedUsername = "adminUsername"; // Replace with actual stored admin username
-        String storedPassword = "adminPassword"; // Replace with actual stored admin password
+        String storedUsername = "adminUsername"; 
+        String storedPassword = "adminPassword"; 
 
         if (username.equals(storedUsername) && password.equals(storedPassword)) {
             this.loggedIn = true;
@@ -36,9 +36,9 @@ public class Usermangadmin {
     }
 
     public void navigateTo(String page) {
-        // Logic to navigate to the specified page
+        
         System.out.println("Navigating to " + page);
-        // Add actual navigation code if needed
+        
     }
 
     public String setUserDetails(User user) {
@@ -46,11 +46,11 @@ public class Usermangadmin {
             return "Admin not logged in";
         }
 
-        // Check if the user already exists
+       
         boolean userExists = false;
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getEmail().equals(user.getEmail())) {
-                userList.set(i, user); // Update existing user
+                userList.set(i, user); 
                 userExists = true;
                 break;
             }
@@ -60,13 +60,13 @@ public class Usermangadmin {
             userList.add(user); // Add new user
         }
 
-        // Save changes to the user.dat.txt file
+        // Save changes to the users.txt file
         return saveUserDetailsToFile(user);
     }
 
     private String saveUserDetailsToFile(User user) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("user.dat.txt", true))) {
-            writer.write(user.toString()); // Ensure User class has a proper toString() method
+            writer.write(user.toString()); 
             writer.newLine();
             return "User details saved successfully";
         } catch (IOException e) {
@@ -130,13 +130,13 @@ public class Usermangadmin {
             return "User not found";
         }
 
-        // Mark user as deleted in file (e.g., move to archive or remove permanently)
+        
         return archiveUserInFile(user);
     }
 
     private String archiveUserInFile(User user) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("user_archive.dat.txt", true))) {
-            writer.write(user.toString()); // Ensure User class has a proper toString() method
+            writer.write(user.toString()); 
             writer.newLine();
             return "User archived successfully";
         } catch (IOException e) {
@@ -155,41 +155,40 @@ public class Usermangadmin {
     }
 
     public void setSearchParameters(String searchParams) {
-        // Logic for setting search parameters
+    
         System.out.println("Search parameters set to: " + searchParams);
-        // Add actual search implementation if needed
+
     }
 
     public boolean isFilteredListRetrieved() {
-        // Logic for checking if filtered list is retrieved
-        return true; // Return true if filtered list is retrieved
+        
+        return true; 
     }
 
     public boolean isUserListDisplayed() {
-        // Logic for checking if user list is displayed
-        return true; // Return true if user list is displayed
+      
+        return true; 
     }
 
     public boolean isUserMarkedAsDeleted(User user) {
-        // Logic for checking if user is marked as deleted
-        return true; // Return true if user is marked as deleted
+        
+        return true; 
     }
 
     public boolean isUserArchived(User user) {
-        // Logic for checking if user is archived
-        return true; // Return true if user is archived
+                return true; 
     }
 
     public boolean isArchivedUserDataRetrieved() {
-        // Logic for checking if archived user data is retrieved
-        return true; // Return true if archived user data is retrieved
+        
+        return true; 
     }
 
     public boolean isArchivedUserListDisplayed() {
-        // Logic for checking if archived user list is displayed
-        return true; // Return true if archived user list is displayed
+     
+        return true; 
     }
 
-    // Other methods...
+    
 
 }
