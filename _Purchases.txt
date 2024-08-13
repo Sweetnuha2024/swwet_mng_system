@@ -1,24 +1,25 @@
-nuhha: Strawberry cake - good - $26.93
-nuhha: Donuts - good - $3.23
-nuhha: Strawberry cake - good - $26.93
-tasneem: Cupcake - so delicious - $16.16
-tasneem: Cupcake - so delicious - $16.16
-tasneem: Cupcake - so delicious - $16.16
-tasneem: Cupcake - so delicious - $16.16
-tasneem: cinamon rolls - softtttttttt - $11.85
-alma: Donuts - good - $3.23
-alma: banana cake - nothing - $16.16
-alma: Cupcake - so delicious - $16.16
-sama: Ice cream cake - Fantastic - $37.71
-sama: Fruitcake - made with candied or dried fruit, nuts, and spices, and optionally soaked in spirits. - $43.09
-sama: Gluten-free choclate banana cake - Bittersweet choclate ,cocoa nibs  banana - $26.93
-merna: Cheesecake - mixture is sweetened - $32.32
-merna: Ice cream cake - Fantastic - $37.71
-merna: Ice cream cake - Fantastic - $37.71
-merna: Ice cream cake - Fantastic - $37.71
-merna: Ice cream cake - Fantastic - $37.71
-merna: Butter cake - Nut-Free - $24.24
-merna: Vanilla Vegan Pound cake - Vegan - $32.32
-merna: Red velvet cake - new cake - $48.48
-Leen: Vegan cake - good - $26.93
-Leen: Cheesecake - mixture is sweetened - $32.32
+nuhha: Strawberry cake - good - $24.24
+nuhha: Donuts - good - $2.91
+nuhha: Strawberry cake - good - $24.24
+tasneem: Cupcake - so delicious - $14.54
+tasneem: Cupcake - so delicious - $14.54
+tasneem: Cupcake - so delicious - $14.54
+tasneem: Cupcake - so delicious - $14.54
+tasneem: cinamon rolls - softtttttttt - $10.67
+alma: Donuts - good - $2.91
+alma: banana cake - nothing - $14.54
+alma: Cupcake - so delicious - $14.54
+sama: Ice cream cake - Fantastic - $33.94
+sama: Fruitcake - made with candied or dried fruit, nuts, and spices, and optionally soaked in spirits. - $38.78
+sama: Gluten-free choclate banana cake - Bittersweet choclate ,cocoa nibs  banana - $24.24
+merna: Cheesecake - mixture is sweetened - $29.09
+merna: Ice cream cake - Fantastic - $33.94
+merna: Ice cream cake - Fantastic - $33.94
+merna: Ice cream cake - Fantastic - $33.94
+merna: Ice cream cake - Fantastic - $33.94
+merna: Butter cake - Nut-Free - $21.82
+merna: Vanilla Vegan Pound cake - Vegan - $29.09
+merna: Red velvet cake - new cake - $43.63
+Leen: Vegan cake - good - $24.24
+Leen: Cheesecake - mixture is sweetened - $29.09
+nuhha: strawberry cake - nothing - $63.00

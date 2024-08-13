@@ -17,5 +17,6 @@ alma,1998,Nablus,almaarawa@gmail.com,REGULAR_USER
 sama,9090,Tulkerem,sama@gmail.com,REGULAR_USER
 yousef,112233,Nablus,yousef@gmail.com,STORE_OWNER
 safaa,444444,Ramallah,safa@gmail.com,STORE_OWNER
-nuhha,12345,Ramallah,nuha@gmail.com,REGULAR_USER
+nuhha,123456,Nablus,nuha@gmail.com,REGULAR_USER
 hala,333333,Nablus,hala@gmail.com,STORE_OWNER
+nonexistent,password123,Palestine,defaultEmail@example.com,REGULAR_USER
