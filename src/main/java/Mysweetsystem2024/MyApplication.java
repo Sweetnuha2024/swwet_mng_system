@@ -46,17 +46,18 @@ public class MyApplication {
 
     private void initializeUsers() {
         // Add users to the application
-        users.put("nuha", new User("nuha", "111111", "nuha@gmail.com", "Palestine", UserRole.REGULAR_USER));
-        users.put("shahd", new User("shahd", "222222", "shahd@gmail.com", "Palestine", UserRole.ADMIN));
-        users.put("hala", new User("hala", "333333", "hala@gmail.com", "Palestine", UserRole.STORE_OWNER));
-        users.put("safaa", new User("safaa", "444444", "safa@gmail.com", "Palestine", UserRole.SUPPLIER));
+        users.put("nuha", new User("nuha", "111111", "nuha@gmail.com", "Nablus", UserRole.REGULAR_USER));
+        users.put("shahd", new User("shahd", "222222", "shahd@gmail.com", "Nablus", UserRole.ADMIN));
+        users.put("hala", new User("hala", "333333", "hala@gmail.com", "Jenin", UserRole.STORE_OWNER));
+        users.put("safaa", new User("safaa", "444444", "safa@gmail.com", "Tulkerem", UserRole.SUPPLIER));
         saveUsers();
     }
 //log in
+    
     private void showLoginFrame() {
         JFrame loginFrame = new JFrame("Login");
         loginFrame.setSize(600, 500);
-        loginFrame.setLayout(new GridLayout(4, 2));
+        loginFrame.setLayout(new GridLayout(5, 2)); // Adjust the grid layout to 5 rows, 2 columns
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setLocationRelativeTo(null); // Center the frame
 
@@ -64,13 +65,21 @@ public class MyApplication {
         JTextField userText = new JTextField();
         JLabel passwordLabel = new JLabel("Password:");
         JPasswordField passwordText = new JPasswordField();
+        
+        JLabel roleLabel = new JLabel("Role:");
+        String[] roles = {"REGULAR_USER", "ADMIN", "STORE_OWNER", "SUPPLIER"};
+        JComboBox<String> roleComboBox = new JComboBox<>(roles); // Create the JComboBox
+
         JButton loginButton = new JButton("Log In");
         JButton signUpButton = new JButton("Sign Up");
 
+        // Add components to the frame
         loginFrame.add(userLabel);
         loginFrame.add(userText);
         loginFrame.add(passwordLabel);
         loginFrame.add(passwordText);
+        loginFrame.add(roleLabel);
+        loginFrame.add(roleComboBox); // Add the JComboBox to the frame
         loginFrame.add(loginButton);
         loginFrame.add(signUpButton);
 
@@ -79,11 +88,13 @@ public class MyApplication {
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
                 String password = new String(passwordText.getPassword());
+                String selectedRole = (String) roleComboBox.getSelectedItem(); // Get the selected role
 
                 if (loginManager.login(username, password)) {
+                	 currentUser= username; 
                     loginFrame.dispose();
                     User user = users.get(username);
-                    if (user != null) {
+                    if (user != null && user.getRole().toString().equals(selectedRole)) {
                         switch (user.getRole()) {
                             case REGULAR_USER:
                                 showBeneficiaryUserDashboard();
@@ -95,9 +106,11 @@ public class MyApplication {
                                 showStoreOwnerDashboard();
                                 break;
                             case SUPPLIER:
-                            	showStoreOwnerDashboard  ();
+                            	 showStoreOwnerDashboard ();
                                 break;
                         }
+                    } else {
+                        JOptionPane.showMessageDialog(loginFrame, "Role does not match. Please try again.");
                     }
                 } else {
                     JOptionPane.showMessageDialog(loginFrame, "Invalid credentials. Please try again.");
@@ -114,6 +127,7 @@ public class MyApplication {
 
         loginFrame.setVisible(true);
     }
+
 //sign up up up up up up up up up up up 
     private void showSignUpFrame() {
         JFrame signUpFrame = new JFrame("Sign Up");
@@ -128,7 +142,7 @@ public class MyApplication {
         JPasswordField passwordText = new JPasswordField();
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailText = new JTextField();
-        JLabel countryLabel = new JLabel("Country:");
+        JLabel countryLabel = new JLabel("City:");
         JTextField countryText = new JTextField();
         JLabel roleLabel = new JLabel("Role:");
         JComboBox<UserRole> roleComboBox = new JComboBox<>(UserRole.values());
@@ -152,11 +166,11 @@ public class MyApplication {
                 String username = nameText.getText();
                 String password = new String(passwordText.getPassword());
                 String email = emailText.getText();
-                String country = countryText.getText();
+                String City = countryText.getText();
                 UserRole role = (UserRole) roleComboBox.getSelectedItem();
 
                 if (!userExists(username)) {
-                    signUpUser(username, password, email, country, role);
+                    signUpUser(username, password, email, City, role);
                     JOptionPane.showMessageDialog(signUpFrame, "Account created successfully.");
                     signUpFrame.dispose();
                 } else {
@@ -215,7 +229,7 @@ public class MyApplication {
        ;
         addPanel.add(new JLabel("Email:"));
         addPanel.add(emailField);
-        addPanel.add(new JLabel("Country:"));
+        addPanel.add(new JLabel("City:"));
         addPanel.add(countryField);
         addPanel.add(new JLabel("Role:"));
         addPanel.add(roleField);
@@ -255,7 +269,7 @@ public class MyApplication {
       
         updatePanel.add(new JLabel("Email:"));
         updatePanel.add(updateEmailField);
-        updatePanel.add(new JLabel("Country:"));
+        updatePanel.add(new JLabel("City:"));
         updatePanel.add(updateCountryField);
         updatePanel.add(new JLabel("Role:"));
         updatePanel.add(updateRoleField);
@@ -277,7 +291,7 @@ public class MyApplication {
             String roleString = roleField.getText();
 
             System.out.println("Name: " + name);
-            System.out.println("Country: " + country);
+            System.out.println("City: " + country);
             System.out.println("Email: " + email);
             System.out.println("Role: " + roleString);
 
@@ -343,9 +357,178 @@ public class MyApplication {
 
     private JPanel createMonitoringReportingPanel() {
         JPanel panel = new JPanel();
-        // Add components for monitoring profits, generating reports, etc.
+        panel.setLayout(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Create title label
+        JLabel titleLabel = new JLabel("Monitoring and Reporting", JLabel.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(titleLabel, BorderLayout.NORTH);
+
+        // Main content panel
+        JPanel contentPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+
+        // Profits and Financial Reports Section
+        JPanel profitsPanel = new JPanel(new BorderLayout());
+        profitsPanel.setBorder(BorderFactory.createTitledBorder("Profits and Financial Reports"));
+
+        JTextArea profitsReport = new JTextArea(10, 40);
+        profitsReport.setEditable(false);
+        profitsReport.setText(generateFinancialReport()); // Replace with actual data
+        JScrollPane profitsScrollPane = new JScrollPane(profitsReport);
+        profitsPanel.add(profitsScrollPane, BorderLayout.CENTER);
+
+        contentPanel.add(profitsPanel);
+
+        // Best-Selling Products Section
+        JPanel bestSellingPanel = new JPanel(new BorderLayout());
+        bestSellingPanel.setBorder(BorderFactory.createTitledBorder("Best-Selling Products by Store"));
+
+        JTextArea bestSellingReport = new JTextArea(10, 40);
+        bestSellingReport.setEditable(false);
+        bestSellingReport.setText(getBestSellingProductsReport()); // Replace with actual data
+        JScrollPane bestSellingScrollPane = new JScrollPane(bestSellingReport);
+        bestSellingPanel.add(bestSellingScrollPane, BorderLayout.CENTER);
+
+        contentPanel.add(bestSellingPanel);
+
+        // User Statistics by City Section
+        JPanel userStatsPanel = new JPanel(new BorderLayout());
+        userStatsPanel.setBorder(BorderFactory.createTitledBorder("User Statistics by City"));
+
+        JTextArea userStatsReport = new JTextArea(10, 40);
+        userStatsReport.setEditable(false);
+        userStatsReport.setText(getUserStatisticsByCity()); // Replace with actual data
+        JScrollPane userStatsScrollPane = new JScrollPane(userStatsReport);
+        userStatsPanel.add(userStatsScrollPane, BorderLayout.CENTER);
+
+        contentPanel.add(userStatsPanel);
+
+        // Add the content panel to the main panel
+        panel.add(contentPanel, BorderLayout.CENTER);
+
         return panel;
     }
+
+    
+    
+    private String generateFinancialReport() {
+        double totalProfits = 0.0;
+        Map<String, Double> storeProfits = new HashMap<>();
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts.length < 3) continue;
+                
+                String productEntry = parts[0];
+                double price = Double.parseDouble(parts[2].replace("$", ""));
+                
+                String storeOwner = "Selen"; // Default if no owner specified
+                if (productEntry.contains(":")) {
+                    String[] ownerProduct = productEntry.split(":");
+                    storeOwner = ownerProduct[0].trim();
+                }
+                
+                totalProfits += price;
+                storeProfits.put(storeOwner, storeProfits.getOrDefault(storeOwner, 0.0) + price);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error generating financial report.";
+        }
+
+        StringBuilder report = new StringBuilder();
+        report.append("Total Profits: $").append(totalProfits).append("\n\n");
+        
+        for (Map.Entry<String, Double> entry : storeProfits.entrySet()) {
+            report.append("User: ").append(entry.getKey()).append(" - Profits: $").append(entry.getValue()).append("\n");
+        }
+        
+        return report.toString();
+    }
+
+    private String getBestSellingProductsReport() {
+        Map<String, Integer> productSales = new HashMap<>();
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts.length < 2) continue;
+                
+                String productEntry = parts[0];
+                String productName = productEntry.contains(":") ? productEntry.split(":")[1].trim() : productEntry.trim();
+                
+                productSales.put(productName, productSales.getOrDefault(productName, 0) + 1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error generating best-selling products report.";
+        }
+        
+        StringBuilder report = new StringBuilder();
+        productSales.entrySet().stream()
+            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())) // Sort by sales descending
+            .forEach(entry -> report.append("Product: ").append(entry.getKey())
+                    .append(" - Sales: ").append(entry.getValue()).append("\n"));
+        
+        return report.toString();
+    }
+
+    private String getUserStatisticsByCity() {
+        Map<String, String> userCityMap = new HashMap<>(); // Maps usernames to cities
+        Map<String, Integer> cityPurchaseStats = new HashMap<>(); // Maps cities to purchase counts
+        
+        // Load user-city mapping
+        try (BufferedReader userReader = new BufferedReader(new FileReader("users.txt"))) {
+            String line;
+            while ((line = userReader.readLine()) != null) {
+                String[] userParts = line.split(",");
+                if (userParts.length < 2) continue;
+
+                String username = userParts[0].trim();
+                String city = userParts[2].trim();
+                userCityMap.put(username, city);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error loading user data.";
+        }
+        
+        // Analyze purchases by city
+        try (BufferedReader purchaseReader = new BufferedReader(new FileReader("_Purchases.txt"))) {
+            String line;
+            while ((line = purchaseReader.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts.length < 3) continue;
+
+                String productEntry = parts[0];
+                String storeOwner = "Unknown"; // Default if no owner specified
+                if (productEntry.contains(":")) {
+                    String[] ownerProduct = productEntry.split(":");
+                    storeOwner = ownerProduct[0].trim();
+                }
+
+                String city = userCityMap.getOrDefault(storeOwner, "Unknown");
+                cityPurchaseStats.put(city, cityPurchaseStats.getOrDefault(city, 0) + 1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error generating user statistics by city.";
+        }
+        
+        StringBuilder report = new StringBuilder();
+        cityPurchaseStats.forEach((city, count) -> 
+            report.append("City: ").append(city).append(" - Purchases: ").append(count).append("\n")
+        );
+        
+        return report.toString();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private JPanel createContentManagementPanel() {
         JPanel panel = new JPanel();
@@ -501,7 +684,7 @@ public class MyApplication {
     
     
     
-    ///////////////////monday 12/8/202444444444444444444444444444444444444444
+    ///////////////////monday 12/8/202444444444444444444444444444444444444444///////////////////
     private JPanel createSalesProfitsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -552,8 +735,10 @@ public class MyApplication {
                 if (discountPercentage < 0 || discountPercentage > 100) {
                     JOptionPane.showMessageDialog(panel, "Please enter a valid discount percentage (0-100).");
                 } else {
-                    // Apply discount logic here (e.g., update prices)
+                    applyDiscount(discountPercentage);
                     JOptionPane.showMessageDialog(panel, "Discount of " + discountPercentage + "% applied successfully.");
+                    // Update sales and profits after discount
+                    updateSalesAndProfits(totalSalesValue, totalProfitsValue);
                 }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(panel, "Please enter a valid number.");
@@ -565,10 +750,116 @@ public class MyApplication {
         panel.add(bestSellingPanel, BorderLayout.CENTER);
         panel.add(discountPanel, BorderLayout.SOUTH);
 
+        // Initial calculation of sales, profits, and best-selling products
+        updateSalesAndProfits(totalSalesValue, totalProfitsValue);
+        updateBestSellingProducts(bestSellingListModel);
+
         return panel;
     }
 
-    
+    private void updateSalesAndProfits(JLabel totalSalesValue, JLabel totalProfitsValue) {
+        double totalSales = 0.0;
+        double totalProfits = 0.0;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts.length >= 3) {
+                    String priceStr = parts[2].replace("$", "");
+                    double price = Double.parseDouble(priceStr);
+
+                    // Assuming cost price is available; if not, use a default profit margin.
+                    double costPrice = price * 0.7; // Example: 70% of selling price is cost
+                    totalSales += price;
+                    totalProfits += (price - costPrice);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        totalSalesValue.setText(String.format("$%.2f", totalSales));
+        totalProfitsValue.setText(String.format("$%.2f", totalProfits));
+    }
+
+    private void updateBestSellingProducts(DefaultListModel<String> bestSellingListModel) {
+        Map<String, Integer> productSalesCount = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts.length >= 3) {
+                    String productName = parts[0];
+                    productSalesCount.put(productName, productSalesCount.getOrDefault(productName, 0) + 1);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Sort products by sales count
+        List<Map.Entry<String, Integer>> sortedProducts = new ArrayList<>(productSalesCount.entrySet());
+        sortedProducts.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+
+        bestSellingListModel.clear();
+        for (Map.Entry<String, Integer> entry : sortedProducts) {
+            bestSellingListModel.addElement(entry.getKey() + " - " + entry.getValue() + " sales");
+        }
+    }
+
+    private void applyDiscount(double discountPercentage) {
+        List<String> discountedProducts = new ArrayList<>();
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"));
+             BufferedWriter writer = new BufferedWriter(new FileWriter("_Purchases_tmp.txt"))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" - ");
+                if (parts.length >= 3) {
+                    String productName = parts[0];
+                    String description = parts[1];
+                    double price = Double.parseDouble(parts[2].replace("$", ""));
+
+                    double discountedPrice = price * (1 - discountPercentage / 100);
+                    String discountedProductLine = productName + " - " + description + " - $" + String.format("%.2f", discountedPrice);
+                    discountedProducts.add(discountedProductLine);
+                    
+                    writer.write(discountedProductLine + "\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Replace the original file with the updated file
+        new File("_Purchases.txt").delete();
+        new File("_Purchases_tmp.txt").renameTo(new File("_Purchases.txt"));
+
+        // Show the discounted products in a new frame
+        showDiscountedProductsFrame(discountedProducts);
+    }
+
+    private void showDiscountedProductsFrame(List<String> discountedProducts) {
+        JFrame frame = new JFrame("Discounted Products");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400, 300);
+        
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (String product : discountedProducts) {
+            model.addElement(product);
+        }
+        
+        JList<String> productList = new JList<>(model);
+        JScrollPane scrollPane = new JScrollPane(productList);
+
+        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////
     
     
     
@@ -602,12 +893,6 @@ public class MyApplication {
     
     ///////////////////////////////end Store Owner
     
-  
-
-///    private void showSupplierDashboard() {
-   //     // Implement Supplier Dashboard display
-     //   System.out.println("Showing Supplier Dashboard");
-    //}
 //////////USER USER  USER USER USER USER
     private void showBeneficiaryUserDashboard() {
         // Implementation specific to the Beneficiary User Dashboard
@@ -720,8 +1005,15 @@ public class MyApplication {
     private String getCurrentUsername() {
         // Implement logic to retrieve the currently logged-in username
         // Placeholder implementation:
-        return "nuha"; // Replace with actual logic
+        return currentUser; // Replace with actual logic
     }
+    
+    
+    
+    
+    
+    
+    
     private String loadUserPosts(String username) {
         StringBuilder posts = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(DESSERT_CREATIONS_FILE))) {
