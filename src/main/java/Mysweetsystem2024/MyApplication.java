@@ -305,7 +305,7 @@ public class MyApplication {
             }
 
             User newUser = new User(name, password, email, country, role);
-            System.out.println("New User: " + newUser.getUsername() + ", " + newUser.getPassword() + ", " + newUser.getCountry() + ", " + newUser.getEmail() + ", " + newUser.getRole().name());
+            System.out.println("New User: " + newUser.getUsername() + ", " + newUser.getPassword() + ", " + newUser.getEmail() + ", " + newUser.getCountry() + ", " + newUser.getRole().name());
 
             users.put(name, newUser);
             saveUsers(); // Save users to file
@@ -425,7 +425,7 @@ public class MyApplication {
                 String productEntry = parts[0];
                 double price = Double.parseDouble(parts[2].replace("$", ""));
                 
-                String storeOwner = "Selen"; // Default if no owner specified
+                String storeOwner = "Selen"; // Default if no owner specified///fix it shahd
                 if (productEntry.contains(":")) {
                     String[] ownerProduct = productEntry.split(":");
                     storeOwner = ownerProduct[0].trim();
@@ -478,65 +478,199 @@ public class MyApplication {
     }
 
     private String getUserStatisticsByCity() {
-        Map<String, String> userCityMap = new HashMap<>(); // Maps usernames to cities
-        Map<String, Integer> cityPurchaseStats = new HashMap<>(); // Maps cities to purchase counts
-        
-        // Load user-city mapping
+        Map<String, Integer> cityUserStats = new HashMap<>(); // Maps cities to user counts
+
+        // Load user-city mapping and count REGULAR_USERs per city
         try (BufferedReader userReader = new BufferedReader(new FileReader("users.txt"))) {
             String line;
             while ((line = userReader.readLine()) != null) {
                 String[] userParts = line.split(",");
-                if (userParts.length < 2) continue;
+                if (userParts.length < 5) continue; // Ensure there's enough data
 
-                String username = userParts[0].trim();
                 String city = userParts[2].trim();
-                userCityMap.put(username, city);
+                String role = userParts[4].trim();
+
+                // Count only REGULAR_USERs
+                if (role.equals("REGULAR_USER")) {
+                    cityUserStats.put(city, cityUserStats.getOrDefault(city, 0) + 1);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
             return "Error loading user data.";
         }
-        
-        // Analyze purchases by city
-        try (BufferedReader purchaseReader = new BufferedReader(new FileReader("_Purchases.txt"))) {
-            String line;
-            while ((line = purchaseReader.readLine()) != null) {
-                String[] parts = line.split(" - ");
-                if (parts.length < 3) continue;
 
-                String productEntry = parts[0];
-                String storeOwner = "Unknown"; // Default if no owner specified
-                if (productEntry.contains(":")) {
-                    String[] ownerProduct = productEntry.split(":");
-                    storeOwner = ownerProduct[0].trim();
-                }
-
-                String city = userCityMap.getOrDefault(storeOwner, "Unknown");
-                cityPurchaseStats.put(city, cityPurchaseStats.getOrDefault(city, 0) + 1);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error generating user statistics by city.";
-        }
-        
+        // Generate report
         StringBuilder report = new StringBuilder();
-        cityPurchaseStats.forEach((city, count) -> 
-            report.append("City: ").append(city).append(" - Purchases: ").append(count).append("\n")
+        cityUserStats.forEach((city, count) -> 
+            report.append("City: ").append(city).append(" - REGULAR_USERs: ").append(count).append("\n")
         );
-        
+
         return report.toString();
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     private JPanel createContentManagementPanel() {
         JPanel panel = new JPanel();
-        // Add components for managing content and feedback
+        panel.setLayout(new GridLayout(3, 1, 10, 10));
+
+        JButton managePostsButton = new JButton("Manage Posts");
+        JButton manageFeedbackButton = new JButton("Manage Feedback");
+        JButton backButton = new JButton("Back");
+
+        managePostsButton.addActionListener(e -> showManagePostsFrame());
+        manageFeedbackButton.addActionListener(e -> showManageFeedbackFrame());
+        backButton.addActionListener(e -> {
+            // Implement logic to go back to the previous panel
+            // For example, switch back to the admin dashboard
+            showAdminDashboard(); // Replace with the actual method to show the admin dashboard
+        });
+
+        panel.add(managePostsButton);
+        panel.add(manageFeedbackButton);
+        panel.add(backButton);
+
         return panel;
     }
     
     
+    private void showManagePostsFrame() {
+        JFrame postsFrame = new JFrame("Manage Posts");
+        postsFrame.setSize(800, 400);  // زيادة عرض الإطار لاستيعاب الأزرار
+        postsFrame.setLocationRelativeTo(null); // Center the frame
+        postsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        DefaultListModel<JPanel> postListModel = new DefaultListModel<>();
+        JList<JPanel> postList = new JList<>(postListModel);
+        postList.setCellRenderer(new ListCellRenderer<JPanel>() {
+            @Override
+            public Component getListCellRendererComponent(JList<? extends JPanel> list, JPanel value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                return value;
+            }
+        });
+
+        JScrollPane scrollPane = new JScrollPane(postList);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("dessert_creations.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Assuming the format is "username|path/to/image.jpg|description"
+                String[] parts = line.split("\\|", 3);
+                if (parts.length == 3) {
+                    String username = parts[0].trim();
+                    String imagePath = parts[1].trim();
+                    String description = parts[2].trim();
+                    
+                    ImageIcon imageIcon = new ImageIcon(imagePath);
+                    if (imageIcon.getIconWidth() == -1) {
+                        System.out.println("Failed to load image: " + imagePath);
+                        continue; // Skip if the image can't be loaded
+                    }
+
+                    // Create a JPanel to hold the image, description, and buttons
+                    JPanel postPanel = new JPanel(new BorderLayout());
+
+                    JLabel imageLabel = new JLabel("<html><b>" + username + ":</b> " + description + "</html>", imageIcon, JLabel.LEFT);
+                    postPanel.add(imageLabel, BorderLayout.CENTER);
+
+                    // Create the buttons panel
+                    JPanel buttonPanel = new JPanel();
+                    JButton editButton = new JButton("Edit");
+                    JButton deleteButton = new JButton("Delete");
+
+                    // Action listener for the delete button
+                    deleteButton.addActionListener(e -> {
+                        postListModel.removeElement(postPanel); // Remove from the list
+                        deletePostFromFile(username, imagePath, description); // Custom method to delete the post from the file
+                    });
+
+                    // Action listener for the edit button
+                    editButton.addActionListener(e -> {
+                        editPost(username, imagePath, description); // Custom method to edit the post
+                    });
+
+                    buttonPanel.add(editButton);
+                    buttonPanel.add(deleteButton);
+
+                    postPanel.add(buttonPanel, BorderLayout.EAST);
+                    postListModel.addElement(postPanel);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(postsFrame, "Error loading posts.");
+        }
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> postsFrame.dispose());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(backButton, BorderLayout.SOUTH);
+
+        postsFrame.add(panel);
+        postsFrame.setVisible(true);
+    }
+
+    // Method to delete the post from the file
+    private void deletePostFromFile(String username, String imagePath, String description) {
+        // Implement logic to remove the line from the file 'dessert_creations.txt'
+        // You may read all lines, remove the specific line, then write back the remaining lines.
+    }
+
+    // Method to edit the post
+    private void editPost(String username, String imagePath, String description) {
+        // Implement logic to allow the user to edit the post details
+        // For example, open a dialog with fields pre-filled with the current post details, then save the changes.
+    }
+
+
+    private void showManageFeedbackFrame() {
+        JFrame feedbackFrame = new JFrame("Manage Feedback");
+        feedbackFrame.setSize(600, 400);
+        feedbackFrame.setLocationRelativeTo(null); // Center the frame
+        feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        DefaultListModel<String> feedbackListModel = new DefaultListModel<>();
+        JList<String> feedbackList = new JList<>(feedbackListModel);
+        JScrollPane scrollPane = new JScrollPane(feedbackList);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                feedbackListModel.addElement(line); // Assuming feedback file contains lines with "username: feedback"
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(feedbackFrame, "Error loading feedback.");
+        }
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> feedbackFrame.dispose());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(backButton, BorderLayout.SOUTH);
+
+        feedbackFrame.add(panel);
+        feedbackFrame.setVisible(true);
+    }
+///////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    
+    
+
     
     
     
