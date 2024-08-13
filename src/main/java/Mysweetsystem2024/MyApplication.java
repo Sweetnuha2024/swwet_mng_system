@@ -688,6 +688,11 @@ public class MyApplication {
 
             while ((line = reader.readLine()) != null) {
           
+            	
+  ///////new ewkmklk
+            	
+            	
+            	
                 if (line.trim().equals(oldPost.trim())) {
                     writer.write(newPost + System.getProperty("line.separator"));
                 } else {
