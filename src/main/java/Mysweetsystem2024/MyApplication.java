@@ -3,6 +3,7 @@ package Mysweetsystem2024;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -297,8 +298,10 @@ public class MyApplication {
             String roleString = roleField.getText();
 
             System.out.println("Name: " + name);
-            System.out.println("City: " + country);
             System.out.println("Email: " + email);
+            System.out.println("City: " + country);
+            
+          
             System.out.println("Role: " + roleString);
 
             
@@ -333,8 +336,9 @@ public class MyApplication {
         updateButton.addActionListener(e -> {
             String name = updateNameField.getText();
             String newPassword = new String(updatePasswordField.getPassword()); 
-            String newCountry = updateCountryField.getText();
+         
             String newEmail = updateEmailField.getText();
+            String newCountry = updateCountryField.getText();
             String newRoleString = updateRoleField.getText();
 
           
@@ -490,7 +494,7 @@ public class MyApplication {
                 String[] userParts = line.split(",");
                 if (userParts.length < 5) continue; 
 
-                String city = userParts[2].trim();
+                String city = userParts[3].trim();
                 String role = userParts[4].trim();
 
                 
@@ -728,24 +732,10 @@ public class MyApplication {
         JList<String> feedbackList = new JList<>(feedbackListModel);
         JScrollPane scrollPane = new JScrollPane(feedbackList);
 
-        // Load feedback from file and populate the list
-        List<String> feedbackLines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("feedback.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                feedbackLines.add(line);
-                String[] parts = line.split("\\|");
-                if (parts.length == 3) {
-                    String username = parts[0].trim();
-                    String productName = parts[1].trim();
-                    String feedback = parts[2].trim();
-                    feedbackListModel.addElement("User: " + username + " | Product/Post: " + productName + " | Feedback: " + feedback);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(feedbackFrame, "Error loading feedback.");
-        }
+        // Load feedback from feedback.txt
+        loadFeedbackFromFile(feedbackListModel, "feedback.txt", false);
+        // Load feedback from postsfeedback.txt
+        loadFeedbackFromFile(feedbackListModel, "postsfeedback.txt", true);
 
         // Button to delete selected feedback
         JButton deleteButton = new JButton("Delete Feedback");
@@ -759,21 +749,9 @@ public class MyApplication {
                         // Remove from list model
                         feedbackListModel.remove(selectedIndex);
 
-                        // Remove from file
-                        try (BufferedWriter writer = new BufferedWriter(new FileWriter("feedback.txt"))) {
-                            for (int i = 0; i < feedbackListModel.getSize(); i++) {
-                                String item = feedbackListModel.getElementAt(i);
-                                String[] parts = item.split("\\|");
-                                String username = parts[0].replace("User: ", "").trim();
-                                String productName = parts[1].replace("Product/Post: ", "").trim();
-                                String feedback = parts[2].replace("Feedback: ", "").trim();
-                                writer.write(username + "|" + productName + "|" + feedback);
-                                writer.newLine();
-                            }
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                            JOptionPane.showMessageDialog(feedbackFrame, "Error updating feedback file.");
-                        }
+                        // Remove from files
+                        saveFeedbackToFile(feedbackListModel, "feedback.txt", false);
+                        saveFeedbackToFile(feedbackListModel, "postsfeedback.txt", true);
                     }
                 } else {
                     JOptionPane.showMessageDialog(feedbackFrame, "No feedback selected.");
@@ -799,6 +777,81 @@ public class MyApplication {
         feedbackFrame.setVisible(true);
     }
 
+    private void loadFeedbackFromFile(DefaultListModel<String> feedbackListModel, String fileName, boolean isPostFeedback) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (isPostFeedback) {
+                    // Process post feedback lines
+                    String[] parts = line.split(" gave feedback on post by ");
+                    if (parts.length == 2) {
+                        String username = parts[0].trim();
+                        String[] feedbackParts = parts[1].split(" - \"");
+                        if (feedbackParts.length == 2) {
+                            String postDescription = feedbackParts[0].trim();
+                            String feedback = feedbackParts[1].replace("\"", "").trim();
+                            feedbackListModel.addElement("User: " + username + " | Post: " + postDescription + " | Feedback: " + feedback);
+                        }
+                    }
+                } else {
+                    // Process product feedback lines
+                    String[] parts = line.split("\\|");
+                    if (parts.length == 3) {
+                        String username = parts[0].trim();
+                        String productName = parts[1].trim();
+                        String feedback = parts[2].trim();
+                        feedbackListModel.addElement("User: " + username + " | Product: " + productName + " | Feedback: " + feedback);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading feedback from " + fileName + ".");
+        }
+    }
+
+    private void saveFeedbackToFile(DefaultListModel<String> feedbackListModel, String fileName, boolean isPostFeedback) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (int i = 0; i < feedbackListModel.getSize(); i++) {
+                String item = feedbackListModel.getElementAt(i);
+                String[] parts = item.split("\\|");
+                if (isPostFeedback) {
+                    // Save post feedback format
+                    String username = parts[0].replace("User: ", "").trim();
+                    String postDescription = parts[1].replace("Post: ", "").trim();
+                    String feedback = parts[2].replace("Feedback: ", "").trim();
+                    writer.write(username + " gave feedback on post by " + postDescription + " - \"" + feedback + "\"");
+                } else {
+                    // Save product feedback format
+                    String username = parts[0].replace("User: ", "").trim();
+                    String productName = parts[1].replace("Product: ", "").trim();
+                    String feedback = parts[2].replace("Feedback: ", "").trim();
+                    writer.write(username + "|" + productName + "|" + feedback);
+                }
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error updating feedback file " + fileName + ".");
+        }
+    }
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -868,13 +921,13 @@ public class MyApplication {
     
     
     
-    private JPanel createCommunicationNotificationPanel() {
-        JPanel panel = new JPanel();
+    private JPanel createCommunicationNotificationPanel() {//not
+        JPanel panel = new JPanel();//not
       
-        return panel;
+        return panel;//not
     }
 
-    private JPanel createOrderManagementPanel() {
+    private JPanel createOrderManagementPanel() {//not
         JPanel panel = new JPanel();
        
         return panel;
@@ -1799,14 +1852,14 @@ public class MyApplication {
     
     /////////////////////////////////////////////////////////////////////////////////
     
-
+//////wednesday
     private void showFeedbackFrameForPosts() {
         JFrame feedbackFrame = new JFrame("Provide Feedback on Shared Posts");
-        feedbackFrame.setSize(500, 400);
+        feedbackFrame.setSize(600, 800);
         feedbackFrame.setLocationRelativeTo(null);
         feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        List<String> sharedPosts = loadSharedPosts();
+        List<Post> sharedPosts = loadSharedPosts();
 
         if (sharedPosts.isEmpty()) {
             JOptionPane.showMessageDialog(feedbackFrame, "No shared posts found.");
@@ -1814,44 +1867,72 @@ public class MyApplication {
             return;
         }
 
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JComboBox<String> postComboBox = new JComboBox<>(sharedPosts.toArray(new String[0]));
-        JTextArea feedbackArea = new JTextArea(5, 20);
-        feedbackArea.setWrapStyleWord(true);
-        feedbackArea.setLineWrap(true);
-        JScrollPane scrollPane = new JScrollPane(feedbackArea);
-        JButton submitFeedbackButton = new JButton("Submit Feedback");
+        for (Post post : sharedPosts) {
+            JPanel singlePostPanel = new JPanel(new BorderLayout());
+            JLabel postLabel = new JLabel(post.getUsername() + ": " + post.getDescription());
 
-        submitFeedbackButton.addActionListener(e -> {
-            String selectedPost = (String) postComboBox.getSelectedItem();
-            String feedback = feedbackArea.getText().trim();
-            if (!feedback.isEmpty()) {
-            	 saveFeedbackToFile(currentUser, selectedPost, feedback);
-                JOptionPane.showMessageDialog(feedbackFrame, "Thank you for your feedback!");
-                feedbackFrame.dispose();
-            } else {
-                JOptionPane.showMessageDialog(feedbackFrame, "Feedback cannot be empty.");
-            }
-        });
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon(post.getImage()).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+            JLabel imageLabel = new JLabel(imageIcon);
 
-        panel.add(new JLabel("Select a post:"), BorderLayout.NORTH);
-        panel.add(postComboBox, BorderLayout.CENTER);
-        panel.add(scrollPane, BorderLayout.SOUTH);
-        panel.add(submitFeedbackButton, BorderLayout.PAGE_END);
+            // Text area for feedback
+            JTextArea feedbackArea = new JTextArea(3, 20);
+            feedbackArea.setWrapStyleWord(true);
+            feedbackArea.setLineWrap(true);
+            JScrollPane feedbackScrollPane = new JScrollPane(feedbackArea);
+            feedbackScrollPane.setPreferredSize(new Dimension(550, 50));
 
-        feedbackFrame.add(panel);
+            // Save feedback button
+            JButton saveFeedbackButton = new JButton("Save Feedback");
+
+            saveFeedbackButton.addActionListener(e -> {
+                String feedback = feedbackArea.getText().trim();
+                if (!feedback.isEmpty()) {
+                    saveFeedbackpostToFile(currentUser, post.getDescription(), feedback);
+                    JOptionPane.showMessageDialog(feedbackFrame, "Thank you for your feedback on " + post.getUsername() + "'s post!");
+                    feedbackArea.setText(""); // Clear the text area after saving
+                } else {
+                    JOptionPane.showMessageDialog(feedbackFrame, "Feedback cannot be empty.");
+                }
+            });
+
+            // Adding components to single post panel
+            singlePostPanel.add(imageLabel, BorderLayout.WEST);
+            singlePostPanel.add(postLabel, BorderLayout.CENTER);
+            singlePostPanel.add(feedbackScrollPane, BorderLayout.SOUTH);
+            singlePostPanel.add(saveFeedbackButton, BorderLayout.EAST);
+
+            panel.add(singlePostPanel);
+            panel.add(Box.createVerticalStrut(10)); // Add some space between posts
+        }
+
+        JScrollPane panelScrollPane = new JScrollPane(panel);
+        panelScrollPane.setPreferredSize(new Dimension(580, 750));
+
+        feedbackFrame.add(panelScrollPane);
         feedbackFrame.setVisible(true);
     }
-    
-    private List<String> loadSharedPosts() {
-        List<String> sharedPosts = new ArrayList<>();
+
+
+
+
+    private List<Post> loadSharedPosts() {
+        List<Post> sharedPosts = new ArrayList<>();
         String filePath = "dessert_creations.txt"; // File where shared posts data is stored
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                sharedPosts.add(line); // Each line represents a shared post
+                // Assuming the line format is "username|imagePath|postText"
+                String[] parts = line.split("\\|");
+                if (parts.length == 3) {
+                    String username = parts[0].trim();
+                    String imagePath = parts[1].trim();
+                    String postText = parts[2].trim();
+                    sharedPosts.add(new Post(username, imagePath, postText));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -1860,6 +1941,23 @@ public class MyApplication {
 
         return sharedPosts;
     }
+
+    private void saveFeedbackpostToFile(String feedbackGiver, String originalPostText, String feedbackContent) {
+        try (FileWriter writer = new FileWriter("postsfeedback.txt", true)) {
+            String[] postDetails = originalPostText.split(":", 2);
+            String feedbackReceiver = postDetails[0]; // Get the original post's author
+
+            // Format: feedbackGiver: gave feedback on post by feedbackReceiver - "feedbackContent"
+            String feedbackEntry = String.format("%s: gave feedback on post by %s - \"%s\"%n", feedbackGiver, feedbackReceiver, feedbackContent);
+
+            writer.write(feedbackEntry);
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "An error occurred while saving feedback.");
+        }
+    }
+
+
     
     ///////
     //////end feedback

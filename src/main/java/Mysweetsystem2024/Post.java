@@ -6,19 +6,30 @@ public class Post {
 	 private String description;
 	    private String image;
 	    private String status; 
-
+	    private String username;
 	    
-	    public Post(String description, String image, String status) {
-	        this.description = description;
-	        this.image = image;
-	        this.status = status;
+	   // public Post(String description, String image, String status) {
+	     //   this.description = description;
+	       // this.image = image;
+	        //this.status = status;
+	    //}
+	    public Post(String username, String imagePath, String text) {
+	        this.username = username;
+	        this.image = imagePath;
+	        this.description = text;
+	    }
+	    public Post(String imagePath, String text) {
+	        this.image = imagePath;
+	        this.description = text;
 	    }
 
 	    public String getDescription() {
 	        return description;
 	    }
 
-	   
+	    public String getUsername() {
+	        return username;
+	    }
 	    public void setDescription(String description) {
 	        this.description = description;
 	    }
