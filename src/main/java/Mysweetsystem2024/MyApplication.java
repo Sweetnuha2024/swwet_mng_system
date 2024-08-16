@@ -61,45 +61,101 @@ public class MyApplication {
         saveUsers();
     }
 /////////////////////////////////////log in///////////////////////////////////////////////////////////////////
-    
+ 
     private void showLoginFrame() {
         JFrame loginFrame = new JFrame("Login");
-        loginFrame.setSize(600, 500);
-        loginFrame.setLayout(new GridLayout(5, 2)); 
+        loginFrame.setSize(400, 350); // زيادة الحجم لاستيعاب العبارة الترحيبية
+        loginFrame.setLayout(new BorderLayout());
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loginFrame.setLocationRelativeTo(null); 
+        loginFrame.setLocationRelativeTo(null); // 
 
-        JLabel userLabel = new JLabel("Username:");
-        JTextField userText = new JTextField();
-        JLabel passwordLabel = new JLabel("Password:");
-        JPasswordField passwordText = new JPasswordField();
-        
+        // 
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setBackground(new Color(208, 185, 101));
+        JLabel welcomeLabel = new JLabel("Welcome!Sweet management system");
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        welcomeLabel.setForeground(new Color(60, 63, 65));
+        welcomePanel.add(welcomeLabel);
+
+        // 
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        formPanel.setBackground(new Color(208, 185, 101));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // 
+        JLabel userLabel = new JLabel("Username");
+        userLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        userLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(userLabel, gbc);
+
+        gbc.gridx = 1;
+        JTextField userText = new JTextField(15);
+        formPanel.add(userText, gbc);
+
+        // 
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        passwordLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        JPasswordField passwordText = new JPasswordField(15);
+        formPanel.add(passwordText, gbc);
+
+       
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         JLabel roleLabel = new JLabel("Role:");
+        roleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        roleLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(roleLabel, gbc);
+
+        gbc.gridx = 1;
         String[] roles = {"REGULAR_USER", "ADMIN", "STORE_OWNER", "SUPPLIER"};
-        JComboBox<String> roleComboBox = new JComboBox<>(roles); 
+        JComboBox<String> roleComboBox = new JComboBox<>(roles);
+        formPanel.add(roleComboBox, gbc);
+
+        // 
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(new Color(208, 185, 101));
 
         JButton loginButton = new JButton("Log In");
+        loginButton.setPreferredSize(new Dimension(100, 30));
+        loginButton.setBackground(new Color(60, 63, 65));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonPanel.add(loginButton);
+
         JButton signUpButton = new JButton("Sign Up");
+        signUpButton.setPreferredSize(new Dimension(100, 30));
+        signUpButton.setBackground(new Color(60, 63, 65));
+        signUpButton.setForeground(Color.WHITE);
+        signUpButton.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonPanel.add(signUpButton);
 
         
-        loginFrame.add(userLabel);
-        loginFrame.add(userText);
-        loginFrame.add(passwordLabel);
-        loginFrame.add(passwordText);
-        loginFrame.add(roleLabel);
-        loginFrame.add(roleComboBox); 
-        loginFrame.add(loginButton);
-        loginFrame.add(signUpButton);
+        loginFrame.add(welcomePanel, BorderLayout.NORTH);
+        loginFrame.add(formPanel, BorderLayout.CENTER);
+        loginFrame.add(buttonPanel, BorderLayout.SOUTH);
 
+        // Action listeners remain unchanged
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = userText.getText();
                 String password = new String(passwordText.getPassword());
-                String selectedRole = (String) roleComboBox.getSelectedItem(); // Get the selected role
+                String selectedRole = (String) roleComboBox.getSelectedItem();
 
                 if (loginManager.login(username, password)) {
-                	 currentUser= username; 
+                    currentUser = username;
                     loginFrame.dispose();
                     User user = users.get(username);
                     if (user != null && user.getRole().toString().equals(selectedRole)) {
@@ -112,9 +168,11 @@ public class MyApplication {
                                 break;
                             case STORE_OWNER:
                                 showStoreOwnerDashboard();
+                                showReceivedMessages(currentUser); 
                                 break;
                             case SUPPLIER:
-                            	 showStoreOwnerDashboard ();
+                                openSupplierDashboard();
+                                showmessagesSupplierDashboard();
                                 break;
                         }
                     } else {
@@ -136,49 +194,214 @@ public class MyApplication {
         loginFrame.setVisible(true);
     }
 
+
+ /////////////////////nuha 
+    
+    
+    
+    
+    
+    private void openSupplierDashboard() {
+        // Create and display the SupplierDashboard
+        SwingUtilities.invokeLater(() -> new SupplierDashboard());
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private void showmessagesSupplierDashboard() {
+        JFrame supplierDashboardFrame = new JFrame("Supplier Dashboard");
+        supplierDashboardFrame.setSize(800, 600);
+        supplierDashboardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        supplierDashboardFrame.setLocationRelativeTo(null);
+
+        // Main panel
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Title label
+        JLabel titleLabel = new JLabel("Supplier Dashboard", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
+        // Button panel
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+        
+        // Button to view messages
+        JButton viewMessagesButton = new JButton("View Messages");
+        viewMessagesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showReceivedMessages(currentUser); // currentUser holds the logged-in supplier's username
+            }
+        });
+
+        // Add more buttons here for other supplier functionalities
+        // ...
+
+        buttonPanel.add(viewMessagesButton);
+        // Add other buttons to the panel as needed
+
+        mainPanel.add(buttonPanel, BorderLayout.CENTER);
+
+        // Close button
+        JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> supplierDashboardFrame.dispose());
+        closePanel.add(closeButton);
+        mainPanel.add(closePanel, BorderLayout.SOUTH);
+
+        supplierDashboardFrame.add(mainPanel);
+        supplierDashboardFrame.setVisible(true);
+    }
+
 //sign up up up up up up up up up up up 
     private void showSignUpFrame() {
         JFrame signUpFrame = new JFrame("Sign Up");
-        signUpFrame.setSize(400, 300);
-        signUpFrame.setLayout(new GridLayout(6, 2));
+        signUpFrame.setSize(600, 500); // Increased size to accommodate the new design
+        signUpFrame.setLayout(new BorderLayout());
         signUpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         signUpFrame.setLocationRelativeTo(null); // Center the frame
 
+        // Panel for the welcome message
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setBackground(new Color(208, 185, 101));
+        JLabel welcomeLabel = new JLabel("Create a New Account in Sweet Management System");
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        welcomeLabel.setForeground(new Color(60, 63, 65));
+        welcomePanel.add(welcomeLabel);
+
+        // Panel for the form
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        formPanel.setBackground(new Color(208, 185, 101));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Username field
         JLabel nameLabel = new JLabel("Username:");
-        JTextField nameText = new JTextField();
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        nameLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(nameLabel, gbc);
+
+        gbc.gridx = 1;
+        JTextField nameText = new JTextField(15);
+        formPanel.add(nameText, gbc);
+
+        // Password field
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         JLabel passwordLabel = new JLabel("Password:");
-        JPasswordField passwordText = new JPasswordField();
+        passwordLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        passwordLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        JPasswordField passwordText = new JPasswordField(15);
+        formPanel.add(passwordText, gbc);
+
+        // Email field
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         JLabel emailLabel = new JLabel("Email:");
-        JTextField emailText = new JTextField();
+        emailLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        emailLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(emailLabel, gbc);
+
+        gbc.gridx = 1;
+        JTextField emailText = new JTextField(15);
+        formPanel.add(emailText, gbc);
+
+        // City field
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         JLabel countryLabel = new JLabel("City:");
-        JTextField countryText = new JTextField();
+        countryLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        countryLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(countryLabel, gbc);
+
+        gbc.gridx = 1;
+        JTextField countryText = new JTextField(15);
+        formPanel.add(countryText, gbc);
+
+        // Role dropdown
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         JLabel roleLabel = new JLabel("Role:");
+        roleLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        roleLabel.setForeground(new Color(60, 63, 65));
+        formPanel.add(roleLabel, gbc);
+
+        gbc.gridx = 1;
         JComboBox<UserRole> roleComboBox = new JComboBox<>(UserRole.values());
+        formPanel.add(roleComboBox, gbc);
+
+        // Panel for the buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        buttonPanel.setBackground(new Color(208, 185, 101));
+
         JButton signUpButton = new JButton("Sign Up");
+        signUpButton.setPreferredSize(new Dimension(120, 30));
+        signUpButton.setBackground(new Color(60, 63, 65));
+        signUpButton.setForeground(Color.WHITE);
+        signUpButton.setFont(new Font("Arial", Font.BOLD, 14));
+        buttonPanel.add(signUpButton);
 
-        signUpFrame.add(nameLabel);
-        signUpFrame.add(nameText);
-        signUpFrame.add(passwordLabel);
-        signUpFrame.add(passwordText);
-        signUpFrame.add(emailLabel);
-        signUpFrame.add(emailText);
-        signUpFrame.add(countryLabel);
-        signUpFrame.add(countryText);
-        signUpFrame.add(roleLabel);
-        signUpFrame.add(roleComboBox);
-        signUpFrame.add(signUpButton);
+        // Adding panels to the frame
+        signUpFrame.add(welcomePanel, BorderLayout.NORTH);
+        signUpFrame.add(formPanel, BorderLayout.CENTER);
+        signUpFrame.add(buttonPanel, BorderLayout.SOUTH);
 
+        // Action listeners remain unchanged
         signUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String username = nameText.getText();
                 String password = new String(passwordText.getPassword());
                 String email = emailText.getText();
-                String City = countryText.getText();
+                String city = countryText.getText();
                 UserRole role = (UserRole) roleComboBox.getSelectedItem();
 
                 if (!userExists(username)) {
-                    signUpUser(username, password, email, City, role);
+                    signUpUser(username, password, email, city, role);
                     JOptionPane.showMessageDialog(signUpFrame, "Account created successfully.");
                     signUpFrame.dispose();
                 } else {
@@ -189,6 +412,7 @@ public class MyApplication {
 
         signUpFrame.setVisible(true);
     }
+
 //Admin Admin Admin  Admin
     private void showAdminDashboard() {
         JFrame frame = new JFrame("Admin Dashboard");
@@ -735,6 +959,7 @@ public class MyApplication {
         // Load feedback from feedback.txt
         loadFeedbackFromFile(feedbackListModel, "feedback.txt", false);
         // Load feedback from postsfeedback.txt
+        System.out.println("____________________________________________________________________--");
         loadFeedbackFromFile(feedbackListModel, "postsfeedback.txt", true);
 
         // Button to delete selected feedback
@@ -1806,12 +2031,28 @@ public class MyApplication {
 
         // Create the communication button
         JButton communicationButton = new JButton("Communication");
-        communicationButton.addActionListener(e -> showCommunicationOptions());
+        communicationButton.addActionListener(e -> {
+            try {
+                showCommunicationOptions();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(panel, "Error opening communication options: " + ex.getMessage(), 
+                                              "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        });
 
         // Create the feedback button
         JButton feedbackButton = new JButton("Feedback");
-        feedbackButton.addActionListener(e -> showFeedbackOptionsFrame());//here i wanna to update somthing 
-        
+        feedbackButton.addActionListener(e -> {
+            try {
+                showFeedbackOptionsFrame();
+                // Additional logic you want to update or add
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(panel, "Error opening feedback options: " + ex.getMessage(), 
+                                              "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        });
 
         // Add buttons to the panel
         panel.add(communicationButton);
@@ -1819,6 +2060,7 @@ public class MyApplication {
 
         return panel;
     }
+
 
     
     private void showFeedbackOptionsFrame() {
@@ -1979,29 +2221,262 @@ public class MyApplication {
     
     
     
-    
-    
-    // Method to show communication options
+ // Method to show communication options
+
     private void showCommunicationOptions() {
+    	String currentUserName = currentUser; 
         JFrame communicationFrame = new JFrame("Communication Options");
-        communicationFrame.setSize(400, 200);
+        communicationFrame.setSize(600, 400);
         communicationFrame.setLocationRelativeTo(null);
         communicationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+        // Main panel with BorderLayout
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // North panel with a title
+        JLabel titleLabel = new JLabel("Choose an Option to Communicate", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
+        // Load users from the file and filter based on roles
+        List<String> storeOwners = new ArrayList<>();
+        List<String> suppliers = new ArrayList<>();
+        loadUsers(storeOwners, suppliers);
+
+        // Center panel with communication buttons and lists
+        JPanel centerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+
+        // Scrollable lists for owners and suppliers
+        JList<String> ownersList = new JList<>(storeOwners.toArray(new String[0]));
+        ownersList.setBorder(BorderFactory.createTitledBorder("Store Owners"));
+        JScrollPane ownersScrollPane = new JScrollPane(ownersList);
+
+        JList<String> suppliersList = new JList<>(suppliers.toArray(new String[0]));
+        suppliersList.setBorder(BorderFactory.createTitledBorder("Suppliers"));
+        JScrollPane suppliersScrollPane = new JScrollPane(suppliersList);
+
+        // Text area for writing the message
+        JTextArea messageArea = new JTextArea(5, 20);
+        messageArea.setBorder(BorderFactory.createTitledBorder("Write your message here"));
+        messageArea.setWrapStyleWord(true);
+        messageArea.setLineWrap(true);
+
+        // Panel for text area and buttons
+        JPanel southPanel = new JPanel(new BorderLayout(10, 10));
+        southPanel.add(new JScrollPane(messageArea), BorderLayout.CENTER);
 
         JButton communicateWithOwnerButton = new JButton("Communicate with Store Owner");
-        communicateWithOwnerButton.addActionListener(e -> communicateWithOwner());
+        communicateWithOwnerButton.addActionListener(e -> communicateWithSelectedUser(ownersList, messageArea, currentUserName));
 
         JButton communicateWithSupplierButton = new JButton("Communicate with Supplier");
-        communicateWithSupplierButton.addActionListener(e -> communicateWithSupplier());
+        communicateWithSupplierButton.addActionListener(e -> communicateWithSelectedUser(suppliersList, messageArea, currentUserName));
 
-        panel.add(communicateWithOwnerButton);
-        panel.add(communicateWithSupplierButton);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(communicateWithOwnerButton);
+        buttonPanel.add(communicateWithSupplierButton);
 
-        communicationFrame.add(panel);
+        // Add components to the south panel
+        southPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Add lists and south panel to the main panel
+        centerPanel.add(ownersScrollPane);
+        centerPanel.add(suppliersScrollPane);
+
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
+
+        // South panel with a close button
+        JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> communicationFrame.dispose());
+        closePanel.add(closeButton);
+        mainPanel.add(closePanel, BorderLayout.NORTH);
+
+        communicationFrame.add(mainPanel);
         communicationFrame.setVisible(true);
     }
+
+
+    
+    private void communicateWithSelectedUser(JList<String> userList, JTextArea messageArea, String sender) {
+        String selectedUser = userList.getSelectedValue();
+        String message = messageArea.getText();
+
+        if (selectedUser != null && !message.isEmpty()) {
+            saveMessageToFile(selectedUser, sender, message);
+            messageArea.setText("");
+            JOptionPane.showMessageDialog(null, "Message sent to " + selectedUser + ":\n" + message);
+        } else if (selectedUser == null) {
+            JOptionPane.showMessageDialog(null, "Please select a user to communicate with.");
+        } else if (message.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please write a message before sending.");
+        }
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    // Method to handle communication with the selected user
+   /* private void communicateWithSelectedUser(JList<String> userList, JTextArea messageArea) {
+        String selectedUser = userList.getSelectedValue();
+        String message = messageArea.getText();
+        
+        if (selectedUser != null && !message.isEmpty()) {
+            // Simulate sending the message to the selected user
+            JOptionPane.showMessageDialog(null, "Message sent to " + selectedUser + ":\n" + message);
+            
+            // Clear the message area after sending
+            messageArea.setText("");
+            
+            // Implement actual message sending logic here, e.g., saving the message to a file
+            saveMessageToFile(selectedUser, message);
+        } else if (selectedUser == null) {
+            JOptionPane.showMessageDialog(null, "Please select a user to communicate with.");
+        } else if (message.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please write a message before sending.");
+        }
+    }
+*/
+    // Placeholder method to save the message to a file
+  /*  private void saveMessageToFile(String recipient, String message) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(recipient + "_messages.txt", true))) {
+            writer.write("Message to " + recipient + ": " + message);
+            writer.newLine();
+            JOptionPane.showMessageDialog(null, "Message saved to " + recipient + "_messages.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error saving message to file.");
+        }
+    }*/
+    //friday
+    private void saveMessageToFile(String recipient, String sender, String message) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(recipient + "_messages.txt", true))) {
+            writer.write("From: " + sender + " - Message: " + message);
+            writer.newLine();
+            JOptionPane.showMessageDialog(null, "Message saved to " + recipient + "_messages.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error saving message to file.");
+        }
+    }
+//friday
+    private void showReceivedMessages(String recipient) {
+        JFrame messagesFrame = new JFrame("Received Messages");
+        messagesFrame.setSize(500, 300);
+        messagesFrame.setLocationRelativeTo(null);
+        messagesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JTextArea messagesArea = new JTextArea();
+        messagesArea.setEditable(false);
+        messagesArea.setBorder(BorderFactory.createTitledBorder("Messages for " + recipient));
+
+        // Load messages from the file
+        try (BufferedReader reader = new BufferedReader(new FileReader(recipient + "_messages.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                messagesArea.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading messages.");
+        }
+
+        JScrollPane scrollPane = new JScrollPane(messagesArea);
+        messagesFrame.add(scrollPane);
+        messagesFrame.setVisible(true);
+    }
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+// Method to load users from the file and filter them into store owners and suppliers
+private void loadUsers(List<String> storeOwners, List<String> suppliers) {
+    try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] userDetails = line.split(",");
+            
+            // Ensure that the array has at least 5 elements before accessing them
+            if (userDetails.length >= 5) {
+                String username = userDetails[0];
+                String role = userDetails[4].trim();
+
+                if ("STORE_OWNER".equals(role)) {
+                    storeOwners.add(username);
+                } else if ("SUPPLIER".equals(role)) {
+                    suppliers.add(username);
+                }
+            } else {
+                System.out.println("Skipping improperly formatted line: " + line);
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error loading users from file.");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Placeholder method to handle communication with the selected user
+private void communicateWithSelectedUser(JList<String> userList) {
+    String selectedUser = userList.getSelectedValue();
+    if (selectedUser != null) {
+        JOptionPane.showMessageDialog(null, "Communicating with " + selectedUser + " feature coming soon.");
+    } else {
+        JOptionPane.showMessageDialog(null, "Please select a user to communicate with.");
+    }
+}
+
 
     // Placeholder methods for communication actions
     private void communicateWithOwner() {
@@ -2178,6 +2653,7 @@ public class MyApplication {
         SwingUtilities.invokeLater(() -> new MyApplication());
        
     }
+    
 }
 
 

@@ -1,5 +1,6 @@
 merna,199,Nablus,merno@gmail.com,REGULAR_USER
 Selen,77,Jenin,seleno@gmail.com,STORE_OWNER
+jamal,78,jamal@gmail.com,Nablus,SUPPLIER
 yousr,88,Ramallah,yousr@gmail.com,STORE_OWNER
 tasneem,196196,Nablus,tasneem@gmail.com,REGULAR_USER
 doaa,888,Nablus,doaa@gmail.com,SUPPLIER
@@ -9,6 +10,7 @@ Yasmine,880,Nablus,Yasmine@gmail.com,REGULAR_USER
 Seren,0000,Jerusalem,seren@gamil.com,STORE_OWNER
 shahd,12,Nablus,shahd@gmail.com,ADMIN
 Hamod,121212,Nablus,hamod@gmail.com,SUPPLIER
+ahmad,44,Nablus,ahmad@gmail.com,STORE_OWNER
 Hassan,33,Nablus,Hassan@gmail.com,STORE_OWNER
 maya,90,Nablus,maya@gmail.com,STORE_OWNER
 yara,220,Nablus,yara@gmail.com,REGULAR_USER
@@ -19,4 +21,3 @@ yousef,112233,Nablus,yousef@gmail.com,STORE_OWNER
 safaa,444444,Ramallah,safa@gmail.com,STORE_OWNER
 nuhha,1234,Jenin,nuuha@gmail.com,REGULAR_USER
 hala,333333,Nablus,hala@gmail.com,STORE_OWNER
-nonexistent,password123,Palestine,defaultEmail@example.com,REGULAR_USER

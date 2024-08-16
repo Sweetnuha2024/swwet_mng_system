@@ -1,3 +1,0 @@
-hala|strawberry|40.0|ff|
-hala|food|40.0|ff|
-hala|ddoo|333.0|ddd|
