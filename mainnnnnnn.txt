@@ -11,8 +11,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -66,14 +64,14 @@ public class MyApplication {
  
     private void showLoginFrame() {
         JFrame loginFrame = new JFrame("Login");
-        loginFrame.setSize(400, 350); 
+        loginFrame.setSize(400, 350); // زيادة الحجم لاستيعاب العبارة الترحيبية
         loginFrame.setLayout(new BorderLayout());
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setLocationRelativeTo(null); // 
 
         // 
         JPanel welcomePanel = new JPanel();
-        welcomePanel.setBackground(new Color  (173, 216, 230));
+        welcomePanel.setBackground(new Color(208, 185, 101));
         JLabel welcomeLabel = new JLabel("Welcome!Sweet management system");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         welcomeLabel.setForeground(new Color(60, 63, 65));
@@ -82,7 +80,7 @@ public class MyApplication {
         // 
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        formPanel.setBackground(new Color (173, 216, 230));
+        formPanel.setBackground(new Color(208, 185, 101));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -127,7 +125,7 @@ public class MyApplication {
 
         // 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonPanel.setBackground(new Color (173, 216, 230));
+        buttonPanel.setBackground(new Color(208, 185, 101));
 
         JButton loginButton = new JButton("Log In");
         loginButton.setPreferredSize(new Dimension(100, 30));
@@ -173,8 +171,8 @@ public class MyApplication {
                                 showReceivedMessages(currentUser); 
                                 break;
                             case SUPPLIER:
-                            	showSupplierDashboard();
-                                
+                                openSupplierDashboard();
+                                showmessagesSupplierDashboard();
                                 break;
                         }
                     } else {
@@ -203,8 +201,93 @@ public class MyApplication {
     
     
     
-    
+    private void openSupplierDashboard() {
+        // Create and display the SupplierDashboard
+        SwingUtilities.invokeLater(() -> new SupplierDashboard());
+    }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private void showmessagesSupplierDashboard() {
+        JFrame supplierDashboardFrame = new JFrame("Supplier Dashboard");
+        supplierDashboardFrame.setSize(800, 600);
+        supplierDashboardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        supplierDashboardFrame.setLocationRelativeTo(null);
+
+        // Main panel
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Title label
+        JLabel titleLabel = new JLabel("Supplier Dashboard", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
+        // Button panel
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 10, 10));
+        
+        // Button to view messages
+        JButton viewMessagesButton = new JButton("View Messages");
+        viewMessagesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showReceivedMessages(currentUser); // currentUser holds the logged-in supplier's username
+            }
+        });
+
+        // Add more buttons here for other supplier functionalities
+        // ...
+
+        buttonPanel.add(viewMessagesButton);
+        // Add other buttons to the panel as needed
+
+        mainPanel.add(buttonPanel, BorderLayout.CENTER);
+
+        // Close button
+        JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> supplierDashboardFrame.dispose());
+        closePanel.add(closeButton);
+        mainPanel.add(closePanel, BorderLayout.SOUTH);
+
+        supplierDashboardFrame.add(mainPanel);
+        supplierDashboardFrame.setVisible(true);
+    }
 
 //sign up up up up up up up up up up up 
     private void showSignUpFrame() {
@@ -216,7 +299,7 @@ public class MyApplication {
 
         // Panel for the welcome message
         JPanel welcomePanel = new JPanel();
-        welcomePanel.setBackground(new Color (173, 216, 230));
+        welcomePanel.setBackground(new Color(208, 185, 101));
         JLabel welcomeLabel = new JLabel("Create a New Account in Sweet Management System");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         welcomeLabel.setForeground(new Color(60, 63, 65));
@@ -225,7 +308,7 @@ public class MyApplication {
         // Panel for the form
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        formPanel.setBackground(new Color (173, 216, 230));
+        formPanel.setBackground(new Color(208, 185, 101));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -293,7 +376,7 @@ public class MyApplication {
 
         // Panel for the buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonPanel.setBackground(new Color (173, 216, 230));
+        buttonPanel.setBackground(new Color(208, 185, 101));
 
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.setPreferredSize(new Dimension(120, 30));
@@ -344,132 +427,10 @@ public class MyApplication {
         frame.add(tabbedPane);
         frame.setVisible(true);
     }
-    ////352
-    
-    private void showSupplierDashboard() {
-        JFrame frame = new JFrame("Supplier Dashboard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Inbox", createInboxPanel());
-        tabbedPane.addTab("Compose messages", createComposeMessagesPanel());
-        tabbedPane.addTab("Sent messages", createSentMessagesPanel());
-
-        frame.add(tabbedPane);
-        frame.setVisible(true);
-    }
-    
-    
-    private JPanel createInboxPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextArea inboxArea = new JTextArea();
-        inboxArea.setEditable(false);
-
-        // Load received messages from the file
-        try (BufferedReader reader = new BufferedReader(new FileReader(currentUser + "_messages.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                inboxArea.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error loading inbox messages.");
-        }
-
-        JScrollPane scrollPane = new JScrollPane(inboxArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        return panel;
-    }
     
     
     
     
-    
-    private JPanel createComposeMessagesPanel() {
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
-        
-        // Recipient field
-        JPanel recipientPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        recipientPanel.add(new JLabel("To:"));
-        JTextField recipientField = new JTextField(20);
-        recipientPanel.add(recipientField);
-        panel.add(recipientPanel, BorderLayout.NORTH);
-        
-        // Message area
-        JTextArea messageArea = new JTextArea(10, 30);
-        JScrollPane scrollPane = new JScrollPane(messageArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
-        
-        // Send button
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton sendButton = new JButton("Send");
-        sendButton.addActionListener(e -> {
-            String recipient = recipientField.getText();
-            String message = messageArea.getText();
-            sendMessage(recipient, message);
-        });
-        buttonPanel.add(sendButton);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
-        return panel;
-    }
-
-    // Method to send the message
-    private void sendMessage(String recipient, String message) {
-        // Save the message to the recipient's file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(recipient + "_messages.txt", true))) {
-            writer.write("From: " + currentUser + " - Message: " + message);
-            writer.newLine();
-            JOptionPane.showMessageDialog(null, "Message sent.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error sending message.");
-        }
-
-        // Save the message to the sender's sent messages file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(currentUser + "_sent_messages.txt", true))) {
-            writer.write("To: " + recipient + " - Message: " + message);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error saving sent message.");
-        }
-    }
-    
-    
-    
-    
-    private JPanel createSentMessagesPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextArea sentMessagesArea = new JTextArea();
-        sentMessagesArea.setEditable(false);
-
-        // Load sent messages from the file
-        try (BufferedReader reader = new BufferedReader(new FileReader(currentUser + "_sent_messages.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sentMessagesArea.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error loading sent messages.");
-        }
-
-        JScrollPane scrollPane = new JScrollPane(sentMessagesArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        return panel;
-    }
-
-    
-    
-    
-    
-
-
-    //////
     
     
     
@@ -652,7 +613,7 @@ public class MyApplication {
         contentPanel.add(profitsPanel);
 
         JPanel bestSellingPanel = new JPanel(new BorderLayout());
-        bestSellingPanel.setBorder(BorderFactory.createTitledBorder("Best-Selling Products "));
+        bestSellingPanel.setBorder(BorderFactory.createTitledBorder("Best-Selling Products by Store"));
 
         JTextArea bestSellingReport = new JTextArea(10, 40);
         bestSellingReport.setEditable(false);
@@ -757,7 +718,7 @@ public class MyApplication {
                 String[] userParts = line.split(",");
                 if (userParts.length < 5) continue; 
 
-                String city = userParts[2].trim();
+                String city = userParts[3].trim();
                 String role = userParts[4].trim();
 
                 
@@ -781,7 +742,7 @@ public class MyApplication {
 
 
 
-    /////////////////////////////////////shahd//////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     private JPanel createContentManagementPanel() {
@@ -1120,7 +1081,33 @@ public class MyApplication {
     
     
     /////14/8/2024
-  
+    private void writeFeedback(String username, String productName) {
+        JFrame feedbackFrame = new JFrame("Write Feedback");
+        feedbackFrame.setSize(400, 300);
+        feedbackFrame.setLocationRelativeTo(null);
+        feedbackFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        JTextArea feedbackArea = new JTextArea(10, 30);
+        JButton submitButton = new JButton("Submit Feedback");
+
+        submitButton.addActionListener(e -> {
+            String feedback = feedbackArea.getText().trim();
+            if (!feedback.isEmpty()) {
+                saveFeedbackToFile(username, productName, feedback);
+                JOptionPane.showMessageDialog(feedbackFrame, "Thank you for your feedback!");
+                feedbackFrame.dispose();
+            } else {
+                JOptionPane.showMessageDialog(feedbackFrame, "Feedback cannot be empty.");
+            }
+        });
+
+        panel.add(new JScrollPane(feedbackArea), BorderLayout.CENTER);
+        panel.add(submitButton, BorderLayout.SOUTH);
+
+        feedbackFrame.add(panel);
+        feedbackFrame.setVisible(true);
+    }
 
   
     
@@ -1149,7 +1136,7 @@ public class MyApplication {
         tabbedPane.addTab("Product Management", createProductManagementPanel());
         tabbedPane.addTab("Sales & Profits", createSalesProfitsPanel());
         tabbedPane.addTab("Communication & Notifications", createCommunicationNotificationPanel());
-        tabbedPane.addTab("Account Management", createAccountManagementOwnerPanel());
+        tabbedPane.addTab("Account Management", createAccountManagementPanel());
         tabbedPane.addTab("Order Management", createOrderManagementPanel());
 
         frame.add(tabbedPane);
@@ -1157,271 +1144,20 @@ public class MyApplication {
     }
     
     
-    // Replace this with your actual logic to get the current user.
-
-        public JPanel createCommunicationNotificationPanel() {
-            JPanel panel = new JPanel();
-            return panel;
-        }
-/////////owner 5
-   
-        
-        
-        
-        public JPanel  createAccountManagementOwnerPanel () {
-            JPanel panel = new JPanel();
-            return panel;
-        }
-       
-        
-        
-        
-        
-        public JPanel createOrderManagementPanel() {
-            JPanel panel = new JPanel();
-            panel.setLayout(new BorderLayout());
-
-            // Title Label
-            JLabel titleLabel = new JLabel("Order Management", JLabel.CENTER);
-            titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
-            panel.add(titleLabel, BorderLayout.NORTH);
-
-            // Table to display orders
-            String[] columnNames = {"Order ID", "Product Name", "Quantity", "Customer", "Status", "Store Owner"};
-            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-            JTable orderTable = new JTable(model);
-            JScrollPane scrollPane = new JScrollPane(orderTable);
-            panel.add(scrollPane, BorderLayout.CENTER);
-            loadOrdersFromFile(model);
-
-            // Panel for form inputs
-            JPanel formPanel = new JPanel();
-            formPanel.setLayout(new GridLayout(0, 2, 5, 5));
-
-            // Form fields
-            JTextField orderIdField = new JTextField();
-            JTextField productNameField = new JTextField();
-            JTextField quantityField = new JTextField();
-            JTextField customerField = new JTextField();
-
-            formPanel.add(new JLabel("Order ID:"));
-            formPanel.add(orderIdField);
-            formPanel.add(new JLabel("Product Name:"));
-            formPanel.add(productNameField);
-            formPanel.add(new JLabel("Quantity:"));
-            formPanel.add(quantityField);
-            formPanel.add(new JLabel("Customer:"));
-            formPanel.add(customerField);
-
-            panel.add(formPanel, BorderLayout.NORTH);
-
-            // Panel for buttons
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-            JButton addButton = new JButton("Add Order");
-            JButton startProcessingButton = new JButton("Start Processing");
-            JButton updateStatusButton = new JButton("Update Status");
-            JButton completeOrderButton = new JButton("Complete Order");
-            JButton deleteOrderButton = new JButton("Delete Order");
-
-            buttonPanel.add(addButton);
-            buttonPanel.add(startProcessingButton);
-            buttonPanel.add(updateStatusButton);
-            buttonPanel.add(completeOrderButton);
-            buttonPanel.add(deleteOrderButton);
-
-            panel.add(buttonPanel, BorderLayout.SOUTH);
-
-            // Action listener to add the order to the table and save it to a file
-            addButton.addActionListener(e -> {
-                String orderId = orderIdField.getText();
-                String productName = productNameField.getText();
-                String quantity = quantityField.getText();
-                String customer = customerField.getText();
-                String storeOwner = currentUser; // Use the current user as the store owner
-
-                // Create a new Order object
-                Order order = new Order(orderId, "New", productName, quantity, customer, storeOwner);
-                // Add the order to the table
-                model.addRow(new Object[]{order.getOrderId(), productName, quantity, customer, order.getStatus(), order.getStoreOwnerName()});
-
-                // Save the order to a file
-                saveOrderToFile(order);
-
-                // Clear the form fields
-                orderIdField.setText("");
-                productNameField.setText("");
-                quantityField.setText("");
-                customerField.setText("");
-            });
-
-            // Action listener to start processing an order
-            startProcessingButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    model.setValueAt("Processing", selectedRow, 4); // Update the status to "Processing"
-                    updateOrderStatusInFile(model, selectedRow, "Processing");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to start processing.");
-                }
-            });
-
-            // Action listener to update the status of an order
-            updateStatusButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    String newStatus = JOptionPane.showInputDialog(panel, "Enter new status:");
-                    if (newStatus != null && !newStatus.trim().isEmpty()) {
-                        model.setValueAt(newStatus, selectedRow, 4); // Update the status
-                        updateOrderStatusInFile(model, selectedRow, newStatus);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to update the status.");
-                }
-            });
-
-            // Action listener to complete an order
-            completeOrderButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    model.setValueAt("Completed", selectedRow, 4); // Update the status to "Completed"
-                    updateOrderStatusInFile(model, selectedRow, "Completed");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to complete.");
-                }
-            });
-
-            // Action listener to delete an order
-            deleteOrderButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    String orderId = (String) model.getValueAt(selectedRow, 0);
-                    String storeOwner = (String) model.getValueAt(selectedRow, 5);
-                    model.removeRow(selectedRow); // Remove the order from the table
-                    deleteOrderFromFile(orderId, storeOwner); // Delete the order from the file
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to delete.");
-                }
-            });
-
-            return panel;
-        }
-
-        private void saveOrderToFile(Order order) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt", true))) {
-                // Format: storeOwnerName:orderId|Product: productName, Quantity: quantity, Customer: customerName|status
-                String orderLine = String.format("%s:%s|Product: %s, Quantity: %s, Customer: %s|%s",
-                        order.getStoreOwnerName(), order.getOrderId(), order.getProductName(), order.getQuantity(), order.getCustomerName(), order.getStatus());
-
-                writer.write(orderLine);
-                writer.newLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void updateOrderStatusInFile(DefaultTableModel model, int row, String newStatus) {
-            String orderId = (String) model.getValueAt(row, 0);
-            String storeOwner = (String) model.getValueAt(row, 5);
-            String productName = (String) model.getValueAt(row, 1);
-            String quantity = (String) model.getValueAt(row, 2);
-            String customer = (String) model.getValueAt(row, 3);
-
-            List<String> updatedOrders = new ArrayList<>();
-
-            try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.startsWith(storeOwner + ":" + orderId)) {
-                        // Update the status
-                        String updatedLine = String.format("%s:%s|Product: %s, Quantity: %s, Customer: %s|%s",
-                                storeOwner, orderId, productName, quantity, customer, newStatus);
-                        updatedOrders.add(updatedLine);
-                    } else {
-                        updatedOrders.add(line);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt"))) {
-                for (String updatedOrder : updatedOrders) {
-                    writer.write(updatedOrder);
-                    writer.newLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void deleteOrderFromFile(String orderId, String storeOwner) {
-            List<String> remainingOrders = new ArrayList<>();
-
-            try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (!line.startsWith(storeOwner + ":" + orderId)) {
-                        remainingOrders.add(line); // Keep orders that do not match the deleted one
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt"))) {
-                for (String order : remainingOrders) {
-                    writer.write(order);
-                    writer.newLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-///////////////////////////////// tuesday
     
     
-    private void loadOrdersFromFile(DefaultTableModel model) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length == 3) {
-                    // Split the first part to extract store owner and order ID
-                    String[] storeOwnerAndOrderId = parts[0].split(":");
-                    String storeOwner = storeOwnerAndOrderId[0];
-                    String orderId = storeOwnerAndOrderId[1];
-
-                    // Split the details part to extract product name, quantity, and customer
-                    String details = parts[1];
-                    String productName = details.split(",")[0].split(":")[1].trim();
-                    String quantity = details.split(",")[1].split(":")[1].trim();
-                    String customer = details.split(",")[2].split(":")[1].trim();
-
-                    String status = parts[2];
-
-                    // Add to the table model
-                    model.addRow(new Object[]{orderId, productName, quantity, customer, status, storeOwner});
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private JPanel createCommunicationNotificationPanel() {//not
+        JPanel panel = new JPanel();//not
+      
+        return panel;//not
     }
 
-////end order management
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    
-    
-    
-    
-    
+    private JPanel createOrderManagementPanel() {//not
+        JPanel panel = new JPanel();
+       
+        return panel;
+    }
+
     
     
     
@@ -2742,6 +2478,15 @@ private void communicateWithSelectedUser(JList<String> userList) {
 }
 
 
+    // Placeholder methods for communication actions
+    private void communicateWithOwner() {
+        JOptionPane.showMessageDialog(null, "Communicate with Store Owner feature coming soon.");
+    }
+
+    private void communicateWithSupplier() {
+        JOptionPane.showMessageDialog(null, "Communicate with Supplier feature coming soon.");
+    }
+
     // Method to show the feedback frame
     private void showFeedbackFrame() {
         JFrame feedbackFrame = new JFrame("Provide Feedback");
@@ -2910,5 +2655,3 @@ private void communicateWithSelectedUser(JList<String> userList) {
     }
     
 }
-
-

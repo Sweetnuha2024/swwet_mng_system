@@ -28,3 +28,13 @@ nuhha: Cinamon Roll - nothing - $30.0
 tasneem: Teramissio - different flavour - $100.0
 tasneem: Creps - delicious - $15.0
 alma: Nut Cake - delicious - $30.0
+nuhha: Cupcake - hghghgh - $30.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
+merna: Apple cake - Vegan - $50.0
