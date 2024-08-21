@@ -1,14 +1,1 @@
-Choclate cake - nothing - $40.0
-strawberry cake - nothing - $70.0
-Cinamon Roll - nothing - $30.0
-Cupcake - hghghgh - $30.0
-Orange cake - hghghgh - $50.0
-Creps - delicious - $15.0
-Nut Cake - delicious - $30.0
-Apple cake - Vegan - $50.0
-Vanila cake - different flavour - $90.0
-Mango cake - different flavour - $60.0
-Teramissio - different flavour - $100.0
-Dubai choclate - new - $60.0
-Kunafah - newww - $5.0
-Banana cake - newww - $50.0
+maya| Product: Orange cake - Description: good - Price: $40.0

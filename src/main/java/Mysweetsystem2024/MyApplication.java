@@ -73,7 +73,7 @@ public class MyApplication {
 
         // 
         JPanel welcomePanel = new JPanel();
-        welcomePanel.setBackground(new Color  (173, 216, 230));
+        welcomePanel.setBackground(new Color(208, 185, 101));
         JLabel welcomeLabel = new JLabel("Welcome!Sweet management system");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         welcomeLabel.setForeground(new Color(60, 63, 65));
@@ -82,7 +82,7 @@ public class MyApplication {
         // 
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        formPanel.setBackground(new Color (173, 216, 230));
+        formPanel.setBackground(new Color(208, 185, 101));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -127,7 +127,7 @@ public class MyApplication {
 
         // 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonPanel.setBackground(new Color (173, 216, 230));
+        buttonPanel.setBackground(new Color(208, 185, 101));
 
         JButton loginButton = new JButton("Log In");
         loginButton.setPreferredSize(new Dimension(100, 30));
@@ -170,11 +170,11 @@ public class MyApplication {
                                 break;
                             case STORE_OWNER:
                                 showStoreOwnerDashboard();
-                                showReceivedMessages(currentUser); 
+                             
                                 break;
                             case SUPPLIER:
-                            	showSupplierDashboard();
-                                
+                                showSupplierDashboard();
+                         
                                 break;
                         }
                     } else {
@@ -202,10 +202,129 @@ public class MyApplication {
     
     
     
+    private void showSupplierDashboard() {
+        JFrame frame = new JFrame("Supplier Dashboard");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Inbox", createInboxPanel());
+        tabbedPane.addTab("Compose messages", createComposeMessagesPanel());
+        tabbedPane.addTab("Sent messages", createSentMessagesPanel());
+
+       
+        tabbedPane.setSelectedIndex(1); 
+
+        frame.add(tabbedPane);
+        frame.setVisible(true);
+    }
+
     
     
+    private JPanel createInboxPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JTextArea inboxArea = new JTextArea();
+        inboxArea.setEditable(false);
 
+       
+        try (BufferedReader reader = new BufferedReader(new FileReader(currentUser + "_messages.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                inboxArea.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        
+        }
 
+        JScrollPane scrollPane = new JScrollPane(inboxArea);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
+    }
+    
+    
+    
+    
+    
+    private JPanel createComposeMessagesPanel() {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        
+        
+        JPanel recipientPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        recipientPanel.add(new JLabel("To:"));
+        JTextField recipientField = new JTextField(20);
+        recipientPanel.add(recipientField);
+        panel.add(recipientPanel, BorderLayout.NORTH);
+        
+        
+        JTextArea messageArea = new JTextArea(10, 30);
+        JScrollPane scrollPane = new JScrollPane(messageArea);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        
+       
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton sendButton = new JButton("Send");
+        sendButton.addActionListener(e -> {
+            String recipient = recipientField.getText();
+            String message = messageArea.getText();
+            sendMessage(recipient, message);
+        });
+        buttonPanel.add(sendButton);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    
+    private void sendMessage(String recipient, String message) {
+       
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(recipient + "_messages.txt", true))) {
+            writer.write("From: " + currentUser + " - Message: " + message);
+            writer.newLine();
+            JOptionPane.showMessageDialog(null, "Message sent.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error sending message.");
+        }
+
+        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(currentUser + "_sent_messages.txt", true))) {
+            writer.write("To: " + recipient + " - Message: " + message);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error saving sent message.");
+        }
+    }
+    
+    
+    
+    
+    private JPanel createSentMessagesPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JTextArea sentMessagesArea = new JTextArea();
+        sentMessagesArea.setEditable(false);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(currentUser + "_sent_messages.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sentMessagesArea.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error loading sent messages.");
+        }
+
+        JScrollPane scrollPane = new JScrollPane(sentMessagesArea);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    
+    ////end supplier dashboard
+   
 //sign up up up up up up up up up up up 
     private void showSignUpFrame() {
         JFrame signUpFrame = new JFrame("Sign Up");
@@ -216,7 +335,7 @@ public class MyApplication {
 
         // Panel for the welcome message
         JPanel welcomePanel = new JPanel();
-        welcomePanel.setBackground(new Color (173, 216, 230));
+        welcomePanel.setBackground(new Color(208, 185, 101));
         JLabel welcomeLabel = new JLabel("Create a New Account in Sweet Management System");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 18));
         welcomeLabel.setForeground(new Color(60, 63, 65));
@@ -225,7 +344,7 @@ public class MyApplication {
         // Panel for the form
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        formPanel.setBackground(new Color (173, 216, 230));
+        formPanel.setBackground(new Color(208, 185, 101));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -293,7 +412,7 @@ public class MyApplication {
 
         // Panel for the buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        buttonPanel.setBackground(new Color (173, 216, 230));
+        buttonPanel.setBackground(new Color(208, 185, 101));
 
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.setPreferredSize(new Dimension(120, 30));
@@ -344,132 +463,10 @@ public class MyApplication {
         frame.add(tabbedPane);
         frame.setVisible(true);
     }
-    ////352
-    
-    private void showSupplierDashboard() {
-        JFrame frame = new JFrame("Supplier Dashboard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Inbox", createInboxPanel());
-        tabbedPane.addTab("Compose messages", createComposeMessagesPanel());
-        tabbedPane.addTab("Sent messages", createSentMessagesPanel());
-
-        frame.add(tabbedPane);
-        frame.setVisible(true);
-    }
-    
-    
-    private JPanel createInboxPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextArea inboxArea = new JTextArea();
-        inboxArea.setEditable(false);
-
-        // Load received messages from the file
-        try (BufferedReader reader = new BufferedReader(new FileReader(currentUser + "_messages.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                inboxArea.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error loading inbox messages.");
-        }
-
-        JScrollPane scrollPane = new JScrollPane(inboxArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        return panel;
-    }
     
     
     
     
-    
-    private JPanel createComposeMessagesPanel() {
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
-        
-        // Recipient field
-        JPanel recipientPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        recipientPanel.add(new JLabel("To:"));
-        JTextField recipientField = new JTextField(20);
-        recipientPanel.add(recipientField);
-        panel.add(recipientPanel, BorderLayout.NORTH);
-        
-        // Message area
-        JTextArea messageArea = new JTextArea(10, 30);
-        JScrollPane scrollPane = new JScrollPane(messageArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
-        
-        // Send button
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton sendButton = new JButton("Send");
-        sendButton.addActionListener(e -> {
-            String recipient = recipientField.getText();
-            String message = messageArea.getText();
-            sendMessage(recipient, message);
-        });
-        buttonPanel.add(sendButton);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
-        return panel;
-    }
-
-    // Method to send the message
-    private void sendMessage(String recipient, String message) {
-        // Save the message to the recipient's file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(recipient + "_messages.txt", true))) {
-            writer.write("From: " + currentUser + " - Message: " + message);
-            writer.newLine();
-            JOptionPane.showMessageDialog(null, "Message sent.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error sending message.");
-        }
-
-        // Save the message to the sender's sent messages file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(currentUser + "_sent_messages.txt", true))) {
-            writer.write("To: " + recipient + " - Message: " + message);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error saving sent message.");
-        }
-    }
-    
-    
-    
-    
-    private JPanel createSentMessagesPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextArea sentMessagesArea = new JTextArea();
-        sentMessagesArea.setEditable(false);
-
-        // Load sent messages from the file
-        try (BufferedReader reader = new BufferedReader(new FileReader(currentUser + "_sent_messages.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                sentMessagesArea.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error loading sent messages.");
-        }
-
-        JScrollPane scrollPane = new JScrollPane(sentMessagesArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
-
-        return panel;
-    }
-
-    
-    
-    
-    
-
-
-    //////
     
     
     
@@ -554,20 +551,18 @@ public class MyApplication {
 
     
         addButton.addActionListener(e -> {
-            String name = nameField.getText();
-            String password = new String(passwordField.getPassword()); 
-            String email = emailField.getText();
-            String country = countryField.getText();
-            String roleString = roleField.getText();
+            String name = nameField.getText().trim();
+            String password = new String(passwordField.getPassword()).trim();
+            String email = emailField.getText().trim();
+            String city = countryField.getText().trim(); // Consider renaming this field to cityField for clarity
+            String roleString = roleField.getText().trim();
 
-            System.out.println("Name: " + name);
-            System.out.println("Email: " + email);
-            System.out.println("City: " + country);
-            
-          
-            System.out.println("Role: " + roleString);
+            // Validate input fields
+            if (name.isEmpty() || password.isEmpty() || email.isEmpty() || city.isEmpty() || roleString.isEmpty()) {
+                JOptionPane.showMessageDialog(panel, "All fields must be filled out.");
+                return;
+            }
 
-            
             UserRole role;
             try {
                 role = UserRole.fromString(roleString);
@@ -576,13 +571,23 @@ public class MyApplication {
                 return;
             }
 
-            User newUser = new User(name, password, email, country, role);
+            // Create new user with the provided details
+            User newUser = new User(name, password, email, city, role);
             System.out.println("New User: " + newUser.getUsername() + ", " + newUser.getPassword() + ", " + newUser.getEmail() + ", " + newUser.getCountry() + ", " + newUser.getRole().name());
 
+            // Add the new user to the collection and save it to the file
             users.put(name, newUser);
             saveUsers(); // Save users to file
 
+            // Confirm success
             JOptionPane.showMessageDialog(panel, "User added successfully."); 
+
+            // Clear input fields after adding user
+            nameField.setText("");
+            passwordField.setText("");
+            emailField.setText("");
+            countryField.setText("");
+            roleField.setText("");
         });
 
         deleteButton.addActionListener(e -> {
@@ -637,7 +642,6 @@ public class MyApplication {
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
         panel.add(titleLabel, BorderLayout.NORTH);
 
-     
         JPanel contentPanel = new JPanel(new GridLayout(3, 1, 10, 10));
 
         JPanel profitsPanel = new JPanel(new BorderLayout());
@@ -645,107 +649,195 @@ public class MyApplication {
 
         JTextArea profitsReport = new JTextArea(10, 40);
         profitsReport.setEditable(false);
-        profitsReport.setText(generateFinancialReport()); 
         JScrollPane profitsScrollPane = new JScrollPane(profitsReport);
         profitsPanel.add(profitsScrollPane, BorderLayout.CENTER);
+
+        JButton refreshProfitsButton = new JButton("Refresh Profits");
+        refreshProfitsButton.addActionListener(e -> profitsReport.setText(generateFinancialReport()));
+        profitsPanel.add(refreshProfitsButton, BorderLayout.SOUTH);
 
         contentPanel.add(profitsPanel);
 
         JPanel bestSellingPanel = new JPanel(new BorderLayout());
-        bestSellingPanel.setBorder(BorderFactory.createTitledBorder("Best-Selling Products "));
+        bestSellingPanel.setBorder(BorderFactory.createTitledBorder("Best-Selling Products by Store"));
 
         JTextArea bestSellingReport = new JTextArea(10, 40);
         bestSellingReport.setEditable(false);
-        bestSellingReport.setText(getBestSellingProductsReport()); 
         JScrollPane bestSellingScrollPane = new JScrollPane(bestSellingReport);
         bestSellingPanel.add(bestSellingScrollPane, BorderLayout.CENTER);
 
+        JButton refreshBestSellingButton = new JButton("Refresh Best-Selling Products");
+        refreshBestSellingButton.addActionListener(e -> bestSellingReport.setText(getBestSellingProductsReport()));
+        bestSellingPanel.add(refreshBestSellingButton, BorderLayout.SOUTH);
+
         contentPanel.add(bestSellingPanel);
 
-       
         JPanel userStatsPanel = new JPanel(new BorderLayout());
         userStatsPanel.setBorder(BorderFactory.createTitledBorder("User Statistics by City"));
 
         JTextArea userStatsReport = new JTextArea(10, 40);
         userStatsReport.setEditable(false);
-        userStatsReport.setText(getUserStatisticsByCity()); 
         JScrollPane userStatsScrollPane = new JScrollPane(userStatsReport);
         userStatsPanel.add(userStatsScrollPane, BorderLayout.CENTER);
 
+        JButton refreshUserStatsButton = new JButton("Refresh User Statistics");
+        refreshUserStatsButton.addActionListener(e -> userStatsReport.setText(getUserStatisticsByCity()));
+        userStatsPanel.add(refreshUserStatsButton, BorderLayout.SOUTH);
+
         contentPanel.add(userStatsPanel);
 
-      
         panel.add(contentPanel, BorderLayout.CENTER);
 
         return panel;
     }
 
-    
-    
+
     private String generateFinancialReport() {
         double totalProfits = 0.0;
         Map<String, Double> storeProfits = new HashMap<>();
-        
+
         try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" - ");
-                if (parts.length < 3) continue;
+                // Split the line by '|'
+                String[] parts = line.split("\\|");
                 
-                String productEntry = parts[0];
-                double price = Double.parseDouble(parts[2].replace("$", ""));
-                
-                String storeOwner = "Selen"; 
-                if (productEntry.contains(":")) {
-                    String[] ownerProduct = productEntry.split(":");
-                    storeOwner = ownerProduct[0].trim();
+                if (parts.length < 2) continue; // Skip lines that do not have the correct format
+
+                // Extract store owner and product details
+                String storeOwner = parts[0].trim();
+                String productDetails = parts[1].trim();
+
+                // Find the Price section
+                String[] detailsParts = productDetails.split(" - ");
+                String priceStr = "";
+
+                for (String part : detailsParts) {
+                    if (part.trim().startsWith("Price:")) {
+                        priceStr = part.trim().replace("Price: $", "").trim();
+                        break;
+                    }
                 }
-                
-                totalProfits += price;
-                storeProfits.put(storeOwner, storeProfits.getOrDefault(storeOwner, 0.0) + price);
+
+                // Convert price to double
+                try {
+                    double price = Double.parseDouble(priceStr.replace(",", ""));
+                    
+                    // Accumulate total profits
+                    totalProfits += price;
+
+                    // Update store profits
+                    storeProfits.put(storeOwner, storeProfits.getOrDefault(storeOwner, 0.0) + price);
+                } catch (NumberFormatException e) {
+                    System.err.println("Skipping invalid price format: " + priceStr);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
             return "Error generating financial report.";
         }
 
+        // Build report
         StringBuilder report = new StringBuilder();
-        report.append("Total Profits: $").append(totalProfits).append("\n\n");
-        
+        report.append("Total Profits: $").append(String.format("%.2f", totalProfits)).append("\n\n");
+
         for (Map.Entry<String, Double> entry : storeProfits.entrySet()) {
-            report.append("User: ").append(entry.getKey()).append(" - Profits: $").append(entry.getValue()).append("\n");
+            report.append("Store Owner: ").append(entry.getKey()).append(" - Profits: $").append(String.format("%.2f", entry.getValue())).append("\n");
         }
-        
+
         return report.toString();
-    }
+    } 
 
     private String getBestSellingProductsReport() {
-        Map<String, Integer> productSales = new HashMap<>();
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"))) {
+        Map<String, Map<String, Integer>> salesData = loadSalesDataFromFile("_Purchases.txt"); // Replace with your actual file path
+
+        StringBuilder reportBuilder = new StringBuilder();
+
+        for (Map.Entry<String, Map<String, Integer>> storeEntry : salesData.entrySet()) {
+            String storeOwner = storeEntry.getKey();
+            Map<String, Integer> productSales = storeEntry.getValue();
+
+            // Identify the best-selling product(s)
+            String bestSellingProduct = null;
+            int maxSales = 0;
+            for (Map.Entry<String, Integer> productEntry : productSales.entrySet()) {
+                String productName = productEntry.getKey();
+                int salesCount = productEntry.getValue();
+
+                if (salesCount > maxSales) {
+                    maxSales = salesCount;
+                    bestSellingProduct = productName;
+                }
+            }
+
+            reportBuilder.append("Store Owner: ").append(storeOwner).append("\n");
+            if (bestSellingProduct != null) {
+                reportBuilder.append("Best-Selling Product: ").append(bestSellingProduct)
+                              .append(" (").append(maxSales).append(" sales)\n");
+            } else {
+                reportBuilder.append("No sales data available.\n");
+            }
+            reportBuilder.append("\n");
+        }
+
+        return reportBuilder.toString();
+    }
+
+    private Map<String, Map<String, Integer>> loadSalesDataFromFile(String fileName) {
+        Map<String, Map<String, Integer>> salesData = new HashMap<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(" - ");
-                if (parts.length < 2) continue;
-                
-                String productEntry = parts[0];
-                String productName = productEntry.contains(":") ? productEntry.split(":")[1].trim() : productEntry.trim();
-                
+                // Example line: ahmad | tasneem: Product: White chocolate pops - Description: every one can have a lice. - Price: $63.00
+                String[] parts = line.split("Product: ");
+                if (parts.length < 2) {
+                    // Log or print a warning, and skip this line as it's not in the expected format
+                    System.err.println("Skipping malformed line: " + line);
+                    continue;
+                }
+
+                String storeInfo = parts[0].trim();
+                String productInfo = parts[1].trim();
+
+                // Extract store owner and product name
+                String[] storeParts = storeInfo.split("\\|");
+                if (storeParts.length < 2) {
+                    // Log or print a warning, and skip this line as it's not in the expected format
+                    System.err.println("Skipping malformed store info: " + storeInfo);
+                    continue;
+                }
+                String storeOwner = storeParts[0].trim();
+                String productName = productInfo.split(" - ")[0].trim();
+
+                // Update sales data
+                salesData.putIfAbsent(storeOwner, new HashMap<>());
+                Map<String, Integer> productSales = salesData.get(storeOwner);
                 productSales.put(productName, productSales.getOrDefault(productName, 0) + 1);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error generating best-selling products report.";
         }
-        
-        StringBuilder report = new StringBuilder();
-        productSales.entrySet().stream()
-            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())) 
-            .forEach(entry -> report.append("Product: ").append(entry.getKey())
-                    .append(" - Sales: ").append(entry.getValue()).append("\n"));
-        
-        return report.toString();
+
+        return salesData;
     }
+
+ 
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
 
     private String getUserStatisticsByCity() {
         Map<String, Integer> cityUserStats = new HashMap<>(); 
@@ -757,12 +849,12 @@ public class MyApplication {
                 String[] userParts = line.split(",");
                 if (userParts.length < 5) continue; 
 
-                String city = userParts[2].trim();
+                String city = userParts[3].trim();
                 String role = userParts[4].trim();
 
                 
                 if (role.equals("REGULAR_USER")) {
-                    cityUserStats.put(city, cityUserStats.getOrDefault(city, 0) + 1);
+                    cityUserStats.put(city, cityUserStats.getOrDefault(city, 0) +1);
                 }
             }
         } catch (IOException e) {
@@ -781,7 +873,7 @@ public class MyApplication {
 
 
 
-    /////////////////////////////////////shahd//////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     private JPanel createContentManagementPanel() {
@@ -995,13 +1087,13 @@ public class MyApplication {
         JList<String> feedbackList = new JList<>(feedbackListModel);
         JScrollPane scrollPane = new JScrollPane(feedbackList);
 
-        // Load feedback from feedback.txt
+        
         loadFeedbackFromFile(feedbackListModel, "feedback.txt", false);
-        // Load feedback from postsfeedback.txt
+      
         System.out.println("____________________________________________________________________--");
         loadFeedbackFromFile(feedbackListModel, "postsfeedback.txt", true);
 
-        // Button to delete selected feedback
+       
         JButton deleteButton = new JButton("Delete Feedback");
         deleteButton.addActionListener(new ActionListener() {
             @Override
@@ -1010,10 +1102,10 @@ public class MyApplication {
                 if (selectedIndex != -1) {
                     int confirm = JOptionPane.showConfirmDialog(feedbackFrame, "Are you sure you want to delete this feedback?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        // Remove from list model
+                       
                         feedbackListModel.remove(selectedIndex);
 
-                        // Remove from files
+                      
                         saveFeedbackToFile(feedbackListModel, "feedback.txt", false);
                         saveFeedbackToFile(feedbackListModel, "postsfeedback.txt", true);
                     }
@@ -1058,7 +1150,7 @@ public class MyApplication {
                         }
                     }
                 } else {
-                    // Process product feedback lines
+                    
                     String[] parts = line.split("\\|");
                     if (parts.length == 3) {
                         String username = parts[0].trim();
@@ -1080,13 +1172,13 @@ public class MyApplication {
                 String item = feedbackListModel.getElementAt(i);
                 String[] parts = item.split("\\|");
                 if (isPostFeedback) {
-                    // Save post feedback format
+                    
                     String username = parts[0].replace("User: ", "").trim();
                     String postDescription = parts[1].replace("Post: ", "").trim();
                     String feedback = parts[2].replace("Feedback: ", "").trim();
                     writer.write(username + " gave feedback on post by " + postDescription + " - \"" + feedback + "\"");
                 } else {
-                    // Save product feedback format
+                  
                     String username = parts[0].replace("User: ", "").trim();
                     String productName = parts[1].replace("Product: ", "").trim();
                     String feedback = parts[2].replace("Feedback: ", "").trim();
@@ -1120,7 +1212,7 @@ public class MyApplication {
     
     
     /////14/8/2024
-  
+   
 
   
     
@@ -1146,392 +1238,580 @@ public class MyApplication {
         frame.setSize(800, 600);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Product Management", createProductManagementPanel());
+        tabbedPane.addTab("Product Management", createProductManagementPanel(currentUser));
         tabbedPane.addTab("Sales & Profits", createSalesProfitsPanel());
         tabbedPane.addTab("Communication & Notifications", createCommunicationNotificationPanel());
-        tabbedPane.addTab("Account Management", createAccountManagementOwnerPanel());
+        tabbedPane.addTab("Account Management",createOwnerAccountManagementPanel());
         tabbedPane.addTab("Order Management", createOrderManagementPanel());
 
         frame.add(tabbedPane);
         frame.setVisible(true);
     }
     
-    
-    // Replace this with your actual logic to get the current user.
+    private JPanel createCommunicationNotificationPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
-        public JPanel createCommunicationNotificationPanel() {
-            JPanel panel = new JPanel();
-            return panel;
-        }
-/////////owner 5
-   
-        
-        
-        
-        public JPanel  createAccountManagementOwnerPanel () {
-            JPanel panel = new JPanel();
-            return panel;
-        }
-       
-        
-        
-        
-        
-        public JPanel createOrderManagementPanel() {
-            JPanel panel = new JPanel();
-            panel.setLayout(new BorderLayout());
+        // Create a label for the title
+        JLabel titleLabel = new JLabel("Communication and Notification", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(titleLabel, BorderLayout.NORTH);
 
-            // Title Label
-            JLabel titleLabel = new JLabel("Order Management", JLabel.CENTER);
-            titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
-            panel.add(titleLabel, BorderLayout.NORTH);
+        // Create a panel for communication options
+        JPanel communicationPanel = new JPanel();
+        communicationPanel.setLayout(new GridLayout(3, 1, 10, 10));
 
-            // Table to display orders
-            String[] columnNames = {"Order ID", "Product Name", "Quantity", "Customer", "Status", "Store Owner"};
-            DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-            JTable orderTable = new JTable(model);
-            JScrollPane scrollPane = new JScrollPane(orderTable);
-            panel.add(scrollPane, BorderLayout.CENTER);
-            loadOrdersFromFile(model);
+        // Create buttons for sending messages and viewing received messages
+        JButton sendMessageButton = new JButton("Send Message");
+        JButton viewMessagesButton = new JButton("View Received Messages");
 
-            // Panel for form inputs
-            JPanel formPanel = new JPanel();
-            formPanel.setLayout(new GridLayout(0, 2, 5, 5));
+        communicationPanel.add(sendMessageButton);
+        communicationPanel.add(viewMessagesButton);
 
-            // Form fields
-            JTextField orderIdField = new JTextField();
-            JTextField productNameField = new JTextField();
-            JTextField quantityField = new JTextField();
-            JTextField customerField = new JTextField();
+        panel.add(communicationPanel, BorderLayout.CENTER);
 
-            formPanel.add(new JLabel("Order ID:"));
-            formPanel.add(orderIdField);
-            formPanel.add(new JLabel("Product Name:"));
-            formPanel.add(productNameField);
-            formPanel.add(new JLabel("Quantity:"));
-            formPanel.add(quantityField);
-            formPanel.add(new JLabel("Customer:"));
-            formPanel.add(customerField);
+        // Action Listener to send messages
+        sendMessageButton.addActionListener(e -> {
+            JTextField recipientField = new JTextField();
+            JTextArea messageArea = new JTextArea(5, 20);
 
-            panel.add(formPanel, BorderLayout.NORTH);
+            JPanel sendMessagePanel = new JPanel(new BorderLayout(5, 5));
+            sendMessagePanel.add(new JLabel("Recipient:"), BorderLayout.NORTH);
+            sendMessagePanel.add(recipientField, BorderLayout.CENTER);
+            sendMessagePanel.add(new JLabel("Message:"), BorderLayout.WEST);
+            sendMessagePanel.add(new JScrollPane(messageArea), BorderLayout.SOUTH);
 
-            // Panel for buttons
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+            int result = JOptionPane.showConfirmDialog(panel, sendMessagePanel, 
+                    "Send Message", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-            JButton addButton = new JButton("Add Order");
-            JButton startProcessingButton = new JButton("Start Processing");
-            JButton updateStatusButton = new JButton("Update Status");
-            JButton completeOrderButton = new JButton("Complete Order");
-            JButton deleteOrderButton = new JButton("Delete Order");
-
-            buttonPanel.add(addButton);
-            buttonPanel.add(startProcessingButton);
-            buttonPanel.add(updateStatusButton);
-            buttonPanel.add(completeOrderButton);
-            buttonPanel.add(deleteOrderButton);
-
-            panel.add(buttonPanel, BorderLayout.SOUTH);
-
-            // Action listener to add the order to the table and save it to a file
-            addButton.addActionListener(e -> {
-                String orderId = orderIdField.getText();
-                String productName = productNameField.getText();
-                String quantity = quantityField.getText();
-                String customer = customerField.getText();
-                String storeOwner = currentUser; // Use the current user as the store owner
-
-                // Create a new Order object
-                Order order = new Order(orderId, "New", productName, quantity, customer, storeOwner);
-                // Add the order to the table
-                model.addRow(new Object[]{order.getOrderId(), productName, quantity, customer, order.getStatus(), order.getStoreOwnerName()});
-
-                // Save the order to a file
-                saveOrderToFile(order);
-
-                // Clear the form fields
-                orderIdField.setText("");
-                productNameField.setText("");
-                quantityField.setText("");
-                customerField.setText("");
-            });
-
-            // Action listener to start processing an order
-            startProcessingButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    model.setValueAt("Processing", selectedRow, 4); // Update the status to "Processing"
-                    updateOrderStatusInFile(model, selectedRow, "Processing");
+            if (result == JOptionPane.OK_OPTION) {
+                String recipient = recipientField.getText().trim();
+                String message = messageArea.getText().trim();
+                if (!recipient.isEmpty() && !message.isEmpty()) {
+                    saveNotification(currentUser, recipient, message); // Store the message
+                    JOptionPane.showMessageDialog(panel, "Message sent to " + recipient + "!");
                 } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to start processing.");
-                }
-            });
-
-            // Action listener to update the status of an order
-            updateStatusButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    String newStatus = JOptionPane.showInputDialog(panel, "Enter new status:");
-                    if (newStatus != null && !newStatus.trim().isEmpty()) {
-                        model.setValueAt(newStatus, selectedRow, 4); // Update the status
-                        updateOrderStatusInFile(model, selectedRow, newStatus);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to update the status.");
-                }
-            });
-
-            // Action listener to complete an order
-            completeOrderButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    model.setValueAt("Completed", selectedRow, 4); // Update the status to "Completed"
-                    updateOrderStatusInFile(model, selectedRow, "Completed");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to complete.");
-                }
-            });
-
-            // Action listener to delete an order
-            deleteOrderButton.addActionListener(e -> {
-                int selectedRow = orderTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    String orderId = (String) model.getValueAt(selectedRow, 0);
-                    String storeOwner = (String) model.getValueAt(selectedRow, 5);
-                    model.removeRow(selectedRow); // Remove the order from the table
-                    deleteOrderFromFile(orderId, storeOwner); // Delete the order from the file
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select an order to delete.");
-                }
-            });
-
-            return panel;
-        }
-
-        private void saveOrderToFile(Order order) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt", true))) {
-                // Format: storeOwnerName:orderId|Product: productName, Quantity: quantity, Customer: customerName|status
-                String orderLine = String.format("%s:%s|Product: %s, Quantity: %s, Customer: %s|%s",
-                        order.getStoreOwnerName(), order.getOrderId(), order.getProductName(), order.getQuantity(), order.getCustomerName(), order.getStatus());
-
-                writer.write(orderLine);
-                writer.newLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void updateOrderStatusInFile(DefaultTableModel model, int row, String newStatus) {
-            String orderId = (String) model.getValueAt(row, 0);
-            String storeOwner = (String) model.getValueAt(row, 5);
-            String productName = (String) model.getValueAt(row, 1);
-            String quantity = (String) model.getValueAt(row, 2);
-            String customer = (String) model.getValueAt(row, 3);
-
-            List<String> updatedOrders = new ArrayList<>();
-
-            try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.startsWith(storeOwner + ":" + orderId)) {
-                        // Update the status
-                        String updatedLine = String.format("%s:%s|Product: %s, Quantity: %s, Customer: %s|%s",
-                                storeOwner, orderId, productName, quantity, customer, newStatus);
-                        updatedOrders.add(updatedLine);
-                    } else {
-                        updatedOrders.add(line);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt"))) {
-                for (String updatedOrder : updatedOrders) {
-                    writer.write(updatedOrder);
-                    writer.newLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void deleteOrderFromFile(String orderId, String storeOwner) {
-            List<String> remainingOrders = new ArrayList<>();
-
-            try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (!line.startsWith(storeOwner + ":" + orderId)) {
-                        remainingOrders.add(line); // Keep orders that do not match the deleted one
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt"))) {
-                for (String order : remainingOrders) {
-                    writer.write(order);
-                    writer.newLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-///////////////////////////////// tuesday
-    
-    
-    private void loadOrdersFromFile(DefaultTableModel model) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length == 3) {
-                    // Split the first part to extract store owner and order ID
-                    String[] storeOwnerAndOrderId = parts[0].split(":");
-                    String storeOwner = storeOwnerAndOrderId[0];
-                    String orderId = storeOwnerAndOrderId[1];
-
-                    // Split the details part to extract product name, quantity, and customer
-                    String details = parts[1];
-                    String productName = details.split(",")[0].split(":")[1].trim();
-                    String quantity = details.split(",")[1].split(":")[1].trim();
-                    String customer = details.split(",")[2].split(":")[1].trim();
-
-                    String status = parts[2];
-
-                    // Add to the table model
-                    model.addRow(new Object[]{orderId, productName, quantity, customer, status, storeOwner});
+                    JOptionPane.showMessageDialog(panel, "Recipient and message cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+        });
+
+        viewMessagesButton.addActionListener(e -> showReceivedMessages1(currentUser)); // Show received messages
+
+        return panel;
+    }
+
+
+    private void saveNotification(String sender, String recipient, String message) {
+        String filename = recipient + "_messages.txt";
+        String notification = "Store owner " + sender + " sent a message to " + recipient + ":\n" + message + "\n\n";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
+            writer.write(notification);
+            writer.flush(); // Ensure the data is written to the file
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Failed to save the message.", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
 
-////end order management
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private JPanel createProductManagementPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
+   
 
-        
-        JPanel addProductPanel = new JPanel(new GridLayout(4, 2));
-        JLabel nameLabel = new JLabel("Product Name:");
-        JTextField nameField = new JTextField();
-        JLabel descriptionLabel = new JLabel("Product Description:");
-        JTextField descriptionField = new JTextField();
-        JLabel priceLabel = new JLabel("Price:");
-        JTextField priceField = new JTextField();
-        JButton addButton = new JButton("Add Product");
 
-        addProductPanel.add(nameLabel);
-        addProductPanel.add(nameField);
-        addProductPanel.add(descriptionLabel);
-        addProductPanel.add(descriptionField);
-        addProductPanel.add(priceLabel);
-        addProductPanel.add(priceField);
-        addProductPanel.add(new JLabel());
-        addProductPanel.add(addButton);
+    public JPanel createOrderManagementPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel titleLabel = new JLabel("Order Management", JLabel.CENTER);
+        titleLabel.setFont(new Font("Serif", Font.BOLD, 24));
+        panel.add(titleLabel, BorderLayout.NORTH);
 
        
-        DefaultListModel<String> productListModel = new DefaultListModel<>();
-        JList<String> productList = new JList<>(productListModel);
-        JScrollPane productScrollPane = new JScrollPane(productList);
-        
-        loadProductsFromFile(productListModel);
+        String[] columnNames = {"Order ID", "Product Name", "Quantity", "Customer", "Status", "Store Owner"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        JTable orderTable = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(orderTable);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        loadOrdersFromFile(model);
 
-       
+        
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(0, 2, 5, 5));
+
+      
+        JTextField orderIdField = new JTextField();
+        JTextField productNameField = new JTextField();
+        JTextField quantityField = new JTextField();
+        JTextField customerField = new JTextField();
+
+        formPanel.add(new JLabel("Order ID:"));
+        formPanel.add(orderIdField);
+        formPanel.add(new JLabel("Product Name:"));
+        formPanel.add(productNameField);
+        formPanel.add(new JLabel("Quantity:"));
+        formPanel.add(quantityField);
+        formPanel.add(new JLabel("Customer:"));
+        formPanel.add(customerField);
+
+        panel.add(formPanel, BorderLayout.NORTH);
+
+        
         JPanel buttonPanel = new JPanel();
-        JButton updateButton = new JButton("Update Product");
-        JButton deleteButton = new JButton("Delete Product");
-        buttonPanel.add(updateButton);
-        buttonPanel.add(deleteButton);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        panel.add(addProductPanel, BorderLayout.NORTH);
-        panel.add(productScrollPane, BorderLayout.CENTER);
+        JButton addButton = new JButton("Add Order");
+        JButton startProcessingButton = new JButton("Start Processing");
+        JButton updateStatusButton = new JButton("Update Status");
+        JButton completeOrderButton = new JButton("Complete Order");
+        JButton deleteOrderButton = new JButton("Delete Order");
+
+        buttonPanel.add(addButton);
+        buttonPanel.add(startProcessingButton);
+        buttonPanel.add(updateStatusButton);
+        buttonPanel.add(completeOrderButton);
+        buttonPanel.add(deleteOrderButton);
+
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
-       
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String productName = nameField.getText().trim();
-                String productDescription = descriptionField.getText().trim();
-                double productPrice;
-                try {
-                    productPrice = Double.parseDouble(priceField.getText().trim());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(panel, "Invalid price.");
-                    return;
-                }
 
-                if (!productName.isEmpty() && !productDescription.isEmpty()) {
-                    String productString = productName + " - " + productDescription + " - $" + productPrice;
-                    productListModel.addElement(productString);
-                    
-                    saveProductsToFile(productListModel);
-                    JOptionPane.showMessageDialog(panel, "Product added successfully.");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please fill all fields.");
-                }
+        addButton.addActionListener(e -> {
+            String orderId = orderIdField.getText();
+            String productName = productNameField.getText();
+            String quantity = quantityField.getText();
+            String customer = customerField.getText();
+            String storeOwner = currentUser; 
+
+            
+            Order order = new Order(orderId, "New", productName, quantity, customer, storeOwner);
+            
+            model.addRow(new Object[]{order.getOrderId(), productName, quantity, customer, order.getStatus(), order.getStoreOwnerName()});
+
+            
+            saveOrderToFile(order);
+
+           
+            orderIdField.setText("");
+            productNameField.setText("");
+            quantityField.setText("");
+            customerField.setText("");
+        });
+
+      
+        startProcessingButton.addActionListener(e -> {
+            int selectedRow = orderTable.getSelectedRow();
+            if (selectedRow >= 0) {
+                model.setValueAt("Processing", selectedRow, 4); 
+                updateOrderStatusInFile(model, selectedRow, "Processing");
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please select an order to start processing.");
             }
         });
 
-        
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedIndex = productList.getSelectedIndex();
-                if (selectedIndex != -1) {
-                    String product = productListModel.getElementAt(selectedIndex);
-                    String[] parts = product.split(" - ");
-                    nameField.setText(parts[0]);
-                    descriptionField.setText(parts[1]);
-                    priceField.setText(parts[2].substring(1));
-                    productListModel.remove(selectedIndex);
-                    
-                    JOptionPane.showMessageDialog(panel, "Product updated. Please re-add with new details.");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select a product to update.");
+        updateStatusButton.addActionListener(e -> {
+            int selectedRow = orderTable.getSelectedRow();
+            if (selectedRow >= 0) {
+                String newStatus = JOptionPane.showInputDialog(panel, "Enter new status:");
+                if (newStatus != null && !newStatus.trim().isEmpty()) {
+                    model.setValueAt(newStatus, selectedRow, 4); // Update the status
+                    updateOrderStatusInFile(model, selectedRow, newStatus);
                 }
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please select an order to update the status.");
+            }
+        });
+
+        completeOrderButton.addActionListener(e -> {
+            int selectedRow = orderTable.getSelectedRow();
+            if (selectedRow >= 0) {
+                model.setValueAt("Completed", selectedRow, 4); 
+                updateOrderStatusInFile(model, selectedRow, "Completed");
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please select an order to complete.");
             }
         });
 
        
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedIndex = productList.getSelectedIndex();
-                if (selectedIndex != -1) {
-                    productListModel.remove(selectedIndex);
-                    saveProductsToFile(productListModel);
-                    JOptionPane.showMessageDialog(panel, "Product deleted successfully.");
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please select a product to delete.");
-                }
+        deleteOrderButton.addActionListener(e -> {
+            int selectedRow = orderTable.getSelectedRow();
+            if (selectedRow >= 0) {
+                String orderId = (String) model.getValueAt(selectedRow, 0);
+                String storeOwner = (String) model.getValueAt(selectedRow, 5);
+                model.removeRow(selectedRow); 
+                deleteOrderFromFile(orderId, storeOwner); 
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please select an order to delete.");
             }
         });
 
         return panel;
     }
 
+    private void saveOrderToFile(Order order) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt", true))) {
+           
+            String orderLine = String.format("%s:%s|Product: %s, Quantity: %s, Customer: %s|%s",
+                    order.getStoreOwnerName(), order.getOrderId(), order.getProductName(), order.getQuantity(), order.getCustomerName(), order.getStatus());
+
+            writer.write(orderLine);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateOrderStatusInFile(DefaultTableModel model, int row, String newStatus) {
+        String orderId = (String) model.getValueAt(row, 0);
+        String storeOwner = (String) model.getValueAt(row, 5);
+        String productName = (String) model.getValueAt(row, 1);
+        String quantity = (String) model.getValueAt(row, 2);
+        String customer = (String) model.getValueAt(row, 3);
+
+        List<String> updatedOrders = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(storeOwner + ":" + orderId)) {
+             
+                    String updatedLine = String.format("%s:%s|Product: %s, Quantity: %s, Customer: %s|%s",
+                            storeOwner, orderId, productName, quantity, customer, newStatus);
+                    updatedOrders.add(updatedLine);
+                } else {
+                    updatedOrders.add(line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt"))) {
+            for (String updatedOrder : updatedOrders) {
+                writer.write(updatedOrder);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteOrderFromFile(String orderId, String storeOwner) {
+        List<String> remainingOrders = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.startsWith(storeOwner + ":" + orderId)) {
+                    remainingOrders.add(line); // Keep orders that do not match the deleted one
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("order.txt"))) {
+            for (String order : remainingOrders) {
+                writer.write(order);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+///////////////////////////////// tuesday
+
+
+private void loadOrdersFromFile(DefaultTableModel model) {
+    try (BufferedReader reader = new BufferedReader(new FileReader("order.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            if (parts.length == 3) {
+                // Split the first part to extract store owner and order ID
+                String[] storeOwnerAndOrderId = parts[0].split(":");
+                String storeOwner = storeOwnerAndOrderId[0];
+                String orderId = storeOwnerAndOrderId[1];
+
+                // Split the details part to extract product name, quantity, and customer
+                String details = parts[1];
+                String productName = details.split(",")[0].split(":")[1].trim();
+                String quantity = details.split(",")[1].split(":")[1].trim();
+                String customer = details.split(",")[2].split(":")[1].trim();
+
+                String status = parts[2];
+
+                // Add to the table model
+                model.addRow(new Object[]{orderId, productName, quantity, customer, status, storeOwner});
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
     
     
+private JPanel createProductManagementPanel(String storeOwnerName) { // Add storeOwnerName as a parameter
+    JPanel panel = new JPanel(new BorderLayout());
+    String newStoreOwnerName = currentUser;
+    // Create the add product panel
+    JPanel addProductPanel = new JPanel(new GridLayout(4, 2));
+    JLabel nameLabel = new JLabel("Product Name:");
+    JTextField nameField = new JTextField();
+    JLabel descriptionLabel = new JLabel("Product Description:");
+    JTextField descriptionField = new JTextField();
+    JLabel priceLabel = new JLabel("Price:");
+    JTextField priceField = new JTextField();
+    JButton addButton = new JButton("Add Product");
+
+    addProductPanel.add(nameLabel);
+    addProductPanel.add(nameField);
+    addProductPanel.add(descriptionLabel);
+    addProductPanel.add(descriptionField);
+    addProductPanel.add(priceLabel);
+    addProductPanel.add(priceField);
+    addProductPanel.add(new JLabel()); // Empty space
+    addProductPanel.add(addButton);
+
+    
+    DefaultListModel<String> productListModel = new DefaultListModel<>();
+    JList<String> productList = new JList<>(productListModel);
+    JScrollPane productScrollPane = new JScrollPane(productList);
+    
+    loadProductsFromFile1(productListModel);
+
+  
+    JPanel buttonPanel = new JPanel();
+    JButton updateButton = new JButton("Update Product");
+    JButton deleteButton = new JButton("Delete Product");
+    buttonPanel.add(updateButton);
+    buttonPanel.add(deleteButton);
+
+    
+    panel.add(addProductPanel, BorderLayout.NORTH);
+    panel.add(productScrollPane, BorderLayout.CENTER);
+    panel.add(buttonPanel, BorderLayout.SOUTH);
+
+ 
+   
+
+    addButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String productName = nameField.getText().trim();
+            String productDescription = descriptionField.getText().trim();
+            double productPrice;
+            try {
+                productPrice = Double.parseDouble(priceField.getText().trim());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(panel, "Invalid price.");
+                return;
+            }
+
+            if (!productName.isEmpty() && !productDescription.isEmpty()) {
+                String productString = storeOwnerName + "| Product: " + productName + " - Description: " + productDescription + " - Price: $" + productPrice;
+                productListModel.addElement(productString);
+                
+          
+                appendProductToFile(productString);
+                
+                JOptionPane.showMessageDialog(panel, "Product added successfully.");
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please fill all fields.");
+            }
+        }
+    });
+
+
+    
+    updateButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = productList.getSelectedIndex();
+            if (selectedIndex != -1) {
+                String selectedProduct = productListModel.getElementAt(selectedIndex);
+                
+            
+                String newProductName = JOptionPane.showInputDialog("Enter new product name:", extractProductName(selectedProduct));
+                String newDescription = JOptionPane.showInputDialog("Enter new product description:", extractProductDescription(selectedProduct));
+                String newPriceStr = JOptionPane.showInputDialog("Enter new product price:", extractProductPrice(selectedProduct));
+
+                if (newProductName != null && newDescription != null && newPriceStr != null) {
+                    double newPrice;
+                    try {
+                        newPrice = Double.parseDouble(newPriceStr.trim());
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(panel, "Invalid price format.");
+                        return;
+                    }
+                    
+                    
+                    String updatedProduct = newStoreOwnerName + "| Product: " + newProductName + " - Description: " + newDescription + " - Price: $" + String.format("%.2f", newPrice);
+                    
+          
+                    updateProductInFile(selectedProduct, updatedProduct);
+                    
+        
+                    productListModel.setElementAt(updatedProduct, selectedIndex);
+                    
+                    JOptionPane.showMessageDialog(panel, "Product updated successfully.");
+                }
+            }
+        }
+    });
+
+   
+    deleteButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedIndex = productList.getSelectedIndex();
+            if (selectedIndex != -1) {
+                
+                String selectedProduct = productListModel.getElementAt(selectedIndex);
+
+               
+                productListModel.remove(selectedIndex);
+
+              
+                String productName = extractProductName(selectedProduct);
+
+                saveProductToFile1(productName);
+
+                JOptionPane.showMessageDialog(panel, "Product deleted successfully.");
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please select a product to delete.");
+            }
+        }
+    });
+
+
+    return panel;
+}
+
+
+
+
+
+
+////
+private String extractProductDescription(String productLine) {
+    String[] parts = productLine.split(" - ");
+    if (parts.length >= 2) {
+        return parts[1].replace("Description: ", "").trim();
+    }
+    return "";
+}
+
+private String extractProductPrice(String productLine) {
+    String[] parts = productLine.split(" - ");
+    if (parts.length >= 3) {
+        return parts[2].replace("Price: $", "").trim();
+    }
+    return "";
+}
+
+private void updateProductInFile(String originalProduct, String updatedProduct) {
+    File inputFile = new File("products.txt");
+    File tempFile = new File("products_temp.txt");
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+         PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
+
+        String currentLine;
+
+        while ((currentLine = reader.readLine()) != null) {
+          
+            if (!currentLine.trim().equalsIgnoreCase(originalProduct.trim())) {
+               
+                writer.println(currentLine);
+            }
+        }
+        
+       
+        writer.println(updatedProduct);
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+   
+    if (inputFile.delete()) {
+        tempFile.renameTo(inputFile);
+    }
+}
+////
+private String extractProductName(String productString) {
+   
+    String[] parts = productString.split(" - ");
+    
+   
+    String[] nameParts = parts[0].split(": ");
+    
+  
+    return nameParts[1].trim();
+}
+
+
+private void appendProductToFile(String productString) {
+    try (PrintWriter writer = new PrintWriter(new FileWriter("products.txt", true))) {  
+        writer.println(productString);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+
+
+
+private void saveProductToFile1(String productName) {
+    File inputFile = new File("products.txt");
+    File tempFile = new File("products_temp.txt");
+
+    try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+         PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
+
+        String currentLine;
+
+        while ((currentLine = reader.readLine()) != null) {
+            String[] parts = currentLine.split(" - ");
+            if (parts.length > 0) {
+                String currentProductName = parts[0].split(":")[1].trim(); 
+                if (!currentProductName.equals(productName)) {
+                    writer.println(currentLine);
+                }
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    
+    if (inputFile.delete()) {
+        if (!tempFile.renameTo(inputFile)) {
+            System.err.println("Failed to rename the temporary file.");
+        }
+    } else {
+        System.err.println("Failed to delete the original file.");
+    }
+}
+
+
+
+private void loadProductsFromFile1(DefaultListModel<String> productListModel) {
+    try (BufferedReader reader = new BufferedReader(new FileReader("products.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            productListModel.addElement(line);
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+
+    
+    //////////hbhdbhjdbhj
     
     
     ///////////////////monday 12/8/202444444444444444444444444444444444444444///////////////////
@@ -1615,13 +1895,24 @@ public class MyApplication {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" - ");
                 if (parts.length >= 3) {
-                    String priceStr = parts[2].replace("$", "");
-                    double price = Double.parseDouble(priceStr);
+                  
+                    String priceStr = parts[2].trim();
+                    if (priceStr.startsWith("Price:")) {
+                       
+                        priceStr = priceStr.split(":")[1].trim();
+                    }
+                    
+                    priceStr = priceStr.replace("$", "");
+                    try {
+                        double price = Double.parseDouble(priceStr);
 
-                   
-                    double costPrice = price * 0.7; 
-                    totalSales += price;
-                    totalProfits += (price - costPrice);
+                       
+                        double costPrice = price * 0.7;
+                        totalSales += price;
+                        totalProfits += (price - costPrice);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Failed to parse price: " + priceStr);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -1661,19 +1952,28 @@ public class MyApplication {
     private void applyDiscount(double discountPercentage) {
         List<String> discountedProducts = new ArrayList<>();
         
-        try (BufferedReader reader = new BufferedReader(new FileReader("_Purchases.txt"));
-             BufferedWriter writer = new BufferedWriter(new FileWriter("_Purchases_tmp.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("products.txt"));
+             BufferedWriter writer = new BufferedWriter(new FileWriter("products_tmp.txt"))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" - ");
                 if (parts.length >= 3) {
-                    String productName = parts[0];
-                    String description = parts[1];
-                    double price = Double.parseDouble(parts[2].replace("$", ""));
+                    
+                    String storeOwnerAndProductName = parts[0];
 
+                    
+                    String description = parts[1];
+
+                    
+                    String priceStr = parts[2].replace("Price: $", "");
+                    double price = Double.parseDouble(priceStr);
+
+                    
                     double discountedPrice = price * (1 - discountPercentage / 100);
-                    String discountedProductLine = productName + " - " + description + " - $" + String.format("%.2f", discountedPrice);
+
+                    
+                    String discountedProductLine = storeOwnerAndProductName + " - " + description + " - Price: $" + String.format("%.2f", discountedPrice);
                     discountedProducts.add(discountedProductLine);
                     
                     writer.write(discountedProductLine + "\n");
@@ -1683,11 +1983,11 @@ public class MyApplication {
             e.printStackTrace();
         }
 
-       
-        new File("_Purchases.txt").delete();
-        new File("_Purchases_tmp.txt").renameTo(new File("_Purchases.txt"));
+        
+        new File("products.txt").delete();
+        new File("products_tmp.txt").renameTo(new File("products.txt"));
 
-       
+        
         showDiscountedProductsFrame(discountedProducts);
     }
 
@@ -1711,31 +2011,85 @@ public class MyApplication {
 ///////////////////////////////////////////////////////////////////////////////////////////
     
     
+   
     
-    private void saveProductsToFile(DefaultListModel<String> productListModel) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Product.txt"))) {
-            for (int i = 0; i < productListModel.size(); i++) {
-                String productString = productListModel.get(i);
-                writer.write(productString);
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private JPanel createOwnerAccountManagementPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
-    private void loadProductsFromFile(DefaultListModel<String> productListModel) {
-        File file = new File("Product.txt");
-        if (file.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    productListModel.addElement(line);
+        JPanel accountDetailsPanel = new JPanel();
+        accountDetailsPanel.setLayout(new GridLayout(5, 2, 10, 10));
+        
+        JLabel usernameLabel = new JLabel("Store Owner Name:");
+        JTextField usernameField = new JTextField(15);
+        
+        JLabel emailLabel = new JLabel("Email:");
+        JTextField emailField = new JTextField(15);
+        
+        JLabel cityLabel = new JLabel("City:");
+        JTextField cityField = new JTextField(15);
+        
+        JLabel passwordLabel = new JLabel("Password:");
+        JPasswordField passwordField = new JPasswordField(15);
+        
+        JButton updateButton = new JButton("Update Account");
+
+        accountDetailsPanel.add(usernameLabel);
+        accountDetailsPanel.add(usernameField);
+        accountDetailsPanel.add(emailLabel);
+        accountDetailsPanel.add(emailField);
+        accountDetailsPanel.add(cityLabel);
+        accountDetailsPanel.add(cityField);
+        accountDetailsPanel.add(passwordLabel);
+        accountDetailsPanel.add(passwordField);
+        accountDetailsPanel.add(new JLabel()); 
+        accountDetailsPanel.add(updateButton);
+
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText().trim();
+                String email = emailField.getText().trim();
+                String city = cityField.getText().trim();
+                String password = new String(passwordField.getPassword()).trim();
+
+                if (username.isEmpty() || email.isEmpty() || city.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "All fields are required.");
+                    return;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                String currentUsername = getCurrentUsername(); // Fetch the current store owner's username
+                User user = users.get(currentUsername);
+                if (user != null) {
+                    user.setUsername(username);
+                    user.setEmail(email);
+                    user.setCountry(city);
+                    user.setPassword(password);
+                    saveUsers();  
+                    JOptionPane.showMessageDialog(panel, "Account details updated successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Store owner not found.");
+                }
             }
-        }
+        });
+
+        panel.add(accountDetailsPanel, BorderLayout.CENTER);
+
+        return panel;
     }
 
   
@@ -1763,7 +2117,6 @@ public class MyApplication {
     
     
     
-
     private JPanel createAccountManagementPanel() {
     	JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -1781,7 +2134,7 @@ public class MyApplication {
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailField = new JTextField(15);
         
-        JLabel countryLabel = new JLabel("Country:");
+        JLabel countryLabel = new JLabel("City:");
         JTextField countryField = new JTextField(15);
         
         JLabel passwordLabel = new JLabel("Password:");
@@ -1847,6 +2200,7 @@ public class MyApplication {
 
         return panel;
     }
+
         
     
     private String getCurrentUsername() {
@@ -1857,31 +2211,7 @@ public class MyApplication {
     
     
     
-    
-    
-    
-    private String loadUserPosts(String username) {
-        StringBuilder posts = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(DESSERT_CREATIONS_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith(username + ":")) {
-                   
-                    String[] parts = line.split(":");
-                    if (parts.length >= 3) {
-                        String imagePath = parts[1];
-                        String description = parts[2];
-                        posts.append("Description: ").append(description).append("\n");
-                        posts.append("Image: ").append(imagePath).append("\n\n");
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return posts.toString();
-    }
-
+ 
 
     
   
@@ -2068,10 +2398,10 @@ public class MyApplication {
         filterPanel.add(veganCheckbox);
         filterPanel.add(nutFreeCheckbox);
 
-        JButton purchaseButton = new JButton("Purchase Selected Product");
+        //JButton purchaseButton = new JButton("Purchase Selected Product");
 
         // Load all products from file
-        List<String> allProducts = loadProductsFromFile("Product.txt");
+        List<String> allProducts = loadProductsFromFile("products.txt");
         allProducts.forEach(productListModel::addElement);
 
         searchButton.addActionListener(e -> {
@@ -2101,26 +2431,8 @@ public class MyApplication {
             filteredProducts.forEach(productListModel::addElement);
         });
 
-        purchaseButton.addActionListener(e -> {
-            String selectedProduct = productList.getSelectedValue();
-            if (selectedProduct != null) {
-                int confirm = JOptionPane.showConfirmDialog(panel,
-                        "Are you sure you want to purchase: " + selectedProduct + "?",
-                        "Confirm Purchase",
-                        JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    // Save the purchase
-                    savePurchaseToFile(selectedProduct);
-                    JOptionPane.showMessageDialog(panel, "Purchase successful! You bought: " + selectedProduct);
+       
 
-                    // Assuming currentUser is a String containing the username
-                  
-                }
-            } else {
-                JOptionPane.showMessageDialog(panel, "Please select a product to purchase.");
-                
-            }
-        });
 
 
         purchaseFromStoreOwnerButton.addActionListener(e -> {
@@ -2143,11 +2455,12 @@ public class MyApplication {
         panel.add(searchPanel, BorderLayout.NORTH);
         panel.add(productScrollPane, BorderLayout.CENTER);
         panel.add(filterPanel, BorderLayout.WEST);
-        panel.add(purchaseButton, BorderLayout.SOUTH);
+      
 
         return panel;
     }
 
+    
 
 ///from here
     private List<String> loadStoreOwnersFromFile(String fileName) {
@@ -2166,62 +2479,106 @@ public class MyApplication {
         return storeOwners;
     }
     //done
+   
+
+//done
+ 
+    private void showProductsFrame(String storeOwnerName) {
+        JFrame frame = new JFrame("Products from " + storeOwnerName);
+        frame.setSize(600, 400);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        DefaultListModel<String> productListModel = new DefaultListModel<>();
+        JList<String> productList = new JList<>(productListModel);
+        JScrollPane scrollPane = new JScrollPane(productList);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Load and filter products
+        loadAndDisplayProducts(storeOwnerName, productListModel);
+
+        // Panel for the purchase button
+        JPanel buttonPanel = new JPanel();
+        JButton purchaseButton = new JButton("Purchase");
+        buttonPanel.add(purchaseButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        purchaseButton.addActionListener(e -> {
+            String selectedProduct = productList.getSelectedValue();
+            if (selectedProduct != null) {
+                int confirm = JOptionPane.showConfirmDialog(panel,
+                        "Are you sure you want to purchase: " + selectedProduct + "?",
+                        "Confirm Purchase",
+                        JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    // Save the purchase
+                    savePurchaseToFile(selectedProduct, storeOwnerName);
+                    JOptionPane.showMessageDialog(panel, "Purchase successful! You bought: " + selectedProduct);
+
+                    // Assuming currentUser is a String containing the username
+                }
+            } else {
+                JOptionPane.showMessageDialog(panel, "Please select a product to purchase.");
+            }
+        });
+
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
+    private void savePurchaseToFile(String product, String storeOwnerName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("_purchases.txt", true))) {
+            // Split the product string to separate the product details
+            String[] productDetails = product.split(" - ");
+            
+            if (productDetails.length >= 3) {
+                // Format: storeOwnerName | PurchaserName: Product: productName - Description: productDescription - Price: $price
+                String purchaseEntry = String.format(
+                    "%s | %s: Product: %s - Description: %s - Price: %s",
+                    storeOwnerName,
+                    currentUser,
+                    productDetails[0].replace("Product: ", "").trim(),
+                    productDetails[1].replace("Description: ", "").trim(),
+                    productDetails[2].replace("Price: ", "").trim()
+                );
+                writer.write(purchaseEntry);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    
+    
+    
     
 
-    private List<String> loadProductsForStoreOwner(String storeOwner) {
-        List<String> products = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("Product.txt"))) {
+    private void loadAndDisplayProducts(String storeOwnerName, DefaultListModel<String> productListModel) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("products.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith(storeOwner + ":")) {
-                    products.add(line.substring(storeOwner.length() + 2)); // Remove owner name and colon
+                // Assuming the format is "storeOwnerName| Product: ... - Description: ... - Price: $..."
+                String[] parts = line.split("\\|");
+                if (parts.length >= 2) {
+                    String ownerName = parts[0].trim();
+                    String productInfo = parts[1].trim();
+
+                    if (ownerName.equals(storeOwnerName)) {
+                        productListModel.addElement(productInfo);
+                    }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return products;
     }
 
-//done
-    //new frame
-    private void showProductsFrame(String storeOwner) {
-        JFrame productsFrame = new JFrame("Products of " + storeOwner);
-        productsFrame.setSize(500, 400);
-        productsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        productsFrame.setLayout(new BorderLayout());
-
-        
-        
-        List<String> products =  loadProductsFromFile("Product.txt");
-       // List<String> products = loadProductsForStoreOwner(storeOwner);
-        DefaultListModel<String> productListModel = new DefaultListModel<>();
-        for (String product : products) {
-            productListModel.addElement(product);
-        }
-
-        JList<String> productList = new JList<>(productListModel);
-        JScrollPane scrollPane = new JScrollPane(productList);
-        productsFrame.add(scrollPane, BorderLayout.CENTER);
-
-        JButton purchaseButton = new JButton("Purchase Selected Product");
-        productsFrame.add(purchaseButton, BorderLayout.SOUTH);
-
-        purchaseButton.addActionListener(e -> {
-            String selectedProduct = productList.getSelectedValue();
-            if (selectedProduct != null) {
-                // Save the selected product to _purchases file
-                savePurchaseToFile(selectedProduct);
-                JOptionPane.showMessageDialog(productsFrame, "Product purchased successfully.");
-            } else {
-                JOptionPane.showMessageDialog(productsFrame, "Please select a product to purchase.");
-            }
-        });
-
-        productsFrame.setVisible(true);
-    }
-
-    
     
     
     
@@ -2241,48 +2598,13 @@ public class MyApplication {
         }
         return products;
     }
-
-    private List<String> loadProductsForStoreOwner(String fileName, String storeOwner) {
-        List<String> products = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Assuming that each line contains the store owner's name followed by a product
-                if (line.startsWith(storeOwner + ":")) {
-                    products.add(line.substring(storeOwner.length() + 1).trim());
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return products;
-    }
     
 
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private void savePurchaseToFile(String product) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("_purchases.txt", true))) {
-            String purchaseEntry = String.format("%s: %s", loginManager.getCurrentUser(), product);
-            writer.write(purchaseEntry);
-            writer.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
+   
+
 
     ////monday
     
@@ -2291,9 +2613,8 @@ public class MyApplication {
     ///////////////////////////////////////
     //////////////////////////////////
     private JPanel createCommunicationFeedbackPanel() {
-        JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(3, 1, 10, 10)); 
 
-        // Create the communication button
         JButton communicationButton = new JButton("Communication");
         communicationButton.addActionListener(e -> {
             try {
@@ -2305,12 +2626,11 @@ public class MyApplication {
             }
         });
 
-        // Create the feedback button
+      
         JButton feedbackButton = new JButton("Feedback");
         feedbackButton.addActionListener(e -> {
             try {
                 showFeedbackOptionsFrame();
-                // Additional logic you want to update or add
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(panel, "Error opening feedback options: " + ex.getMessage(), 
                                               "Error", JOptionPane.ERROR_MESSAGE);
@@ -2318,11 +2638,59 @@ public class MyApplication {
             }
         });
 
-        // Add buttons to the panel
+     
+        JButton receivedMessagesButton = new JButton("Show Received Messages");
+        receivedMessagesButton.addActionListener(e -> {
+            try {
+                showReceivedMessages1(currentUser); 
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(panel, "Error showing received messages: " + ex.getMessage(), 
+                                              "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        });
+
+        
         panel.add(communicationButton);
         panel.add(feedbackButton);
+        panel.add(receivedMessagesButton); 
 
         return panel;
+    }
+
+    private void showReceivedMessages1(String username) {
+
+        String filename = username + "_messages.txt";
+        
+        File file = new File(filename);
+        
+        
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null, "No messages found for " + username + ".", 
+                                          "Messages", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        
+        StringBuilder messages = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                messages.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error reading messages: " + e.getMessage(), 
+                                          "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+      
+        JTextArea textArea = new JTextArea(messages.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+        
+        JOptionPane.showMessageDialog(null, scrollPane, "Received Messages", JOptionPane.INFORMATION_MESSAGE);
     }
 
 
@@ -2335,17 +2703,16 @@ public class MyApplication {
 
         JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
 
-        // Button for feedback on purchases
+   
         JButton feedbackOnPurchasesButton = new JButton("Feedback on My Purchases");
         feedbackOnPurchasesButton.addActionListener(e -> {
-            feedbackOptionsFrame.dispose(); // Close the options frame
+            feedbackOptionsFrame.dispose(); 
             showFeedbackFrame();
         });
 
-        // Button for feedback on posts
         JButton feedbackOnPostsButton = new JButton("Feedback on Posts");
         feedbackOnPostsButton.addActionListener(e -> {
-            feedbackOptionsFrame.dispose(); // Close the options frame
+            feedbackOptionsFrame.dispose(); 
             showFeedbackFrameForPosts ();
         });
 
@@ -2383,14 +2750,13 @@ public class MyApplication {
             ImageIcon imageIcon = new ImageIcon(new ImageIcon(post.getImage()).getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH));
             JLabel imageLabel = new JLabel(imageIcon);
 
-            // Text area for feedback
+            
             JTextArea feedbackArea = new JTextArea(3, 20);
             feedbackArea.setWrapStyleWord(true);
             feedbackArea.setLineWrap(true);
             JScrollPane feedbackScrollPane = new JScrollPane(feedbackArea);
             feedbackScrollPane.setPreferredSize(new Dimension(550, 50));
 
-            // Save feedback button
             JButton saveFeedbackButton = new JButton("Save Feedback");
 
             saveFeedbackButton.addActionListener(e -> {
@@ -2398,20 +2764,20 @@ public class MyApplication {
                 if (!feedback.isEmpty()) {
                     saveFeedbackpostToFile(currentUser, post.getDescription(), feedback);
                     JOptionPane.showMessageDialog(feedbackFrame, "Thank you for your feedback on " + post.getUsername() + "'s post!");
-                    feedbackArea.setText(""); // Clear the text area after saving
+                    feedbackArea.setText(""); 
                 } else {
                     JOptionPane.showMessageDialog(feedbackFrame, "Feedback cannot be empty.");
                 }
             });
 
-            // Adding components to single post panel
+           
             singlePostPanel.add(imageLabel, BorderLayout.WEST);
             singlePostPanel.add(postLabel, BorderLayout.CENTER);
             singlePostPanel.add(feedbackScrollPane, BorderLayout.SOUTH);
             singlePostPanel.add(saveFeedbackButton, BorderLayout.EAST);
 
             panel.add(singlePostPanel);
-            panel.add(Box.createVerticalStrut(10)); // Add some space between posts
+            panel.add(Box.createVerticalStrut(10)); 
         }
 
         JScrollPane panelScrollPane = new JScrollPane(panel);
@@ -2426,12 +2792,12 @@ public class MyApplication {
 
     private List<Post> loadSharedPosts() {
         List<Post> sharedPosts = new ArrayList<>();
-        String filePath = "dessert_creations.txt"; // File where shared posts data is stored
+        String filePath = "dessert_creations.txt"; 
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // Assuming the line format is "username|imagePath|postText"
+              
                 String[] parts = line.split("\\|");
                 if (parts.length == 3) {
                     String username = parts[0].trim();
@@ -2451,9 +2817,9 @@ public class MyApplication {
     private void saveFeedbackpostToFile(String feedbackGiver, String originalPostText, String feedbackContent) {
         try (FileWriter writer = new FileWriter("postsfeedback.txt", true)) {
             String[] postDetails = originalPostText.split(":", 2);
-            String feedbackReceiver = postDetails[0]; // Get the original post's author
+            String feedbackReceiver = postDetails[0]; 
 
-            // Format: feedbackGiver: gave feedback on post by feedbackReceiver - "feedbackContent"
+            
             String feedbackEntry = String.format("%s: gave feedback on post by %s - \"%s\"%n", feedbackGiver, feedbackReceiver, feedbackContent);
 
             writer.write(feedbackEntry);
@@ -2468,6 +2834,7 @@ public class MyApplication {
     ///////
     //////end feedback
     
+
     
     
     
@@ -2484,8 +2851,7 @@ public class MyApplication {
     
     
     
-    
- // Method to show communication options
+ 
 
     private void showCommunicationOptions() {
     	String currentUserName = currentUser; 
@@ -2494,24 +2860,24 @@ public class MyApplication {
         communicationFrame.setLocationRelativeTo(null);
         communicationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Main panel with BorderLayout
+        
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // North panel with a title
+      
         JLabel titleLabel = new JLabel("Choose an Option to Communicate", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        // Load users from the file and filter based on roles
+        
         List<String> storeOwners = new ArrayList<>();
         List<String> suppliers = new ArrayList<>();
         loadUsers(storeOwners, suppliers);
 
-        // Center panel with communication buttons and lists
+       
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
 
-        // Scrollable lists for owners and suppliers
+        
         JList<String> ownersList = new JList<>(storeOwners.toArray(new String[0]));
         ownersList.setBorder(BorderFactory.createTitledBorder("Store Owners"));
         JScrollPane ownersScrollPane = new JScrollPane(ownersList);
@@ -2520,13 +2886,13 @@ public class MyApplication {
         suppliersList.setBorder(BorderFactory.createTitledBorder("Suppliers"));
         JScrollPane suppliersScrollPane = new JScrollPane(suppliersList);
 
-        // Text area for writing the message
+       
         JTextArea messageArea = new JTextArea(5, 20);
         messageArea.setBorder(BorderFactory.createTitledBorder("Write your message here"));
         messageArea.setWrapStyleWord(true);
         messageArea.setLineWrap(true);
 
-        // Panel for text area and buttons
+        
         JPanel southPanel = new JPanel(new BorderLayout(10, 10));
         southPanel.add(new JScrollPane(messageArea), BorderLayout.CENTER);
 
@@ -2540,17 +2906,17 @@ public class MyApplication {
         buttonPanel.add(communicateWithOwnerButton);
         buttonPanel.add(communicateWithSupplierButton);
 
-        // Add components to the south panel
+    
         southPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        // Add lists and south panel to the main panel
+        
         centerPanel.add(ownersScrollPane);
         centerPanel.add(suppliersScrollPane);
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         mainPanel.add(southPanel, BorderLayout.SOUTH);
 
-        // South panel with a close button
+      
         JPanel closePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton closeButton = new JButton("Close");
         closeButton.addActionListener(e -> communicationFrame.dispose());
@@ -2594,45 +2960,7 @@ public class MyApplication {
     
     
     
-    
-    
-    
-    
-    
-    
 
-    // Method to handle communication with the selected user
-   /* private void communicateWithSelectedUser(JList<String> userList, JTextArea messageArea) {
-        String selectedUser = userList.getSelectedValue();
-        String message = messageArea.getText();
-        
-        if (selectedUser != null && !message.isEmpty()) {
-            // Simulate sending the message to the selected user
-            JOptionPane.showMessageDialog(null, "Message sent to " + selectedUser + ":\n" + message);
-            
-            // Clear the message area after sending
-            messageArea.setText("");
-            
-            // Implement actual message sending logic here, e.g., saving the message to a file
-            saveMessageToFile(selectedUser, message);
-        } else if (selectedUser == null) {
-            JOptionPane.showMessageDialog(null, "Please select a user to communicate with.");
-        } else if (message.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please write a message before sending.");
-        }
-    }
-*/
-    // Placeholder method to save the message to a file
-  /*  private void saveMessageToFile(String recipient, String message) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(recipient + "_messages.txt", true))) {
-            writer.write("Message to " + recipient + ": " + message);
-            writer.newLine();
-            JOptionPane.showMessageDialog(null, "Message saved to " + recipient + "_messages.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error saving message to file.");
-        }
-    }*/
     //friday
     private void saveMessageToFile(String recipient, String sender, String message) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(recipient + "_messages.txt", true))) {
@@ -2645,45 +2973,9 @@ public class MyApplication {
         }
     }
 //friday
-    private void showReceivedMessages(String recipient) {
-        JFrame messagesFrame = new JFrame("Received Messages");
-        messagesFrame.setSize(500, 300);
-        messagesFrame.setLocationRelativeTo(null);
-        messagesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        JTextArea messagesArea = new JTextArea();
-        messagesArea.setEditable(false);
-        messagesArea.setBorder(BorderFactory.createTitledBorder("Messages for " + recipient));
-
-        // Load messages from the file
-        try (BufferedReader reader = new BufferedReader(new FileReader(recipient + "_messages.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                messagesArea.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error loading messages.");
-        }
-
-        JScrollPane scrollPane = new JScrollPane(messagesArea);
-        messagesFrame.add(scrollPane);
-        messagesFrame.setVisible(true);
-    }
+   
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
 // Method to load users from the file and filter them into store owners and suppliers
 private void loadUsers(List<String> storeOwners, List<String> suppliers) {
@@ -2713,33 +3005,6 @@ private void loadUsers(List<String> storeOwners, List<String> suppliers) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Placeholder method to handle communication with the selected user
-private void communicateWithSelectedUser(JList<String> userList) {
-    String selectedUser = userList.getSelectedValue();
-    if (selectedUser != null) {
-        JOptionPane.showMessageDialog(null, "Communicating with " + selectedUser + " feature coming soon.");
-    } else {
-        JOptionPane.showMessageDialog(null, "Please select a user to communicate with.");
-    }
-}
 
 
     // Method to show the feedback frame
@@ -2840,8 +3105,6 @@ private void communicateWithSelectedUser(JList<String> userList) {
     ////////////////feedback on shared post 
     
     
-    
-    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////
 
@@ -2897,12 +3160,6 @@ private void communicateWithSelectedUser(JList<String> userList) {
         }
     }
     
-    
-    
-    
-    
-    
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MyApplication());
@@ -2910,5 +3167,3 @@ private void communicateWithSelectedUser(JList<String> userList) {
     }
     
 }
-
-

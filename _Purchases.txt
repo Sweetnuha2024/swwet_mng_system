@@ -1,40 +1,61 @@
-nuhha: Strawberry cake - good - $24.24
-nuhha: Donuts - good - $2.91
-nuhha: Strawberry cake - good - $24.24
-tasneem: Cupcake - so delicious - $14.54
-tasneem: Cupcake - so delicious - $14.54
-tasneem: Cupcake - so delicious - $14.54
-tasneem: Cupcake - so delicious - $14.54
-tasneem: cinamon rolls - softtttttttt - $10.67
-alma: Donuts - good - $2.91
-alma: banana cake - nothing - $14.54
-alma: Cupcake - so delicious - $14.54
-sama: Ice cream cake - Fantastic - $33.94
-sama: Fruitcake - made with candied or dried fruit, nuts, and spices, and optionally soaked in spirits. - $38.78
-sama: Gluten-free choclate banana cake - Bittersweet choclate ,cocoa nibs  banana - $24.24
-merna: Cheesecake - mixture is sweetened - $29.09
-merna: Ice cream cake - Fantastic - $33.94
-merna: Ice cream cake - Fantastic - $33.94
-merna: Ice cream cake - Fantastic - $33.94
-merna: Ice cream cake - Fantastic - $33.94
-merna: Butter cake - Nut-Free - $21.82
-merna: Vanilla Vegan Pound cake - Vegan - $29.09
-merna: Red velvet cake - new cake - $43.63
-Leen: Vegan cake - good - $24.24
-Leen: Cheesecake - mixture is sweetened - $29.09
-nuhha: strawberry cake - nothing - $63.00
-nuhha: strawberry cake - nothing - $70.0
-nuhha: Cinamon Roll - nothing - $30.0
-tasneem: Teramissio - different flavour - $100.0
-tasneem: Creps - delicious - $15.0
-alma: Nut Cake - delicious - $30.0
-nuhha: Cupcake - hghghgh - $30.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
-merna: Apple cake - Vegan - $50.0
+ahmad | tasneem: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+hala | tasneem: Product: Ice cream cake - Description: traditional cake - Price: $144.00
+ahmad | alma: Product: Brownese - Description: hh - Price: $54.00
+ahmad | alma: Product: Layered rainbow cake - Description: birthday - Price: $90.00
+safaa | alma: Product: Butter cake - Description: new - Price: $72.00
+safaa | alma: Product: Lemon cake - Description: Nut-Free - Price: $54.00
+safaa | alma: Product: Strawberry cake - Description: creme - Price: $81.00
+Seren | alma: Product: Dark cake - Description: dark - Price: $50.00
+safaa | alma: Product: Carrot cake - Description: made with a combination of warm spices such as cinnamon - Price: $108.00
+safaa | alma: Product: Red velvet cake - Description: new recipe - Price: $135.00
+hala | tasneem: Product: Fruit cake - Description: dried fruit,nuts - Price: $45.00
+hala | nuhha: Product: Cookie cake - Description: traditional cake - Price: $108.00
+ahmad | nuhha: Product: caramel cake - Description: new flavour - Price: $171.00
+
+Seren | tasneem: Product: Dark cake - Description: dark - Price: $50.0
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+hala | nuhha: Product: Vanilla cake - Description: light test - Price: $63.00
+safaa | tasneem: Product: Butter cake - Description: new - Price: $72.00
+safaa | tasneem: Product: Butter cake - Description: new - Price: $72.00
+safaa | tasneem: Product: Butter cake - Description: new - Price: $72.00
+ahmad | tasneem: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00
+ahmad | tasneem: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00
+ahmad | tasneem: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00
+ahmad | tasneem: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00
+safaa | merna: Product: Butter cake - Description: new - Price: $72.00
+safaa | merna: Product: Butter cake - Description: new - Price: $72.00
+safaa | merna: Product: Butter cake - Description: new - Price: $72.00
+ahmad | merna: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00
+ahmad | merna: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00
+ahmad | merna: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: White choclate pops - Description: every one can have a lice. - Price: $63.00
+ahmad | nuhha: Product: Gluten-Free choclate loaf - Description: every one can have a lice. - Price: $108.00
+ahmad | nuhha: Product: Layered rainbow cake - Description: birthday - Price: $90.00
+ahmad | nuhha: Product: Banana caramel cake - Description: cute and tasty - Price: $117.00

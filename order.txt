@@ -1,5 +1,6 @@
 hala:1|Product: Cinamon roll, Quantity: 3, Customer: bassam|Completed
-hala:4|Product: Mango cake, Quantity: 1, Customer: haneen|Processing
-hala:2|Product: choclate cake, Quantity: 2, Customer: layla|processing
+hala:4|Product: Mango cake, Quantity: 1, Customer: haneen|Completed
+hala:2|Product: choclate cake, Quantity: 2, Customer: layla|Completed
 hala:5|Product: lebanon nights, Quantity: 1, Customer: mostafa|Completed
 hala:6|Product: Orange cake, Quantity: 5, Customer: ali|Processing
+hala:7|Product: Vanilla, Quantity: 2, Customer: hiba|Processing

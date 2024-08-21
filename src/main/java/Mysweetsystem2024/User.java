@@ -9,12 +9,13 @@ public class User {
     private String country;
     private String phoneNumber;
 
-    public User(String username, String password, String country, String email, UserRole role) {
+    public User(String username, String password,  String email,String country, UserRole role) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        
         this.email = email;
         this.country = country;
+        this.role = role;
     }
 
     public User(String username, String password, String role) {
