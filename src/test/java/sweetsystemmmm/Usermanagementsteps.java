@@ -106,14 +106,14 @@ public class Usermanagementsteps {
 
     @Then("the user account should be successfully deleted")
     public void theUserAccountShouldBeSuccessfullyDeleted() {
-        // التحقق من أن حساب المستخدم تم حذفه بنجاح
+       
         assertTrue("User account should be successfully deleted", isUserDeleted);
         System.out.println("User account was successfully deleted");
     }
 
     @Then("the user should no longer appear in the list of store owners")
     public void theUserShouldNoLongerAppearInTheListOfStoreOwners() {
-        // التحقق من أن المستخدم لم يعد يظهر في قائمة أصحاب المتاجر
+      
         assertFalse("User should no longer appear in the list of store owners", isUserCreated1);
         System.out.println("User no longer appears in the list of store owners");
     }
