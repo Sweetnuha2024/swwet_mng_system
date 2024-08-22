@@ -3125,9 +3125,16 @@ private void loadUsers(List<String> storeOwners, List<String> suppliers) {
     public User getUser(String username) {
         return users.get(username);
     }
-    public void addUser(User user) {
+    public boolean addUser(User user) {
+        if (userExists(user.getUsername())) {
+            return false;
+        }
         users.put(user.getUsername(), user);
-        saveUsers();
+        return true;
+    
+       // saveUsers();
+        
+        
     }
 // read  users from file
     private void loadUserData() {
