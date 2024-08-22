@@ -11,6 +11,7 @@ public class Order {
 	    private String customerName;
 	    private String storeOwnerName;
 	    private LocalDateTime creationTime;
+	    private String details;
 
 	    public Order(String orderId, String status, String productName, String quantity, String customerName, String storeOwnerName) {
 	        this.orderId = orderId;
@@ -23,7 +24,10 @@ public class Order {
 	    }
 
 	    // Getters and setters
-
+	    public Order(String details) {
+            this.details = details;
+            this.status = "Created";
+        }
 	    public String getOrderId() { return orderId; }
 	    public String getStatus() { return status; }
 	    public String getProductName() { return productName; }

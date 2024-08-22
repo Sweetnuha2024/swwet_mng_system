@@ -12,6 +12,7 @@ karam,9990,karam@gmail.com,Tubas,REGULAR_USER
 Aseell,34,Aseel@gmail.com,Tubas,REGULAR_USER
 hala,333333,hala@gmail.com,Nablus,STORE_OWNER
 yassar,13,yassar@gmail.com,Nablus,REGULAR_USER
+nonexistent,password123,defaultEmail@example.com,Palestine,REGULAR_USER
 merna,199,merno@gmail.com,Nablus,REGULAR_USER
 Selen,77,seleno@gmail.com,Jenin,STORE_OWNER
 adam,12,adam@gmail.com,Nablus,REGULAR_USER
@@ -23,8 +24,10 @@ Seren,0000,seren@gamil.com,Jerusalem,STORE_OWNER
 razan,777,razan@gmail.com,Nablus,REGULAR_USER
 Hamod,121212,hamod@gmail.com,Nablus,SUPPLIER
 Salma,3333,Salma@gmail.com,Nablus,REGULAR_USER
+shahd,defaultPassword,defaultEmail@example.com,Palestine,REGULAR_USER
 alia,12,Nablus,alia@gmail.com,ADMIN
 maya,90,maya@gmail.com,Nablus,STORE_OWNER
+ameer,password123,defaultEmail@example.com,Palestine,REGULAR_USER
 suad,66,suad@gmail.com,Tubas,REGULAR_USER
 safaa,444444,safa@gmail.com,Ramallah,STORE_OWNER
 omar,11,omar@gmail.com,Nablus,REGULAR_USER
