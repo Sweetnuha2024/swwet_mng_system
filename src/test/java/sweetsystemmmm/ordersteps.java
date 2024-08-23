@@ -1,8 +1,6 @@
 package sweetsystemmmm;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import Mysweetsystem2024.Order;
 import io.cucumber.java.en.Given;
@@ -11,43 +9,44 @@ import io.cucumber.java.en.When;
 
 public class ordersteps {
 
-
     private Order currentOrder;
     private String currentOrderStatus;
     private boolean isOrderProcessed;
-
+    private boolean isOrderCreated;
+    
     @Given("I am logged in as a Store Owner or Raw Material Supplier")
     public void iAmLoggedInAsAStoreOwnerOrRawMaterialSupplier() {
-        // Assuming that your system has a method to check if the user is logged in
-        boolean isLoggedIn = true; // Replace with actual login check if available
+        // Replace with actual login check if available
+        boolean isLoggedIn = true; 
         assertTrue("User is not logged in as Store Owner or Raw Material Supplier", isLoggedIn);
     }
 
     @Given("I am on the order management page")
     public void iAmOnTheOrderManagementPage() {
-        // Assume that the user is navigating to the order management page
-        // In a real scenario, you might check if the correct page is displayed
-        boolean isOnOrderManagementPage = true; // Replace with actual page check if available
+        // Replace with actual page check if available
+        boolean isOnOrderManagementPage = true; 
         assertTrue("Not on the order management page", isOnOrderManagementPage);
     }
 
     @When("I create a new order with details {string}")
     public void iCreateANewOrderWithDetails(String details) {
-        // Split details assuming a format like "Product1:2,Product2:3"
+        // Create a new order with provided details
         currentOrder = new Order(details);
+        isOrderCreated = (currentOrder != null);
         isOrderProcessed = true; // Assume order processing is successful
     }
 
     @Then("the order should be processed successfully")
     public void theOrderShouldBeProcessedSuccessfully() {
         assertTrue("Order was not processed successfully", isOrderProcessed);
+        assertNotNull("Order was not created", currentOrder);
     }
 
     @Given("I have created an order with details {string}")
     public void iHaveCreatedAnOrderWithDetails(String details) {
-        // Assuming the order is created when this step is called
+        // Create an order with the given details
         currentOrder = new Order(details);
-        isOrderProcessed = true;
+        isOrderCreated = (currentOrder != null);
         assertNotNull("Order was not created", currentOrder);
     }
 
@@ -55,12 +54,37 @@ public class ordersteps {
     public void iUpdateTheStatusOfTheOrderTo(String status) {
         if (currentOrder != null) {
             currentOrder.setStatus(status);
-            currentOrderStatus = status;
+            currentOrderStatus = currentOrder.getStatus();
         }
     }
 
     @Then("the order status should be {string}")
     public void theOrderStatusShouldBe(String expectedStatus) {
         assertEquals("Order status did not match the expected status", expectedStatus, currentOrderStatus);
+    }
+
+    @When("I check if the order is new")
+    public void iCheckIfTheOrderIsNew() {
+        if (currentOrder != null) {
+            isOrderProcessed = currentOrder.isNew();
+        }
+    }
+
+    @Then("the order should be considered {string}")
+    public void theOrderShouldBeConsidered(String expectedNewStatus) {
+        boolean expectedIsNew = "new".equalsIgnoreCase(expectedNewStatus);
+        assertEquals("Order new status did not match the expected status", expectedIsNew, isOrderProcessed);
+    }
+
+    @When("I create an order with an empty detail string")
+    public void iCreateAnOrderWithAnEmptyDetailString() {
+        currentOrder = new Order("");
+        isOrderCreated = (currentOrder != null);
+    }
+
+    @Then("the order should be created with default status")
+    public void theOrderShouldBeCreatedWithDefaultStatus() {
+        assertTrue("Order was not created", isOrderCreated);
+        assertEquals("Created", currentOrder.getStatus());
     }
 }

@@ -23,9 +23,17 @@ public class Order {
 	        this.creationTime = LocalDateTime.now(); 
 	    }
 
-	    // Getters and setters
+	    public LocalDateTime getCreationTime() {
+			return creationTime;
+		}
+
+		public void setCreationTime(LocalDateTime creationTime) {
+			this.creationTime = creationTime;
+		}
+
+		// Getters and setters
 	    public Order(String details) {
-            this.details = details;
+            this.setDetails(details);
             this.status = "Created";
         }
 	    public String getOrderId() { return orderId; }
@@ -65,4 +73,12 @@ public class Order {
         boolean isCreatedRecently = creationTime.isAfter(LocalDateTime.now().minusHours(24)); 
         return isNewStatus || isCreatedRecently;
     }
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
 }
