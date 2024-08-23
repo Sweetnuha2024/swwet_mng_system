@@ -1,6 +1,7 @@
 package Mysweetsystem2024;
 
 public class Admin {
+	
 	private UserRepositry userRepository;
 
     public Admin(UserRepositry userRepository) {
@@ -12,9 +13,9 @@ public class Admin {
         return userRepository.addUser(user);
     }
 
-    public User viewUser(String username) {
-        return userRepository.getUser(username);
-    }
+   // public User viewUser(String username) {
+     //   return userRepository.getUser(username);
+    //}
 
     public boolean updateUser(User user) {
         return userRepository.updateUser(user);

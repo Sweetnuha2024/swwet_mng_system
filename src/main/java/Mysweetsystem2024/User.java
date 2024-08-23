@@ -126,7 +126,7 @@ public class User {
     private UserRole role;
     private String email;
     private String country;
-    private String phoneNumber;
+    
     
     private String confirmationMessage;
     private boolean feedbackRecorded;
@@ -144,7 +144,9 @@ public class User {
         this.role = role;
         this.email = email;
         this.country = country;
+        
     }
+  
     public boolean submitProductFeedback(String rating, String comment) {
         // Simulate feedback submission (In reality, this would involve saving feedback in a database)
         feedbackRecorded = true; // Assuming feedback submission is successful
@@ -162,10 +164,7 @@ public class User {
     public User(String username, String password, String role) {
 		// TODO Auto-generated constructor stub
 	}
-    public String getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    
-    
+   
     
     
     
@@ -216,11 +215,11 @@ public class User {
         this.email = email;
     }
 
-    @Override
-	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", role=" + role + ", email=" + email
-				+ ", country=" + country + "]";
-	}
+    //@Override 
+	//public String toString() {
+		//return "User [username=" + username + ", password=" + password + ", role=" + role + ", email=" + email
+			//	+ ", country=" + country + "]";
+//	}
 
 	public String getCountry() {
         return country;
