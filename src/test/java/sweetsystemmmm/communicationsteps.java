@@ -2,6 +2,7 @@ package sweetsystemmmm;
 
 import org.junit.Assert;
 
+import Mysweetsystem2024.MyApplication;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,7 +13,9 @@ public class communicationsteps {
     private String messageSubject;
     private String messageBody;
     private String emailContent;
-
+    private  MyApplication app;
+    public communicationsteps (MyApplication app) {
+    	this.app=app;}
     @Given("I am logged in as a Store Owner")
     public void iAmLoggedInAsAStoreOwner() {
         // Simulate logging in as a Store Owner
