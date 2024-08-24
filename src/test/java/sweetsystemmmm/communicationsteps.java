@@ -2,10 +2,10 @@ package sweetsystemmmm;
 
 import org.junit.Assert;
 
-import Mysweetsystem2024.MyApplication;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import mysweetsystem.MyApplication;
 
 public class communicationsteps {
 

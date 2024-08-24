@@ -1,4 +1,4 @@
-package Mysweetsystem2024;
+package mysweetsystem;
 
 import java.io.*;
 import java.util.ArrayList;

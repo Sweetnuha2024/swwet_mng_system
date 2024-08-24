@@ -2,14 +2,14 @@ package sweetsystemmmm;
 
 import static org.junit.Assert.*;
 
-import Mysweetsystem2024.Admin;
-import Mysweetsystem2024.MyApplication;
-import Mysweetsystem2024.StoreOwner;
-import Mysweetsystem2024.User;
-import Mysweetsystem2024.UserRepositry;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import mysweetsystem.Admin;
+import mysweetsystem.MyApplication;
+import mysweetsystem.StoreOwner;
+import mysweetsystem.User;
+import mysweetsystem.UserRepositry;
 
 public class Usermanagementsteps {
 

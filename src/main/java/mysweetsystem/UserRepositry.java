@@ -1,4 +1,4 @@
-package Mysweetsystem2024;
+package mysweetsystem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,9 +38,9 @@ public class UserRepositry {
         return false;
     }
 
-    public User getArchivedUser(String username) {
-        return archivedUsers.get(username);
-    }	
+   // public User getArchivedUser(String username) {
+     //   return archivedUsers.get(username);
+    //}	
 	
 	
 	

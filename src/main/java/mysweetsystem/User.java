@@ -117,7 +117,7 @@ public class User {
     
 }
 */
-package Mysweetsystem2024;
+package mysweetsystem;
 
 
 public class User {
@@ -162,7 +162,9 @@ public class User {
     }
 
     public User(String username, String password, String role) {
-		// TODO Auto-generated constructor stub
+    	this.username = username;
+        this.password = password;
+        this.role = UserRole.valueOf(role.toUpperCase()); 
 	}
    
     

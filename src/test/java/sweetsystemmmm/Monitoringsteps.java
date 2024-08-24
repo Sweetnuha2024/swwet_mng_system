@@ -3,10 +3,10 @@ package sweetsystemmmm;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import static org.junit.Assert.*;
+import mysweetsystem.MyApplication;
+import mysweetsystem.Test;
 
-import Mysweetsystem2024.MyApplication;
-import Mysweetsystem2024.Test;
+import static org.junit.Assert.*;
 
 public class Monitoringsteps {
 

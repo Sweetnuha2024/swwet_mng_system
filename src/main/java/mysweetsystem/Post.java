@@ -77,7 +77,7 @@ public class Post {
 	
 	
 }*/
-package Mysweetsystem2024;
+package mysweetsystem;
 
 public class Post {
     private String description;

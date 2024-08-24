@@ -2,14 +2,10 @@ package sweetsystemmmm;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-
-
-
+import mysweetsystem.MyApplication;
+import mysweetsystem.Order;
 
 import static org.junit.Assert.*;
-
-import Mysweetsystem2024.MyApplication;
-import Mysweetsystem2024.Order;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

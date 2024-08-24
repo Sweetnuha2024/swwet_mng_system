@@ -6,15 +6,15 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import mysweetsystem.LoginManager;
+import mysweetsystem.MyApplication;
+import mysweetsystem.User;
+import mysweetsystem.UserRole;
+
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import Mysweetsystem2024.LoginManager;
-import Mysweetsystem2024.MyApplication;
-import Mysweetsystem2024.User;
-import Mysweetsystem2024.UserRole;
 
 public class loginsteps {
 
